@@ -11,11 +11,14 @@ fulfilled
 
 rejected
 
+```javascript
 const p = new Promise((resolve, reject) => {
   resolve("Done");
 });
+```
 
 ⭐ Creating & Consuming Promises
+```javascript
 function task() {
   return new Promise((resolve, reject) => {
     setTimeout(() => resolve("OK"), 1000);
@@ -25,20 +28,26 @@ function task() {
 task()
   .then(res => console.log(res))
   .catch(err => console.error(err));
+```
 
 ⭐ Promise Chaining
+```javascript
 task1()
   .then(r1 => task2(r1))
   .then(r2 => task3(r2))
   .catch(err => console.error(err));
+```
 
 ⭐ Error Handling
+```javascript
 doTask()
   .then(() => { throw new Error("fail") })
   .catch(err => console.log("Caught:", err))
   .finally(() => console.log("Always runs"));
+```
 
 ⭐ Async / Await (syntax sugar for Promises)
+```javascript
 async function run() {
   try {
     const res = await fetchData();
@@ -47,25 +56,30 @@ async function run() {
     console.error(e);
   }
 }
+```
 
 ⭐ Microtask Queue (Promise Priority)
 
 Promise callbacks (then/catch/finally) run before macrotasks (setTimeout, etc.).
 
+```javascript
 console.log("A");
 
 setTimeout(() => console.log("timeout"), 0);
 Promise.resolve().then(() => console.log("promise"));
 
 console.log("B");
+```
 
 
 Output:
 
+```text
 A
 B
 promise
 timeout
+```
 
 
 

@@ -7,6 +7,7 @@ Arrow functions do not have their own this; they lexically inherit this from the
 
 Example:
 
+```javascript
 const obj = {
   value: 10,
   normalFn() { return this.value; },
@@ -15,6 +16,7 @@ const obj = {
 
 obj.normalFn(); // 10 (works)
 obj.arrowFn();  // undefined (arrow takes `this` from outer scope)
+```
 
 ## 2. arguments Object
 
@@ -22,6 +24,7 @@ Normal functions have the built-in arguments object.
 
 Arrow functions do not. You must use rest parameters (...args).
 
+```javascript
 function normal() {
   console.log(arguments); // works
 }
@@ -29,6 +32,7 @@ function normal() {
 const arrow = () => {
   console.log(arguments); // error: arguments is not defined
 };
+```
 
 
 
@@ -45,15 +49,20 @@ But its value depends on how the function is called, not where it is written.
 
 ## 1. this in Global Context
 Browser
+```javascript
 console.log(this); // window
+```
 
 Node.js (modules)
+```javascript
 console.log(this); // undefined (in strict mode)
+```
 
 ## 2. this in Object Methods
 
 When a function is called as a method of an object, this refers to that object.
 
+```javascript
 const user = {
   name: "Akash",
   greet() { 
@@ -62,15 +71,18 @@ const user = {
 };
 
 user.greet(); // "Akash"  (this = user)
+```
 
 ## 3. this in Regular Functions
 
 Regular functions get this based on how they are invoked.
 
+```javascript
 function show() {
   console.log(this);
 }
 show();        // global this (window / undefined)
+```
 
 ## 4. this in Arrow Functions
 
@@ -78,9 +90,11 @@ Arrow functions do not have their own this.
 
 They lexically inherit this from the surrounding scope.
 
+```javascript
 const obj = {
   value: 10,
   arrow: () => console.log(this.value)
 };
 
 obj.arrow();   // undefined (this comes from global scope)
+```

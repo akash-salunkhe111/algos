@@ -81,16 +81,19 @@ MessageChannel
 
 
 ## Guess op
- console.log('Start');
+```javascript
+console.log('Start');
 setTimeout(() => console.log('Timeout 1!'), 0);
 Promise.resolve(Promise.resolve('Promise'))
 .then(res => console.log('promise 1')).then(res => console.log(`promise 2`))
 setImmediate(() => console.log('setImmediate callback'));
 process.nextTick(() => console.log('process.nextTick callback'));
 console.log('End');
+```
 
 
 
+```text
 Start
 end
 process.nextTick callback
@@ -98,6 +101,7 @@ promise 1
 promise 2
 Timeout 1
 setImmediate callback
+```
 
 
 

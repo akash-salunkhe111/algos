@@ -68,7 +68,9 @@ If we run 'outer' again and store the returned 'incrementCounter' function defin
 
 ### Where to check value
 the value of closure is stored in inner function in above case incrementCounter [[Scopes]]
+```javascript
 console.dir(myNewFunction)
+```
 
 
 Garbage collection

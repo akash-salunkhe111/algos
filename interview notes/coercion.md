@@ -58,10 +58,12 @@ Can produce unexpected results
 
 Examples
 
+```javascript
 "5" == 5        // true  (string → number)
 false == 0      // true
 null == undefined // true
 "" == 0         // true
+```
 
 ### 🔹 === (Strict Equality)
 
@@ -73,10 +75,12 @@ Safer and more predictable
 
 Examples
 
+```javascript
 "5" === 5       // false (string vs number)
 false === 0     // false
 null === undefined // false
 0 === 0         // true
+```
 
 
 📝 JS Coercion: + vs Other Operators
@@ -88,9 +92,11 @@ JS first tries to convert the other operand using ToString.
 
 Examples
 
+```javascript
 "5" + 2      // "52"   (2 → "2")
 "Hello " + true   // "Hello true"
 "" + 5       // "5"
+```
 
 
 This happens because + has two meanings:
@@ -107,11 +113,13 @@ Operators like -, *, /, %, ** always expect numbers, so they trigger ToNumber co
 
 Examples
 
+```javascript
 "5" - 1      // 4      ("5" → 5)
 "10" * "2"   // 20     (both → numbers)
 "8" / "2"    // 4
 true - 1     // 0      (true → 1)
 null + 5     // 5      (null → 0)
+```
 
 
 Even if a string is involved (except for +), JS will convert it to a number.
@@ -121,15 +129,17 @@ Even if a string is involved (except for +), JS will convert it to a number.
 
 ### Example questions
 
+```javascript
 var y = 1;
 if (function f() {}) {
    y += typeof f;
 }
 console.log(y); // ?
+```
 ✅ Output
-javascript
-Copy code
+```text
 1undefined
+```
 ✍️ Short explanation (step-by-step)
 function f() {} in an expression position (if ( ... )) is a function expression (a function object). Any function object is truthy, so the if condition is true and the body runs.
 
@@ -147,9 +157,9 @@ y += "undefined" is equivalent to y = y + "undefined".
 
 console.log(y) therefore logs the string:
 
-javascript
-Copy code
+```text
 1undefined
+```
 
 
 
@@ -195,6 +205,7 @@ undefined == false  // false
 
 📌 JavaScript Hoisting Example Explained
 Code
+```javascript
 var name = 'fvdf';
 
 (function () {
@@ -202,6 +213,7 @@ var name = 'fvdf';
   var name = "sdcds";
   console.log(name);
 }());
+```
 
 🧠 Explanation (Step-by-Step)
 ### 1. Global variable
@@ -214,11 +226,13 @@ A global variable name is created with the value "fvdf".
 
 Inside the function:
 
+```javascript
 (function () {
   console.log(name);   // ?
   var name = "sdcds";
   console.log(name);   // ?
 }());
+```
 
 ## 3. Hoisting happens inside the function
 
@@ -226,12 +240,14 @@ The var name inside the function is hoisted:
 
 JavaScript rewrites the function like this:
 
+```javascript
 (function () {
   var name;              // hoisted with value undefined
   console.log(name);     // prints undefined
   name = "sdcds";        // assignment happens here
   console.log(name);     // prints "sdcds"
 }());
+```
 
 ## 🧩 Why does the first console.log(name) print undefined?
 
@@ -252,17 +268,21 @@ Assignment name = "sdcds"
 Second console.log(name) → prints "sdcds"
 
 🎉 Final Output
+```text
 undefined
 sdcds
+```
 
 
 
 📌 JS Reference Assignment Example Explained
 Code
+```javascript
 let a = [1, 2, 3];
 let b = a;
 a = [4, 5, 6];
 console.log(b);
+```
 
 🧠 Explanation (Step-by-Step)
 ## 1. let a = [1, 2, 3];
@@ -298,17 +318,21 @@ b ---> [1, 2, 3]   (unchanged)
 
 b still references the original array, so output is:
 
+```javascript
 [1, 2, 3]
+```
 
 
 
 
 ### eg - 
- var name = "Lokesh Prajapati";
+```javascript
+var name = "Lokesh Prajapati";
 (function() {
   console.log(name);
   var name = "Lokesh Prajapati";
 })();
+```
 
 op - undefined due to hoisting of name inside function as undefined
 

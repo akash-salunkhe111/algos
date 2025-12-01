@@ -139,6 +139,7 @@ Update the real DOM once efficiently
 
 🔍 JavaScript vs React (Practical Example)
 🧠 Plain JavaScript — Immediate DOM updates
+```javascript
 const el = document.getElementById("counter");
 let count = 0;
 
@@ -146,6 +147,7 @@ function increment() {
   count++;
   el.innerText = count; // direct DOM update
 }
+```
 
 
 If increment() runs 10 times quickly:
@@ -157,6 +159,7 @@ Browser triggers 10 reflows + repaints
 Layout & style recalculation each time (expensive)
 
 ⚛️ React — Batched Virtual DOM updates
+```jsx
 function Counter() {
   const [count, setCount] = useState(0);
 
@@ -168,6 +171,7 @@ function Counter() {
 
   return <p>{count}</p>;
 }
+```
 
 React will:
 
@@ -215,6 +219,7 @@ Styles inside cannot affect the outer DOM
 Perfect for reusable, predictable UI components
 
 ## ✔ Example (Browser Native)
+```html
 <div id="my-component"></div>
 
 <script>
@@ -228,6 +233,7 @@ Perfect for reusable, predictable UI components
     <p>Hello from Shadow DOM!</p>
   `;
 </script>
+```
 
 
 Here:
@@ -251,12 +257,16 @@ JSX (JavaScript XML) is a syntax extension for JavaScript that allows you to wri
 
 Example:
 
+```jsx
 const element = <h1>Hello World</h1>;
+```
 
 
 Under the hood, JSX compiles to pure JavaScript:
 
+```javascript
 const element = React.createElement("h1", null, "Hello World");
+```
 
 
 So JSX is not HTML — it is syntactic sugar that makes UI code easier to write and read.
@@ -279,6 +289,7 @@ JSX is usually compiled by tools like Babel, SWC, or TypeScript before running i
 
 We can write react app without jsx like below using createElement everytime
 
+```javascript
 function App() {
   return React.createElement(
     'div',
@@ -287,6 +298,7 @@ function App() {
     React.createElement('p', null, 'Subtitle')
   );
 }
+```
 
 
 ***
@@ -299,7 +311,9 @@ function App() {
 
 In JavaScript, class is used to define classes:
 
+```javascript
 class Person {}
+```
 
 
 Since JSX is JavaScript with HTML-like syntax, using class in JSX would conflict with the JS keyword.
@@ -327,11 +341,13 @@ Flow is unidirectional (parent → child)
 Cannot be modified by the receiving component
 
 ✔ Example
+```jsx
 function Welcome(props) {
   return <h1>Hello, {props.name}</h1>;
 }
 
 <Welcome name="Akash" />;
+```
 
 
 name is a prop.
@@ -351,6 +367,7 @@ Causes the component to re-render when updated
 Used for dynamic data: counters, forms, toggles, API responses, etc.
 
 ✔ Example
+```jsx
 function Counter() {
   const [count, setCount] = useState(0);
 
@@ -360,6 +377,7 @@ function Counter() {
     </button>
   );
 }
+```
 
 
 count is state, updated via setCount.
@@ -471,12 +489,14 @@ Use <></> for shorthand, and React.Fragment when you need a key.
 Fragments cannot take props except one special case:
 
 ✔ key prop (when returning arrays)
+```jsx
 const items = users.map(user => (
   <React.Fragment key={user.id}>
     <dt>{user.name}</dt>
     <dd>{user.age}</dd>
   </React.Fragment>
 ));
+```
 
 ***
 ***
@@ -490,7 +510,9 @@ useState is a React Hook that allows functional components to store and manage s
 It is one of the most commonly used hooks in React.
 
 ## 🔧 Syntax
+```javascript
 const [state, setState] = useState(initialValue);
+```
 
 - state → current state value
 - setState → function to update the state
@@ -522,21 +544,27 @@ Updating document title
 Logging
 
 ## 🔧 Syntax
+```javascript
 useEffect(() => {
   // side effect (runs after render)
 }, [dependencies]);
+```
 
 # 🔍 When does useEffect run?
 There are 3 main behaviors based on the dependency array.
 ## 1️⃣ No Dependency Array → Runs after every render
+```javascript
 useEffect(() => {
   console.log("Runs every render");
 });
+```
 
 ## 2️⃣ Empty Dependency Array → Runs once (like componentDidMount)
+```javascript
 useEffect(() => {
   console.log("Runs only on first mount");
 }, []);
+```
 
 
 Use it for:
@@ -548,9 +576,11 @@ Event listeners
 Subscriptions
 
 ## 3️⃣ Dependency Array → Runs when dependencies change
+```javascript
 useEffect(() => {
   console.log("Runs when count changes");
 }, [count]);
+```
 
 
 React re-runs the effect if any dependency changes.
@@ -559,6 +589,7 @@ React re-runs the effect if any dependency changes.
 
 You can return a function inside useEffect to clean up side effects.
 
+```javascript
 useEffect(() => {
   const timer = setInterval(() => {
     console.log("Tick");
@@ -568,6 +599,7 @@ useEffect(() => {
     clearInterval(timer); // cleanup
   };
 }, []);
+```
 
 
 Cleanup runs:

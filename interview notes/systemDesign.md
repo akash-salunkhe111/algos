@@ -9,13 +9,16 @@ A class/module/function should have only one reason to change.
 ✔ One piece = One job
 
 Example
+```javascript
 // ❌ Wrong: One class doing multiple things
 class UserService {
   createUser(user) { /* DB logic */ }
   sendEmail(user) { /* Email logic */ }
 }
+```
 
 // ✅ Correct: Split responsibilities
+```javascript
 class UserRepository {
   createUser(user) {}
 }
@@ -23,6 +26,7 @@ class UserRepository {
 class EmailService {
   sendEmail(user) {}
 }
+```
 
 ## 2️⃣ O — Open/Closed Principle (OCP)
 
@@ -31,6 +35,7 @@ Open for extension, closed for modification.
 ✔ Add new features WITHOUT touching existing code
 
 Example
+```javascript
 // Base logger
 class Logger {
   log(message) {
@@ -44,6 +49,7 @@ class FileLogger extends Logger {
     // write to file instead
   }
 }
+```
 
 ## 3️⃣ L — Liskov Substitution Principle (LSP)
 
@@ -52,6 +58,7 @@ Child classes should work perfectly when used in place of parent classes.
 ✔ Subclasses must not break parent behavior.
 
 Example
+```javascript
 class Bird {
   fly() {
     return "Flying";
@@ -64,6 +71,7 @@ class Ostrich extends Bird {  // ❌ Violates LSP
     throw new Error("Ostrich cannot fly");
   }
 }
+```
 
 # 4️⃣ I — Interface Segregation Principle (ISP)
 
@@ -74,6 +82,7 @@ Different types of workers have different capabilities.
 
 Here, all workers must implement eat, work, and sleep — even if some workers do NOT need them (e.g., robots don’t sleep or eat).
 
+```javascript
 class Worker {
   eat() { }
   work() { }
@@ -91,6 +100,7 @@ class RobotWorker extends Worker {
   sleep() { throw new Error("Robots do not sleep"); } // ❌
   work() { console.log("Robot working"); }
 }
+```
 
 ✅ Good Example (Follows ISP)
 
@@ -105,6 +115,7 @@ Eatable
 Now each worker implements ONLY what they need.
 
 Interfaces (represented in JS using classes or objects)
+```javascript
 class Workable {
   work() {}
 }
@@ -116,18 +127,23 @@ class Eatable {
 class Sleepable {
   sleep() {}
 }
+```
 
 Human: can work, eat, sleep
+```javascript
 class HumanWorker {
   work() { console.log("Human working"); }
   eat() { console.log("Human eating"); }
   sleep() { console.log("Human sleeping"); }
 }
+```
 
 Robot: can only work
+```javascript
 class RobotWorker {
   work() { console.log("Robot working"); }
 }
+```
 
 ## 5️⃣ D — Dependency Inversion Principle (DIP)
 
@@ -138,14 +154,17 @@ Both should depend on abstractions.
 ✔ Pass behavior instead of creating it inside
 
 Example
+```javascript
 // ❌ Wrong: Hard dependency
 class AuthService {
   constructor() {
     this.db = new MySQLDatabase(); // tightly coupled
   }
 }
+```
 
 // ✅ Correct: Inject dependency
+```javascript
 class AuthService {
   constructor(database) {
     this.db = database;   // abstracted
@@ -154,6 +173,7 @@ class AuthService {
 
 const db = new MySQLDatabase();
 const auth = new AuthService(db);
+```
 
 
 

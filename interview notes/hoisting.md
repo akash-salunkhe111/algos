@@ -9,25 +9,31 @@ But only declarations are hoisted — not initializations.
 
 Fully hoisted. You can call them before they appear.
 
+```javascript
 sayHello(); // works
 
 function sayHello() {
   console.log("Hello!");
 }
+```
 
 ✅ var Declarations
 
 Hoisted but initialized as undefined.
 
+```javascript
 console.log(a); // undefined
 var a = 10;
+```
 
 ❌ let and const
 
 Hoisted but placed in the Temporal Dead Zone (TDZ) → you cannot use them before declaration.
 
+```javascript
 console.log(x); // ReferenceError (TDZ)
 let x = 5;
+```
 
 # 💡 Are Arrow Functions Hoisted?
 Arrow functions are not hoisted like function declarations.
@@ -35,9 +41,11 @@ Arrow functions are not hoisted like function declarations.
 It depends on how they are defined:
 
 ## ❌ Case 1: Arrow function assigned to var
+```javascript
 doSomething(); // ❌ TypeError: doSomething is not a function
 
 var doSomething = () => {};
+```
 
 
 Why?
@@ -72,27 +80,33 @@ Function-scoped
 
 NOT block-scoped
 
+```javascript
 if (true) {
   var x = 10;
 }
 console.log(x); // 10
+```
 
 let & const
 
 Block-scoped ({ })
 
+```javascript
 if (true) {
   let y = 20;
 }
 console.log(y); // ❌ ReferenceError
+```
 
 ## 2. Hoisting
 var
 
 Hoisted and initialized as undefined.
 
+```javascript
 console.log(a); // undefined
 var a = 5;
+```
 
 let & const
 
@@ -113,8 +127,10 @@ let
 
 Cannot be re-declared in the same scope.
 
+```javascript
 let y = 5;
 let y = 10; // ❌ SyntaxError
+```
 
 const
 
@@ -124,8 +140,10 @@ Cannot be re-declared.
 var — allowed
 let — allowed
 const — ❌ not allowed
+```javascript
 const a = 5;
 a = 10; // ❌ TypeError
+```
 
 
 But object mutation is allowed:
@@ -138,8 +156,10 @@ var
 
 Declared in global scope → becomes a property of window (browser).
 
+```javascript
 var a = 10;
 console.log(window.a); // 10
+```
 
 let & const
 
