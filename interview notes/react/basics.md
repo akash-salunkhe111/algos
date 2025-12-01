@@ -79,6 +79,9 @@ Requires Next.js or SSR setup
 ***
 
 
+
+
+
 # Virtual DOM
 The Virtual DOM (VDOM) is a lightweight, in-memory representation of the real DOM.
 React uses it to update the UI efficiently.
@@ -184,6 +187,9 @@ Apply one minimal DOM update
 ***
 
 
+
+
+
 # ⭐ What is the Shadow DOM? (Low priority)
 
 The Shadow DOM is a browser technology (part of Web Components) that allows you to create encapsulated, isolated components with their own:
@@ -235,6 +241,9 @@ A <p> outside this component won’t be affected
 ***
 
 
+
+
+
 # ⭐ What is JSX? Is it part of React?
 ## 1. What is JSX?
 
@@ -282,6 +291,9 @@ function App() {
 
 ***
 
+
+
+
 # ⭐ Why do we use className instead of class in React?
 ## 1. class is a reserved keyword in JavaScript
 
@@ -295,6 +307,9 @@ Since JSX is JavaScript with HTML-like syntax, using class in JSX would conflict
 To avoid ambiguity, React uses className.
 
 ***
+
+
+
 
 # ⭐ Props vs State in React
 ## 1. What are Props?
@@ -351,6 +366,9 @@ count is state, updated via setCount.
 
 
 ***
+
+
+
 
 
 # ⭐ Dumb vs Smart Components in React
@@ -429,6 +447,9 @@ function UserContainer() {
 
 ***
 
+
+
+
 # key in react
 
 The key-index map is an internal structure React uses to match list items between renders.
@@ -436,6 +457,9 @@ It maps each item’s key to its previous fiber node, helping React efficiently 
 Using stable, unique keys ensures correct behavior and prevents unnecessary re-renders.
 
 ***
+
+
+
 
 # Fragments in react
 A Fragment in React lets you return multiple elements without adding extra DOM nodes.
@@ -456,6 +480,9 @@ const items = users.map(user => (
 
 ***
 
+
+
+
 # ⭐ What is useState in React?
 
 useState is a React Hook that allows functional components to store and manage state — i.e., data that changes over time and causes re-rendering.
@@ -471,6 +498,9 @@ const [state, setState] = useState(initialValue);
 
 
 ***
+
+
+
 
 # What is useEffect in React?
 
@@ -566,4 +596,7 @@ React follows this lifecycle for functional components:
 
 
 *** 
+
+
+
 
