@@ -77,10 +77,8 @@ Requires Next.js or SSR setup
 
 
 ***
-
-
-
-
+***
+***
 
 # Virtual DOM
 The Virtual DOM (VDOM) is a lightweight, in-memory representation of the real DOM.
@@ -185,10 +183,8 @@ Apply one minimal DOM update
 
 
 ***
-
-
-
-
+***
+***
 
 # ⭐ What is the Shadow DOM? (Low priority)
 
@@ -239,10 +235,8 @@ A <p> outside this component won’t be affected
 
 
 ***
-
-
-
-
+***
+***
 
 # ⭐ What is JSX? Is it part of React?
 ## 1. What is JSX?
@@ -290,11 +284,9 @@ function App() {
 
 
 ***
-
-
-
-
-# ⭐ Why do we use className instead of class in React?
+***
+# ***
+⭐ Why do we use className instead of class in React?
 ## 1. class is a reserved keyword in JavaScript
 
 In JavaScript, class is used to define classes:
@@ -307,11 +299,9 @@ Since JSX is JavaScript with HTML-like syntax, using class in JSX would conflict
 To avoid ambiguity, React uses className.
 
 ***
-
-
-
-
-# ⭐ Props vs State in React
+***
+# ***
+⭐ Props vs State in React
 ## 1. What are Props?
 
 Props (Properties) are inputs passed from a parent component to a child component.
@@ -366,10 +356,8 @@ count is state, updated via setCount.
 
 
 ***
-
-
-
-
+***
+***
 
 # ⭐ Dumb vs Smart Components in React
 
@@ -446,22 +434,18 @@ function UserContainer() {
 
 
 ***
-
-
-
-
-# key in react
+***
+# k***
+ey in react
 
 The key-index map is an internal structure React uses to match list items between renders.
 It maps each item’s key to its previous fiber node, helping React efficiently detect changes and update only the necessary parts of the UI.
 Using stable, unique keys ensures correct behavior and prevents unnecessary re-renders.
 
 ***
-
-
-
-
-# Fragments in react
+***
+# F***
+ragments in react
 A Fragment in React lets you return multiple elements without adding extra DOM nodes.
 It avoids unnecessary <div> wrappers, keeps HTML clean, and improves performance.
 Use <></> for shorthand, and React.Fragment when you need a key.
@@ -479,11 +463,9 @@ const items = users.map(user => (
 ));
 
 ***
-
-
-
-
-# ⭐ What is useState in React?
+***
+# ***
+⭐ What is useState in React?
 
 useState is a React Hook that allows functional components to store and manage state — i.e., data that changes over time and causes re-rendering.
 
@@ -498,11 +480,9 @@ const [state, setState] = useState(initialValue);
 
 
 ***
-
-
-
-
-# What is useEffect in React?
+***
+# W***
+hat is useEffect in React?
 
 useEffect is a React Hook used to handle side effects in functional components.
 Side effects are operations that happen outside the normal component render flow.
@@ -596,7 +576,5 @@ React follows this lifecycle for functional components:
 
 
 *** 
-
-
-
-
+***
+***
