@@ -631,3 +631,263 @@ React follows this lifecycle for functional components:
 ***
 ***
  
+# ⭐ What is useReducer in React?
+
+useReducer is a React Hook used to manage complex state logic in functional components.
+It is an alternative to useState and is especially useful when:
+
+The state has multiple sub-values
+
+State updates depend on previous state
+
+Multiple actions modify the same state
+
+You want centralized state logic (like Redux inside a component)
+
+## 🔧 Syntax
+const [state, dispatch] = useReducer(reducer, initialState);
+
+- state → current state
+- dispatch(action) → function to send actions
+- reducer(state, action) → function that returns the new state
+# 🔍 How useReducer Works
+
+1️⃣ You define a reducer function
+2️⃣ You define an initial state
+3️⃣ You call dispatch() with an action
+4️⃣ React calls the reducer → returns new state
+5️⃣ Component re-renders with updated state
+
+## ✔ Example: Counter using useReducer
+Reducer function
+```
+function reducer(state, action) {
+  switch (action.type) {
+    case "increment":
+      return { count: state.count + 1 };
+    case "decrement":
+      return { count: state.count - 1 };
+    case "reset":
+      return { count: 0 };
+    default:
+      return state;
+  }
+}
+```
+Component using the reducer
+```
+function Counter() {
+  const [state, dispatch] = useReducer(reducer, { count: 0 });
+
+  return (
+    <>
+      <h2>Count: {state.count}</h2>
+      <button onClick={() => dispatch({ type: "increment" })}>+</button>
+      <button onClick={() => dispatch({ type: "decrement" })}>-</button>
+      <button onClick={() => dispatch({ type: "reset" })}>Reset</button>
+    </>
+  );
+}
+```
+
+***
+***
+***
+
+# ⭐ What is useContext in React?
+
+useContext is a React Hook that allows you to share data across the component tree without passing props down manually at every level (a.k.a prop drilling).
+
+It provides a way to access values from React Context, which acts like a global state container for a part of the app.
+
+## Why do we need useContext?
+
+Without useContext, data has to be passed like this:
+
+App → Parent → Child → GrandChild → ComponentNeedingData
+
+
+This is called prop drilling and becomes messy.
+
+useContext allows any component to directly consume the value.
+
+## 🔧 Syntax
+const value = useContext(MyContext);
+
+# ✔ Example: Theme Context (Dark / Light)
+1️⃣ Create Context
+const ThemeContext = React.createContext();
+
+2️⃣ Provide the value (at a high level)
+```
+function App() {
+  const [theme, setTheme] = useState("light");
+
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <Home />
+    </ThemeContext.Provider>
+  );
+}
+```
+3️⃣ Consume the value using useContext
+```
+function Home() {
+  const { theme, setTheme } = useContext(ThemeContext);
+
+  return (
+    <>
+      <h2>Current Theme: {theme}</h2>
+      <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+        Toggle Theme
+      </button>
+    </>
+  );
+}
+```
+
+⭐ What happens here?
+
+ThemeContext.Provider defines a shared state
+
+All components inside the provider can access the value with useContext
+
+No need to pass theme or setTheme as props through multiple components
+
+***
+***
+***
+
+# ⭐ What is useRef in React?
+
+useRef is a React Hook that allows you to:
+
+Access DOM elements directly
+
+ Measure width/height of an element
+ ```
+function Box() {
+  const boxRef = useRef();
+
+  useEffect(() => {
+    console.log("Width:", boxRef.current.offsetWidth);
+    console.log("Height:", boxRef.current.offsetHeight);
+  }, []);
+
+  return (
+    <div
+      ref={boxRef}
+      style={{ width: "200px", height: "100px", background: "lightblue" }}
+    />
+  );
+}
+```
+***
+***
+***
+
+
+useMemo & useCallback in React (Interview Explanation)
+
+Both hooks are used for performance optimization, but they solve different problems.
+
+# 🚀 1. useMemo — Memoize Values
+
+useMemo caches the result of a computation so it does NOT re-run on every render.
+
+✔ Use it when:
+
+You have expensive calculations
+
+You want to avoid recalculating derived data unnecessarily
+
+🔧 Syntax
+
+```
+const memoizedValue = useMemo(() => computeSomething(a, b), [a, b]);
+
+✔ Example: Expensive Calculation
+function ExpensiveComponent({ num }) {
+  const expensiveValue = useMemo(() => {
+    console.log("Running heavy calculation...");
+    return num * 1000; 
+  }, [num]);
+
+  return <h2>Value: {expensiveValue}</h2>;
+}
+```
+
+Without useMemo
+
+The heavy calculation runs on every render.
+
+With useMemo
+
+It only runs when num changes.
+
+# 🚀 2. useCallback — Memoize Functions
+
+useCallback returns a memoized version of a function, so it is not recreated on every render.
+
+✔ Use it when:
+
+Passing a function to a child component (prevents unnecessary re-renders)
+
+You have dependencies that rarely change
+
+You want stable function references
+
+🔧 Syntax
+```
+const memoizedFn = useCallback(() => {
+  doSomething(value);
+}, [value]);
+
+✔ Example: Prevent Child Re-render
+
+Parent Component:
+
+function Parent() {
+  const [count, setCount] = React.useState(0);
+
+  const handleClick = useCallback(() => {
+    console.log("Clicked!");
+  }, []);
+
+  return (
+    <>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+      <Child onClick={handleClick} />
+    </>
+  );
+}
+```
+
+Child Component:
+```
+const Child = React.memo(function Child({ onClick }) {
+  console.log("Child re-rendered");
+  return <button onClick={onClick}>Child Button</button>;
+});
+```
+Without useCallback
+
+The parent creates a new function every render
+
+Child re-renders every time
+
+With useCallback
+
+Function reference stays the same
+
+Child does not re-render unnecessarily
+
+🎯 useMemo vs useCallback (Simple Table)
+Hook	Memoizes	Use case
+useMemo	Value	Avoid expensive recalculations
+useCallback	Function	Prevent unnecessary re-renders due to changing function reference
+
+***
+***
+***
+
