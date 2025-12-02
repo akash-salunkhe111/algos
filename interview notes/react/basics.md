@@ -716,8 +716,9 @@ const value = useContext(MyContext);
 
 # ✔ Example: Theme Context (Dark / Light)
 1️⃣ Create Context
+```
 const ThemeContext = React.createContext();
-
+```
 2️⃣ Provide the value (at a high level)
 ```
 function App() {
