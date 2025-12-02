@@ -883,9 +883,11 @@ Function reference stays the same
 Child does not re-render unnecessarily
 
 🎯 useMemo vs useCallback (Simple Table)
-Hook	Memoizes	Use case
-useMemo	Value	Avoid expensive recalculations
-useCallback	Function	Prevent unnecessary re-renders due to changing function reference
+| Hook            | Memoizes | Use case                                                          |
+| --------------- | -------- | ----------------------------------------------------------------- |
+| **useMemo**     | Value    | Avoid expensive recalculations                                    |
+| **useCallback** | Function | Prevent unnecessary re-renders due to changing function reference |
+
 
 ***
 ***
