@@ -894,3 +894,204 @@ Child does not re-render unnecessarily
 ***
 ***
 
+# What are React Portals?
+
+A React Portal allows you to render a component outside its normal parent DOM hierarchy, while still keeping it inside the same React component tree.
+
+You create a portal using:
+```
+ReactDOM.createPortal(child, container)
+```
+
+Example:
+
+```
+return ReactDOM.createPortal(
+  <div className="modal">Hello</div>,
+  document.getElementById("modal-root")
+);
+```
+⭐ Why are Portals Needed?
+
+Normally, components render inside the DOM element where your React app is mounted.
+
+But some UI elements need to break out of this structure, for example:
+
+✔ Modals
+✔ Dialogs / Popups
+✔ Tooltips
+✔ Dropdowns
+
+***
+***
+***
+
+React.lazy and React.Suspense (Interview Explanation)
+
+Together, React.lazy and React.Suspense enable code splitting and lazy loading of components in React.
+
+This improves performance by loading components only when needed, instead of bundling everything into a large initial JavaScript file.
+
+# 🚀 React.lazy — Lazy-load Components
+
+React.lazy allows you to load a component dynamically using import().
+The component is only loaded when it is first rendered.
+
+🔧 Syntax
+```
+const MyComponent = React.lazy(() => import('./MyComponent'));
+```
+
+This tells React:
+
+“Do not include MyComponent in the main bundle. Load it only when needed.”
+
+✔ Example: Lazy Loading a Component
+```
+const About = React.lazy(() => import("./About"));
+
+function App() {
+  return (
+    <div>
+      <h1>Home Page</h1>
+      <About />   {/* Loaded only when rendered */}
+    </div>
+  );
+}
+```
+
+# 🎟 React.Suspense — Fallback While Loading
+
+Since React.lazy loads components asynchronously, React needs a way to show something while loading.
+
+React.Suspense wraps lazy components and shows a fallback UI.
+
+🔧 Syntax
+```
+<Suspense fallback={<div>Loading...</div>}>
+  <LazyComponent />
+</Suspense>
+```
+✔ Example: Lazy Component with Suspense
+```
+const About = React.lazy(() => import("./About"));
+
+function App() {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <About />
+    </Suspense>
+  );
+}
+```
+
+When About is loading, React shows:
+
+Loading...
+
+# ⭐ Why use React.lazy + Suspense?
+✔ Reduce initial bundle size
+
+Large components (charts, editors, pages) load on demand.
+
+✔ Faster initial load time
+
+User sees the UI sooner.
+
+✔ Great for routing
+
+You can lazy-load individual pages.
+
+✔ Works well with code splitting tools (Webpack, Vite)
+
+
+***
+***
+***
+
+# The Real Reason: Detect Unsafe or Buggy Code
+
+React tries to catch problems where your component logic is not pure.
+
+A component should be a pure function, meaning:
+
+Rendering should NOT cause side effects
+
+Rendering should NOT change data
+
+Rendering should NOT mutate props or state
+
+Rendering should NOT cause subscriptions or timers without cleanup
+
+To detect these issues early, React re-renders the component.
+
+## 🔍 What exactly happens?
+
+In React 18 and newer:
+
+✔ React mounts the component
+✔ Then unmounts it
+✔ Then mounts it again
+
+This reveals hidden bugs like:
+
+Double API calls
+
+Double state initialization
+
+Missing cleanup functions
+
+Effects that mutate data
+
+Timers or intervals that weren’t cleaned up
+
+Database listeners not being detached
+
+***
+***
+***
+
+# Can we force component to rerender without state or props change
+
+React class components include a built-in method:
+
+## 🔥 this.forceUpdate()
+
+***
+***
+***
+
+# React fiber
+
+React Fiber is the internal reconciliation engine introduced in React 16.
+It completely rewrote how React updates the UI.
+
+Fiber is not a feature you use directly — it is the algorithm and architecture inside React that makes rendering faster, interruptible, and smarter.
+
+⭐ Why did React need Fiber?
+
+Before Fiber (React 15):
+
+Rendering was synchronous
+
+Slow components blocked the UI
+
+Browser events could lag or freeze
+
+Large trees caused jank
+
+React needed a new system that could:
+
+Pause work
+
+Split work into small pieces
+
+Reuse work
+
+Prioritize urgent updates (e.g., typing)
+
+Abort low-priority updates
+
+***
+***
+***
