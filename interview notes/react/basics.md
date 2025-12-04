@@ -1354,6 +1354,7 @@ The input value changes only when React updates state
 Easier to validate, transform, and track form values
 
 🔹 Example (Controlled Input)
+```
 function Form() {
   const [name, setName] = useState("");
 
@@ -1364,6 +1365,7 @@ function Form() {
     />
   );
 }
+```
 
 ✅ Uncontrolled Components
 
@@ -1380,6 +1382,7 @@ Useful for quick forms or when you don’t need to track every keystroke
 Minimal React involvement
 
 🔹 Example (Uncontrolled Input)
+```
 function Form() {
   const inputRef = useRef();
 
@@ -1394,7 +1397,7 @@ function Form() {
     </>
   );
 }
-
+```
 ### useRef itself is neither controlled nor uncontrolled. But when you use useRef to manage form inputs, it creates an uncontrolled component.
 
 ***
