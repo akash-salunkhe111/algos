@@ -1336,7 +1336,6 @@ Custom hooks can call other hooks
 ***
 ***
 # What are controlled and uncontrolled components in react
-
 Controlled vs Uncontrolled Components in React
 ✅ Controlled Components
 
