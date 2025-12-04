@@ -1095,3 +1095,313 @@ Abort low-priority updates
 ***
 ***
 ***
+
+# Virtual DOM (Interview Explanation)
+
+The Virtual DOM is a lightweight in-memory representation of the real DOM that React uses to efficiently update the UI.
+When the state changes, React:
+
+Creates a new Virtual DOM tree
+
+Compares it with the previous one (diffing algorithm)
+
+Updates only the changed parts of the real DOM
+
+This makes rendering faster and avoids unnecessary reflows.
+
+🔄 Before & After Update
+Before Update:
+```
+Virtual DOM:  <h1>Count: 0</h1>
+Real DOM:     <h1>Count: 0</h1>
+```
+After Update:
+```
+New Virtual DOM: <h1>Count: 1</h1>
+Diff:            text changed (0 → 1)
+→ Update only that text node in Real DOM
+```
+
+React doesn’t update the real DOM after every small change.
+It batches multiple state updates, processes them in memory using the Virtual DOM, calculates the minimal set of DOM changes, and then commits them all at once.
+
+This batching is one of React’s biggest performance advantages.
+
+🧩 Analogy
+
+Imagine editing a Word document.
+If you press backspace 10 times, you don’t want the printer to reprint 10 times.
+You finish editing → then print once.
+
+React works the same way:
+
+Collect changes → Compute differences → Update the real DOM once efficiently
+
+🔍 Example Comparison
+🧠 Plain JavaScript (Immediate DOM Updates)
+```
+const el = document.getElementById("counter");
+let count = 0;
+
+function increment() {
+  count++;
+  el.innerText = count; // direct DOM update
+}
+```
+
+If increment() is called 10 times quickly:
+
+DOM updates → 10 times
+
+10 reflows + 10 repaints
+
+Browser recalculates layout each time → expensive
+
+⚛️ React (Batched Virtual DOM Updates)
+```
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  function handleClick() {
+    setCount(count + 1);
+    setCount(count + 2);
+    setCount(count + 3);
+  }
+
+  return <p>{count}</p>;
+}
+```
+
+React will:
+
+Queue multiple setCount() calls
+
+Batch them in the same event loop tick
+
+Compute the final state
+
+Re-render the Virtual DOM once
+
+Apply one efficient real DOM update
+
+✔️ Only one real DOM write (instead of 3).
+
+***
+***
+***
+
+React recoincialion/diffing algo
+
+Excellent 👏 — this is one of those questions that separate React users from React engineers.
+Let’s explain React’s diffing (reconciliation) algorithm in a clear, short, and interview-ready way 👇
+
+⚛️ Goal of the Diffing Algorithm
+React’s diffing algorithm (aka reconciliation) determines:
+“What changed in the Virtual DOM, and what’s the minimal set of updates needed in the Real DOM?”
+Because re-rendering the entire DOM is expensive, React efficiently figures out which parts actually changed — then updates only those.
+
+🧩 The Core Idea
+When state/props change:
+React creates a new Virtual DOM tree (based on new render).
+
+
+It compares the new VDOM with the previous VDOM (stored in memory).
+
+
+It finds differences (diffing).
+
+
+It updates only the changed nodes in the real DOM (commit phase).
+
+
+
+🧠 The Diffing Process in a Nutshell
+React’s diffing algorithm uses 3 key heuristics (rules of thumb) to make diffing fast — O(n) instead of O(n³).
+Let’s go through them 👇
+
+🧩 1️⃣ Element type comparison
+If the type of an element is different → React destroys and recreates that node.
+```
+// before
+<div>Hello</div>
+// after
+<span>Hello</span>
+```
+
+➡️ React removes <div> and creates <span> — no attempt to reuse.
+If the type is same, React keeps the existing DOM node and updates attributes/props.
+```
+<div className="a"></div>
+<div className="b"></div>
+```
+
+➡️ React just updates the class — reuses the same <div>.
+
+```
+🧩 2️⃣ Text node comparison
+If the content of a text node changes:
+<p>Hello</p>
+<p>Hi</p>
+```
+
+➡️ React updates only the text content, not the whole element.
+
+🧩 3️⃣ List diffing with key
+When elements are in a list (map()), React uses the key prop to identify which items changed, were added, or removed.
+Example:
+```
+<ul>
+  <li key="A">A</li>
+  <li key="B">B</li>
+  <li key="C">C</li>
+</ul>
+```
+If next render gives:
+```
+<ul>
+  <li key="B">B</li>
+  <li key="A">A</li>
+  <li key="C">C</li>
+</ul>
+```
+
+With proper keys (A, B, C), React reorders nodes efficiently.
+
+
+Without keys (or using array indexes), React can recreate all items — slower and causes bugs.
+
+
+✅ Keys let React match elements between renders.
+
+🧮 Complexity Optimization
+Naive diffing between two trees = O(n³).
+ React’s heuristic-based approach = O(n), which is practical for UIs.
+
+🧠 Visual Example
+```
+Old Virtual DOM:         New Virtual DOM:
+<div>                    <div>
+  <h1>Hello</h1>           <h1>Hello</h1>
+  <p>World</p>             <p>React</p>
+</div>                   </div>
+```
+
+Diff result:
+- <h1> same → no change
+- <p> text changed → update only innerText
+
+➡️ Only the <p>’s text is updated in the real DOM.
+ Everything else is reused.
+
+
+***
+***
+***
+
+# Custom Hooks in React
+
+Custom Hooks are reusable JavaScript functions in React that use built-in hooks (like useState, useEffect, etc.) to extract component logic into a separate function.
+
+They help you reuse logic, avoid duplicating code, and keep components clean.
+
+### Rules of Custom Hooks
+
+Must start with the word use
+(e.g., useFetch, useCounter)
+
+Must follow all rules of hooks, same as built-in hooks
+
+Call hooks only at the top level
+
+Not inside loops
+
+Not inside conditions
+
+Not inside nested functions
+
+Call hooks only inside React functions
+
+Inside React components ✔️
+
+Inside custom hooks ✔️
+
+Not in regular JS functions ❌
+
+Not in class components ❌
+
+Custom hooks can call other hooks
+(They are just functions that reuse hook logic)
+
+***
+***
+***
+
+# What are controlled and uncontrolled components in react
+
+Controlled vs Uncontrolled Components in React
+✅ Controlled Components
+
+A controlled component is a form element (like <input>, <textarea>, <select>) whose value is fully controlled by React state.
+
+React controls the input value, and updates happen via setState / setValue.
+
+🔹 Key Points
+
+React state is the single source of truth
+
+The input value changes only when React updates state
+
+Easier to validate, transform, and track form values
+
+🔹 Example (Controlled Input)
+function Form() {
+  const [name, setName] = useState("");
+
+  return (
+    <input
+      value={name}
+      onChange={(e) => setName(e.target.value)}
+    />
+  );
+}
+
+✅ Uncontrolled Components
+
+An uncontrolled component is a form element where the DOM itself controls the value, not React.
+
+You read values using a ref instead of state.
+
+🔹 Key Points
+
+Browser DOM is the source of truth
+
+Useful for quick forms or when you don’t need to track every keystroke
+
+Minimal React involvement
+
+🔹 Example (Uncontrolled Input)
+function Form() {
+  const inputRef = useRef();
+
+  const handleSubmit = () => {
+    alert(inputRef.current.value);
+  };
+
+  return (
+    <>
+      <input ref={inputRef} />
+      <button onClick={handleSubmit}>Submit</button>
+    </>
+  );
+}
+
+### useRef itself is neither controlled nor uncontrolled. But when you use useRef to manage form inputs, it creates an uncontrolled component.
+
+***
+***
+***
+
+
+***
+***
+***
