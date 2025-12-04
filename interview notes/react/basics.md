@@ -1397,7 +1397,7 @@ function Form() {
   );
 }
 ```
-### useRef itself is neither controlled nor uncontrolled. But when you use useRef to manage form inputs, it creates an uncontrolled component.
+useRef itself is neither controlled nor uncontrolled. But when you use useRef to manage form inputs, it creates an uncontrolled component.
 
 ***
 ***
