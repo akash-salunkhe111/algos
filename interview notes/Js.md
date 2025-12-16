@@ -98,3 +98,103 @@ const obj = {
 
 obj.arrow();   // undefined (this comes from global scope)
 ```
+
+***
+***
+***
+
+# difference between __proto__ and prototype in js
+
+🟦 prototype
+Works on functions
+
+Every function in JavaScript automatically gets a prototype property.
+
+```
+function Person() {}
+console.log(Person.prototype);
+```
+
+Used when creating objects with the new keyword:
+
+```
+const p = new Person();
+```
+
+p will inherit methods from Person.prototype.
+
+Think:
+
+prototype is used to build the prototype chain for objects created by a constructor function
+
+🟩 __proto__
+Works on objects
+
+__proto__ is an internal reference that points to the prototype object from which the object inherits.
+
+```
+const obj = {};
+console.log(obj.__proto__);
+```
+
+This points to Object.prototype.
+
+Think:
+
+```
+__proto__ links an object to its prototype.
+```
+
+🧠 Relationship
+
+When you do:
+
+```
+const p = new Person();
+```
+
+Behind the scenes:
+
+```
+p.__proto__ === Person.prototype
+```
+
+***
+***
+***
+
+# Prototype inheritance with eg 
+
+```
+const person = {
+  sayHello() {
+    console.log("Hello!");
+  },
+};
+
+const user = {
+  name: "Akash",
+};
+
+// make user inherit from person
+user.__proto__ = person;
+
+user.sayHello(); // "Hello!"
+```
+
+```
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype.sayHello = function () {
+  console.log("Hello from", this.name);
+};
+
+const p1 = new Person("Akash");
+p1.sayHello(); // Hello from Akash
+```
+
+***
+***
+***
