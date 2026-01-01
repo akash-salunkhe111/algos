@@ -21,6 +21,12 @@ You can start processing data as soon as it begins to arrive.
 
 Such as video streaming, audio, logs, network packets.
 
+***
+***
+***
+
+
+
 # 🔄 Types of Streams in Node.js
 
 Node.js provides 4 types of streams:
@@ -59,6 +65,12 @@ zlib.createGzip()
 
 Encryption streams
 
+***
+***
+***
+
+
+
 # 📌 How Streams Work (Simple Example)
 ```javascript
 const fs = require("fs");
@@ -79,7 +91,9 @@ readable.pipe(writable);
 
 
 
-
+***
+***
+***
 
 
 
@@ -99,13 +113,16 @@ You can think of it like the browser console, but for Node.js.
 
 
 
-
+***
+***
+***
 
 
 # 🚀 1. Web Workers
 What they are:
 
 Web Workers allow JavaScript to run in background threads, separate from the main UI thread.
+this feature is provided by browser. it is diff from worker threads
 
 Why they exist:
 
@@ -152,7 +169,9 @@ Does NOT interact with DOM directly
 Used for Progressive Web Apps (PWAs)
 
 
-
+***
+***
+***
 
 
 # process.nextTick()
@@ -160,3 +179,37 @@ process.nextTick() is a Node.js function that schedules a callback to run:
 
 Immediately after the current operation completes, but before the event loop continues.
 It runs after all synchronous code is finished but before any promises or timers
+
+
+***
+***
+***
+
+# Multithreading in node js
+
+1. Worker Threads (worker_threads)
+Worker Threads allow you to run JavaScript in parallel within the same process. Each worker runs its own isolated V8 engine instance but shares the same system memory as the main thread.
+
+Best For: CPU-intensive tasks (e.g., image processing, encryption, complex mathematical calculations).
+
+Memory: They can share memory using SharedArrayBuffer, which makes passing large amounts of data extremely fast because you don't have to copy the data.
+
+Overhead: Low. Starting a thread is "cheaper" than starting a whole new process.
+
+Communication: Uses postMessage() to send data back and forth.
+
+2. Child Processes (child_process)
+A Child Process is a completely separate instance of the Node.js runtime (or even a different language like Python). It has its own memory space, its own PID, and its own V8 instance.
+
+Best For: Running system commands (like ls or git), executing external scripts, or tasks where you need isolation (if the child crashes, the parent stays alive).
+
+Memory: Completely isolated. They do not share memory.
+
+Overhead: High. Each child process consumes its own memory and CPU resources, similar to opening a new tab in a browser.
+
+Communication: Uses Inter-Process Communication (IPC). Data must be "serialized" (converted to a string/JSON), sent, and "deserialized" on the other end, which is slower than sharing memory.
+
+
+***
+***
+***

@@ -159,6 +159,50 @@ high-throughput, fault-tolerant streaming systems.
 ***
 ***
 
+# Locking for ticket booking, hotel booking to avoid concurrent booking issue
+use redis to lock the room with TTL 5 mins, this techinque is called "redis lock"
+
+
+***
+***
+***
+
+# apache flink
+
+For logger system like splunk, when we get millions of message in kafka, we need some middleware
+to stream all the messages along with parsing and enrichment and valadition service before saving it to db,
+for that we can use this
+
+Apache Flink is a distributed stream-processing framework used to process real-time data streams with low latency and exactly-once guarantees.
+
+[Servers / Lambdas]
+        ↓
+     Kafka
+        ↓
+     Flink
+        ↓
+  Storage (Cassandra / S3)
+        ↓
+     Query Layer
+Why this works
+Kafka absorbs bursts (millions/sec)
+
+Flink performs:
+
+parsing
+
+enrichment
+
+aggregation
+
+anomaly detection
+
+Storage optimized for fast time-range queries
+
+Splunk itself internally uses similar patterns (stream ingestion + indexing).
 
 
 
+***
+***
+***

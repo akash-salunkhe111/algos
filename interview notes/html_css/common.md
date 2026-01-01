@@ -478,3 +478,133 @@ Syntax example:
 ***
 
 
+# What is the difference between justify-content, align-items, and align-self?
+
+Answer (expected):
+
+justify-content → Aligns items along the main axis (row or column)
+
+align-items → Aligns items along the cross axis for all items
+
+align-self → Overrides align-items for a single flex item
+
+
+
+***
+***
+***
+
+# What is `flex-grow`?
+
+`flex-grow` is a Flexbox property that defines **how much a flex item should grow** relative to other items when there is **extra space available** in the flex container.
+
+- Default value: `0`
+- A higher value means the item will take **more available space**.
+
+### Example:
+```
+css
+.item1 { flex-grow: 1; }
+.item2 { flex-grow: 2; }
+```
+
+Common shorthand values:
+
+flex: 1 → 1 1 0 (items grow equally, ignore initial size)
+
+flex: auto → 1 1 auto (items grow and respect content size)
+
+flex: none → 0 0 auto (items neither grow nor shrink)
+
+
+***
+***
+***
+
+# What is CSS Grid?
+
+**CSS Grid** is a **two-dimensional layout system** that allows you to control both:
+- **Rows**
+- **Columns**
+
+
+```
+
+html
+<div class="container">
+  <header class="header">Header</header>
+  <main class="content1">Content 1</main>
+  <main class="content2">Content 2</main>
+  <main class="content3">Content 3</main>
+  <footer class="footer">Footer</footer>
+</div>
+
+.container {
+  display: grid;
+
+  /* 3 rows: header, content, footer */
+  grid-template-rows: auto 1fr auto;
+
+  /* 3 columns for content row */
+  grid-template-columns: repeat(3, 1fr);
+
+  /* Define layout areas */
+  grid-template-areas:
+    "header header header"
+    "c1     c2     c3"
+    "footer footer footer";
+
+  height: 100vh;
+}
+
+.header {
+  grid-area: header;
+}
+
+.content1 {
+  grid-area: c1;
+}
+
+.content2 {
+  grid-area: c2;
+}
+
+.content3 {
+  grid-area: c3;
+}
+
+.footer {
+  grid-area: footer;
+}
+
+
+```
+
+
+
+***
+***
+***
+
+
+
+
+***
+***
+***
+
+
+
+
+
+***
+***
+***
+
+
+
+
+
+***
+***
+***
