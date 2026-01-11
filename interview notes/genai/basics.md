@@ -28,35 +28,29 @@ More parameters generally mean:
 
 # What is quantization
 
-Quantization is a technique to reduce the size and memory usage of a large language model by storing its weights using fewer bits (lower precision numbers).
+Understanding Quantization
+### Definition
+Quantization is the process of conversion from a higher memory format to a lower memory format. This is primarily used to optimize large models like Llama 2 (70 Billion parameters) which otherwise require massive resources and high costs.
 
-| Type | Bits   | Description               |
-| ---- | ------ | ------------------------- |
-| FP32 | 32-bit | Very accurate, very large |
-| FP16 | 16-bit | Used on GPUs              |
-| INT8 | 8-bit  | Common quantization       |
-| INT4 | 4-bit  | Very small, very fast     |
+The Core Mechanism
+Weights to Matrix: Neural network weights are stored in matrices.
 
+Floating Points: These weights are typically stored as FP32 (Full Precision / Single Precision), where each value takes up 32 bits.
 
-Why Quantization is Used
+The Conversion: Quantization reduces these 32-bit floating points into smaller formats, such as int8 (8-bit integers).
 
-Run LLMs on limited hardware
+### Why Quantization Matters
+Reducing the bit-width of model parameters leads to several advantages:
 
-Laptops
+Inference Efficiency: Smaller models run much faster and require less computational power.
 
-Mobile
+Hardware Compatibility: It enables high-perf ormance models to run on resource-constrained devices, such as:
 
-Edge devices
+Mobile Phones
 
-Reduce inference cost
+Edge Devices
 
-Less GPU memory
-
-Lower cloud bills
-
-Faster inference
-
-Smaller data → faster computation
+Resource Management: Helps mitigate the high cost and heavy resource requirements associated with massive models.
 
 
 ***
@@ -235,6 +229,75 @@ Behavior: When you ask a question, you’ll see a "Thinking..." status for sever
 The Benefit: They are significantly better at complex math, scientific reasoning, and debugging difficult code.
 
 Best For: Coding architecture, advanced physics/math, logic puzzles, and "Deep Research" where accuracy is more important than speed.
+
+
+***
+***
+***
+
+# Prompting techniques
+
+
+- **Zero-shot prompting**  
+  Asking the model to perform a task with **no examples**, relying purely on its pre-trained knowledge.
+
+- **Few-shot prompting**  
+  Providing **a small number of examples** in the prompt to guide the model’s behavior and output format.
+
+- **Chain-of-Thought prompting**  
+  Encouraging the model to **reason step by step** before giving the final answer, improving accuracy on complex tasks. like we do in dspy attribute sorter, with example we add reasoning like why this is the output
+
+***
+***
+***
+
+# What are dimensions
+In a vector database, each data point (such as a word or an image) is transformed into a vector containing multiple values, and the number of these values is called the dimensionality or dimensions of the vector.dataknobs​
+For example, word embeddings often use 300 dimensions, meaning each word is represented as a 300-dimensional vector where each dimension captures a specific aspect of the word's meaning or context.developers.cloudflare+1​
+The choice of dimensionality affects the precision of similarity searches and computational performance—higher dimensions capture more data features but may require more resources, while lower dimensions are more efficient yet might lose nuanced relationships.
+
+
+***
+***
+***
+
+# How vector search works
+
+Each data object, such as a document, image, or sentence, is transformed into a vector embedding—a numerical representation capturing the object's key features and semantics.
+
+When a query is issued, it is also converted into a vector using the same embedding model, ensuring that comparison happens in the same vector space.weaviate​
+
+The core of vector search is finding the vectors in the database that are most similar to the query vector. This is achieved by calculating the distance (such as Euclidean distance, cosine similarity, or dot product) between the query vector and each stored vector.
+
+
+
+***
+***
+***
+
+How to reduce costs in llms
+1 - semantic/ vector caching -
+If query has very similar similarity with previous query vector then we can reuse the output of similar query, we can cache it as vectors as keys and value as op from llm for that query
+2 - using low cost model
+3 - minimizing tokens passed to llm, maybe use reranker to get top docs to send to llm
+4 - Rate limiting user 
+https://interviewready.io/learn/ai-engineering/what-is-a-large-language-model/llm-improvements
+
+
+
+
+***
+***
+***
+
+
+
+
+***
+***
+***
+
+
 
 
 ***

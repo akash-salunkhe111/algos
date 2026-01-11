@@ -209,6 +209,33 @@ No other customer can access your VPC unless explicitly allowed.
 ***
 ***
 
+# saProxy vs Reverse proxy
+## Proxy (Forward Proxy)
+
+Sits between client and internet
+
+Hides the client’s identity
+
+Used for access control, caching, anonymity
+
+Example: Corporate proxy, VPN
+
+Flow: Client → Proxy → Server
+
+## Reverse Proxy
+
+Sits between internet and backend servers
+
+Hides the server’s identity
+
+Used for load balancing, security, SSL termination
+
+Example: Nginx, HAProxy, Cloudflare
+
+Flow: Client → Reverse Proxy → Server
+
+One-line difference (easy to remember):
+👉 Proxy protects clients, Reverse Proxy protects servers.
 
 
 
@@ -216,6 +243,152 @@ No other customer can access your VPC unless explicitly allowed.
 ***
 ***
 
+
+# How video download and upload works in s3
+
+## SECURE VIDEO UPLOAD FLOW
+
+```
+[ Client ] → [ Server ] → [ S3 ]
+```
+
+### Client → Server (Upload Request)
+
+Client sends metadata only:
+
+```
+{
+  "fileName": "video.mp4",
+  "fileSize": "2.4GB",
+  "fileType": "video/mp4"
+}
+```
+
+### Security checks at Server
+
+Authenticate user (JWT / session)
+
+Authorize upload permission
+
+Validate file type & size
+
+
+## Server → S3 (Prepare Multipart Upload)
+
+### Server:
+
+Creates multipart upload
+
+Generates pre-signed URLs for each chunk
+
+URLs are:
+
+Time-limited
+
+Write-only
+
+Object-scoped
+
+Server returns:
+
+```
+{
+  "uploadId": "abc123",
+  "chunkUrls": [url1, url2, url3...]
+}
+```
+
+## Client → S3 (Direct Chunk Upload)
+
+
+Client:
+
+Splits video into chunks (5–10MB)
+
+Uploads chunks directly to S3
+
+Parallel uploads + retries
+
+✅ Server never touches video data
+✅ Upload is resumable
+
+
+## Client → Server (Upload Complete)
+
+Client notifies:
+```
+{
+  "uploadId": "abc123"
+}
+```
+
+## Server → S3 (Finalize Upload)
+
+Server:
+
+Verifies all parts
+
+Completes multipart upload
+
+Stores metadata in DB
+
+📌 Optional async jobs:
+
+Virus scan
+
+Transcoding
+
+Thumbnail generation
+
+
+
+
+
+# 🔵 SECURE VIDEO DOWNLOAD FLOW (CONFIDENTIAL)
+
+```
+[ Client ] → [ Server ] → [ S3 ]
+```
+
+## Client → Server (Access Request)
+```
+GET /videos/{videoId}/download
+Authorization: Bearer <token>
+```
+
+## Server (Authorization + Policy Check)
+
+Server verifies:
+
+User identity
+
+Ownership or access rights
+
+Video sensitivity level
+
+🚫 If unauthorized → 403 Forbidden
+
+
+
+## Server → S3 (Generate Download URL)
+
+Server generates read-only pre-signed URL:
+
+Expiry: 30–120 seconds
+
+Bound to single object
+
+HTTPS only
+
+
+
+## Client → S3 (Direct Download / Stream)
+
+Client:
+
+Streams or downloads video directly
+
+URL expires automatically
 
 
 ***

@@ -4,15 +4,15 @@ HTML5 introduced many semantic, interactive, and media elements. Here are common
 
 🎯 Semantic tags (structure + accessibility)
 Tag	Purpose
-<header>	Intro / top section of page or section
-<footer>	Bottom section / copyright / links
-<nav>	Navigation links
-<section>	Thematic grouping of content
-<article>	Independent content (blog, news)
-<aside>	Sidebar or complementary content
-<main>	Primary content of the page
-<figure>	Image + caption wrapper
-<figcaption>	Caption for images/video/etc
+header -	Intro / top section of page or section
+footer -	Bottom section / copyright / links
+nav -	Navigation links
+section -	Thematic grouping of content
+article -	Independent content (blog, news)
+aside -	Sidebar or complementary content
+main -	Primary content of the page
+figure -	Image + caption wrapper
+figcaption -	Caption for images/video/etc
 
 ***
 ***
@@ -23,7 +23,7 @@ Tag	Purpose
 The CSS Box Model describes how every HTML element is treated as a rectangular box, and how its size and space are calculated.
 
 Each element is made up of 4 layers (from inside → outside):
-
+```
 +------------------------------+
 |          content             |
 +------------------------------+
@@ -33,7 +33,7 @@ Each element is made up of 4 layers (from inside → outside):
 +------------------------------+
 |          margin              |
 +------------------------------+
-
+```
 
 🔹 Parts of the box model
 1️⃣ Content
@@ -123,19 +123,19 @@ Helps search engines understand content type
 🏷 Examples of Semantic Tags
 Page structure
 
-<header>
+header
 
-<main>
+main
 
-<footer>
+footer
 
-<nav>
+nav
 
-<section>
+section
 
-<article>
+article
 
-<aside>
+aside
 
 
 
