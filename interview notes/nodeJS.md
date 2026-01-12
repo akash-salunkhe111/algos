@@ -198,6 +198,27 @@ Overhead: Low. Starting a thread is "cheaper" than starting a whole new process.
 
 Communication: Uses postMessage() to send data back and forth.
 
+
+### How many should you spawn?
+
+✅ Rule of thumb:
+Number of workers ≤ number of CPU cores
+
+So if you have:
+
+4 cores → 4–6 workers
+
+8 cores → 8–12 workers
+
+Why?
+
+Each Worker = real OS thread
+
+Too many workers = context switching overhead
+
+Performance drops beyond core count
+
+
 2. Child Processes (child_process)
 A Child Process is a completely separate instance of the Node.js runtime (or even a different language like Python). It has its own memory space, its own PID, and its own V8 instance.
 

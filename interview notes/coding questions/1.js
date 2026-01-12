@@ -14,5 +14,5 @@ const students = [
     }
   
     // 2. Sort by name (ascending)
-    return a.name.localeCompare(b.name);
+    return a.name.localeCompare(b.name);   // Note spelling of localeCompare, it has e in it
   });

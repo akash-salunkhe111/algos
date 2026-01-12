@@ -3,18 +3,21 @@
 
 A Promise represents the result of an asynchronous operation.
 
-States:
-
-pending
-
-fulfilled
-
-rejected
+States: pending | fulfilled | rejected
 
 ```javascript
 const p = new Promise((resolve, reject) => {
   resolve("Done");
 });
+```
+
+⭐ Pending State Example
+```javascript
+const pending = new Promise((resolve, reject) => {
+  // No resolve or reject called yet
+  setTimeout(() => resolve("Done"), 5000);
+});
+console.log(pending); // Promise { <pending> }
 ```
 
 ⭐ Creating & Consuming Promises
@@ -44,6 +47,18 @@ doTask()
   .then(() => { throw new Error("fail") })
   .catch(err => console.log("Caught:", err))
   .finally(() => console.log("Always runs"));
+```
+
+⭐ Rejection Flow (Chain Skipping)
+```javascript
+Promise.reject("Error occurred")
+  .then(() => console.log("1. Skipped"))
+  .then(() => console.log("2. Skipped"))
+  .catch(err => console.log("3. Caught:", err))
+  .then(() => console.log("4. Chain continues"));
+// Output:
+// 3. Caught: Error occurred
+// 4. Chain continues
 ```
 
 ⭐ Async / Await (syntax sugar for Promises)
