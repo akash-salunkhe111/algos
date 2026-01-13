@@ -396,7 +396,7 @@ URL expires automatically
 ***
 
 # How do we secure api, for senior software developer interview
-
+```
 1 - Authentication – Who are you? (JWT)
 2 - Authorization – What are you allowed to do? (RBAC (Role-Based Access Control))
 3 - HTTPS everywhere
@@ -405,7 +405,7 @@ URL expires automatically
 6 - Secrets Management (vault)
 7 - Logging, Monitoring & Auditing
 8 - Versioning Apis, make it backward compatible
-
+```
 
 
 
@@ -414,12 +414,13 @@ URL expires automatically
 ***
 
 # how do you ensure api remain stable for long periods
+```
 1 - Strong API Contract (Contract-First Design) (swagger)
 2 - Backward Compatibility as a Rule
 3 - Idempotency & Deterministic Behavior
 4 - Observability & API Health Monitoring
 5 - Feature Flags & Dark Launches
-
+```
 
 
 
@@ -429,11 +430,12 @@ URL expires automatically
 ***
 
 # what kind of versioning strategies you have used, which do you recommend
+```
 - Tell about V1 V2 in url
 - then tell about sdk or libraries versioning like 1.2.3
 MAJOR.MINOR.PATCH
 Major is breaking change, minor is backward compotable and patch is simple change
-
+```
 
 
 
@@ -452,13 +454,15 @@ Major is breaking change, minor is backward compotable and patch is simple chang
 ***
 
 # why statelessness is important
-
+```
 1 - Any request can go to any server instance. Easy to add/remove servers
 2 - Fault Tolerance & Resilience . If a server crashes, no user session is lost
 3 -  Enables Idempotency & Retries. Clients can safely retry requests for payments
+```
 
 ## When Statelessness Is Not Ideal (Important!)
 
+```
 Senior engineers acknowledge trade-offs.
 
 Legitimate State
@@ -472,9 +476,11 @@ Background jobs
 Transactions
 
 Rate-limiting counters
+```
 
 ## Correct Approach
 
+```
 Store state externally, not in memory:
 
 Redis
@@ -482,7 +488,7 @@ Redis
 DB
 
 Message queues
-
+```
 ***
 ***
 ***
@@ -505,10 +511,12 @@ PATCH /users/123
 ***
 
 # how would you handle async errors in node js
+```
 1 - Try/catch
 2 - middleware for rest errors
 3 - logging and monitoring
 4 - Different levels of errors
+```
 
 ***
 ***
@@ -516,10 +524,11 @@ PATCH /users/123
 
 # how would you manage dependencies
 
+```
 1 - Prefer standard library first
 2 - npm audit - Fix vulnerabilities proactively
 3 - "Synk" (often spelled Snyk) refers primarily to a popular developer-first security platform for finding and fixing vulnerabilities in code, dependencies, and containers
-
+```
 ***
 ***
 ***
