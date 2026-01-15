@@ -1401,3 +1401,74 @@ useRef itself is neither controlled nor uncontrolled. But when you use useRef to
 ***
 ***
 ***
+
+# difference between useMemo and react.memo
+
+### Difference between `useMemo` and `React.memo`
+
+- **`useMemo`:** Memoizes a **value or computation** inside a component to avoid expensive recalculations on re-renders.
+- **`React.memo`:** Memoizes an **entire component**, preventing re-render if its props have not changed.
+
+**In short:**  
+`useMemo` optimizes **calculations**, while `React.memo` optimizes **component re-renders**.
+
+### Example: When `React.memo` is needed
+
+Use `React.memo` when a **child component receives the same props repeatedly** but still re-renders because the parent updates.
+
+```jsx
+const ProductCard = React.memo(({ product }) => {
+  console.log("ProductCard rendered");
+  return <div>{product.name}</div>;
+});
+
+function ProductList({ products }) {
+  const [count, setCount] = React.useState(0);
+
+  return (
+    <>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+      {products.map(p => (
+        <ProductCard key={p.id} product={p} />
+      ))}
+    </>
+  );
+}
+```
+
+Why React.memo helps
+Clicking Increment updates count
+
+Parent re-renders
+
+Without React.memo, all ProductCards re-render
+
+With React.memo, ProductCard re-renders only if product changes
+
+
+***
+***
+***
+
+
+
+
+***
+***
+***
+
+
+
+
+
+***
+***
+***
+
+
+
+
+
+***
+***
+***

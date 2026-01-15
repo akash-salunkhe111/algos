@@ -220,8 +220,43 @@ interface User {
 ***
 ***
 
+```
+type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends object
+    ? DeepPartial<T[P]>
+    : T[P];
+};
+```
 
+what does this type do 
+This is a TypeScript utility type that makes all properties optional, recursively (deep).
+```
+What it means (line by line)
 
+[P in keyof T]?
+→ loop over every property of T and make it optional.
+
+T[P] extends object ? ... : ...
+→ if the property is an object, apply DeepPartial recursively.
+
+Otherwise, keep the original type.
+```
+
+```
+type User = {
+  id: number;
+  name: string;
+  address: {
+    city: string;
+    pin: number;
+  };
+};
+
+```
+
+```
+type PartialUser = DeepPartial<User>;
+```
 
 ***
 ***

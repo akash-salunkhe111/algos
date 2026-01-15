@@ -295,3 +295,120 @@ start animation from scratch
 ***
 ***
 ***
+
+# What does getServerSideProps do in Next.js?
+
+getServerSideProps tells Next.js to render a page on the server for every incoming request instead of pre-building it at build time.
+
+In simple words
+
+It fetches data on the server at request time and injects it into the page before sending HTML to the browser.
+
+How it works (step-by-step)
+
+```
+User requests a page (/dashboard)
+
+Next.js runs getServerSideProps on the server
+
+Data is fetched (DB, API, auth, cookies)
+
+Page HTML is generated with that data
+
+Fully rendered HTML is sent to the browser
+
+📌 This happens on every request
+```
+
+
+## Then how do I run first request on server and next ones on client?
+
+### This is a hybrid pattern, and yes — it’s very common.
+
+✅ Pattern: SSR → Client-side fetching
+```
+Step 1: Use getServerSideProps only for initial load
+export async function getServerSideProps() {
+  const initialData = await fetch("https://api.example.com/data").then(res => res.json());
+
+  return {
+    props: { initialData }
+  };
+}
+```
+
+Step 2: Fetch client-side for next updates
+```
+import { useEffect, useState } from "react";
+
+export default function Page({ initialData }) {
+  const [data, setData] = useState(initialData);
+
+  useEffect(() => {
+    fetch("/api/data")
+      .then(res => res.json())
+      .then(setData);
+  }, []);
+
+  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+}
+```
+
+➡️ First request = SSR
+➡️ Subsequent updates = Client-side
+
+***
+***
+***
+
+# Hydration in next js
+
+### How the Hydration Flow Works
+```
+Server Side: Next.js renders your component into a plain HTML string and sends it to the browser. The user sees the content immediately (fast First Contentful Paint).
+
+Browser Side: The browser downloads the JavaScript bundle.
+
+Hydration: React runs through the components in the browser, matches them with the existing HTML, and attaches event listeners (like onClick).
+```
+
+### The Methods Responsible for Hydration - hydrateRoot
+
+## Common Interview Trap: Hydration Mismatch
+
+A "Hydration Error" occurs when the server-rendered HTML doesn't match what the client expects.
+
+Example of what causes an error:
+
+```
+export default function TimeComponent() {
+  // This will be different on the server vs. the client!
+  const time = new Date().toLocaleTimeString(); 
+  
+  return <div>Current time: {time}</div>;
+}
+```
+Because the server time (e.g., 10:00:01) is slightly different from the client time (e.g., 10:00:02) when the JS executes, React will throw a Hydration Mismatch error because the "dry" HTML doesn't match the "wet" React state.
+
+### How to fix Mismatch?
+Use useEffect to ensure the dynamic data only loads on the client:
+
+***
+***
+***
+
+# 'use client'
+
+In the Next.js App Router, 'use client' is a directive used to declare a boundary between Server Components and Client Components.
+
+By default, every file in the app directory is a Server Component. You only add 'use client' at the very top of a file (before any imports) when you need browser-specific features.
+
+***
+***
+***
+
+
+
+***
+***
+***

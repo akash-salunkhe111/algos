@@ -533,6 +533,411 @@ PATCH /users/123
 ***
 ***
 
+# Performance in React / Next.js
+
+## 📊 How to Measure Performance
+
+### 1. React DevTools Profiler
+- Measures component render time
+- Detects unnecessary re-renders
+
+### 2. Chrome DevTools (Lighthouse)
+- Metrics: **LCP, FID, CLS, TTFB**
+```
+- **LCP (Largest Contentful Paint):** Time taken for the largest visible element (image/text) to render on screen.
+- **FID (First Input Delay):** Time between user’s first interaction and browser’s response.
+- **CLS (Cumulative Layout Shift):** Measures unexpected layout movement during page load.
+- **TTFB (Time to First Byte):** Time taken for the server to send the first byte of response.
+```
+- Performance and SEO scoring
+
+### 3. Next.js Web Vitals
+```js
+export function reportWebVitals(metric) {
+  console.log(metric);
+}
+```
+Tracks real-user performance (RUM)
+
+### Network Tab
+
+- Analyze JS bundle size
+- Measure API latency
+- Waterfall request analysis
+
+### Bundle Analyzer - Identifies large or unused dependencies
+
+# ⚡ How to Optimize Performance
+🧠 React-Level Optimizations
+
+Use React.memo to prevent unnecessary re-renders
+
+Use useCallback and useMemo
+
+Avoid inline functions inside render
+
+Virtualize long lists (react-window, react-virtualized)
+
+🚀 Next.js Optimizations
+
+Prefer SSG / ISR over SSR
+
+Use App Router with Server Components
+
+Use dynamic imports (next/dynamic)
+
+Optimize images with next/image
+
+Optimize fonts with next/font
+
+📦 Bundle & Asset Optimization
+
+Enable code splitting
+
+Remove unused dependencies
+
+Lazy-load heavy components
+
+Ensure tree-shaking is effective
+
+🌐 Network & API Optimization
+
+Use CDN caching
+
+Cache API responses
+
+Use SWR or React Query
+
+Enable HTTP compression and HTTP/2
+
+🧪 Rendering Strategy
+
+Reduce hydration using Server Components
+
+Avoid browser-only logic during SSR
+
+Defer non-critical JavaScript
+
+***
+***
+***
+
+### Measuring & Improving Component Re-rendering
+
+**How to measure:**
+- Use **React DevTools Profiler** to see render counts and duration
+- Add `console.log()` inside components to detect re-renders
+- Enable **why-did-you-render** for debugging unnecessary renders
+
+**How to improve:**
+- Wrap components with `React.memo`
+- Use `useCallback` for stable function props
+- Use `useMemo` for expensive calculations
+- Avoid passing new object/array references
+- Split large components into smaller ones
+
+
+***
+***
+***
+
+# Measuring & Improving Node.js Performance (Interview Short Notes)
+
+## 📊 How to Measure Performance
+- **Node.js Profiler (`--prof`)**: Analyze CPU usage and bottlenecks
+- **APM Tools**: New Relic, Datadog, Elastic APM
+- **Logging & Metrics**: Track latency, throughput, error rates
+- **Load Testing**: Artillery, k6, JMeter
+
+---
+
+## ⚡ How to Improve Performance
+- Use **async/non-blocking I/O** (use promise.all)
+- Avoid CPU-heavy work on main thread (use **Worker Threads**)
+- Optimize database queries & add indexes
+- Use caching (Redis, in-memory)
+- Enable HTTP compression & keep-alive
+- Limit concurrency and use backpressure
+- Scale with **Cluster mode / PM2**
+- Optimize JSON parsing and payload size maybe use grpc
+
+
+
+
+***
+***
+***
+
+# End-to-End Request–Response Flow
+
+## 1️⃣ User Action
+- User enters URL or clicks a button
+- Browser initiates an HTTP/HTTPS request
+
+---
+
+## 2️⃣ DNS Resolution
+- Domain → IP address via DNS
+- Result is cached by browser / OS
+
+---
+
+## 3️⃣ TCP + TLS Handshake
+- TCP connection established (3-way handshake)
+- TLS handshake for HTTPS (cert verification, encryption)
+
+---
+
+## 4️⃣ HTTP Request Sent
+- Method: GET / POST / PUT / DELETE
+- Headers: cookies, auth tokens, content-type
+- Body (for POST/PUT)
+
+---
+
+## 5️⃣ CDN / Load Balancer
+- CDN serves cached content (if available)
+- Otherwise forwards request to load balancer
+- Load balancer routes to healthy server
+
+---
+
+## 6️⃣ Backend Server Processing
+- Request reaches Node.js server
+- Middleware runs (auth, logging, validation)
+- Controller executes business logic
+- DB / cache / external API calls
+
+---
+
+## 7️⃣ Database Interaction
+- Query executed (SQL / NoSQL)
+- Data fetched or updated
+- Response returned to server
+
+---
+
+## 8️⃣ Response Creation
+- Server prepares response
+- Status code + headers + JSON/HTML
+- For SSR: HTML rendered on server
+
+---
+
+## 9️⃣ Response Sent to Client
+- Data sent back over network
+- Browser receives first byte (TTFB)
+
+---
+
+## 🔟 Browser Processing
+- HTML parsed → DOM
+- CSS parsed → CSSOM
+- JS downloaded & executed
+- Hydration (if SSR/Next.js)
+
+---
+
+## 1️⃣1️⃣ UI Update
+- React updates Virtual DOM
+- Events attached
+- Page becomes interactive
+
+---
+
+## 🎯 Interview One-Liner
+> *A request flows from the browser through DNS, TCP/TLS, CDN, backend processing, database interaction, and back as a response, which the browser parses, renders, and hydrates to make the UI interactive.*
+
+
+
+***
+***
+***
+
+# Throttling vs Rate Limiting (Short)
+
+## Throttling
+- Controls **request speed**
+- Delays or slows requests when limit is exceeded
+- Ensures system stability under heavy load
+
+**Example:**  
+User can send **1 request per second**
+
+---
+
+## Rate Limiting
+- Controls **request count**
+- Blocks or rejects requests after a fixed limit
+- Prevents abuse and DDoS attacks
+
+**Example:**  
+User can send **100 requests per minute**
+
+---
+
+# Common Rate Limiting Algorithms
+
+## 1️⃣ Fixed Window
+- Counts requests in a fixed time window
+- Simple but causes burst traffic at window edges
+
+**Example:**  
+100 requests per minute, reset every minute
+
+---
+
+## 2️⃣ Sliding Window
+- Uses rolling time window
+- Smoother and more accurate than fixed window
+
+---
+
+## 3️⃣ Token Bucket (Most Common)
+- Tokens added at fixed rate
+- Each request consumes a token
+- Allows short bursts
+
+**Used by:** API gateways, AWS, NGINX
+
+---
+
+## 4️⃣ Leaky Bucket
+- Requests processed at constant rate
+- Extra requests are queued or dropped
+- No bursts allowed
+
+---
+
+## 🎯 Interview One-Liner
+> *Rate limiting restricts request count, throttling controls request speed; common algorithms include fixed window, sliding window, token bucket, and leaky bucket.*
+
+
+***
+***
+***
+
+# AWS Lambda – Pros & Cons (Interview Short)
+
+## ✅ Pros
+- **Serverless**: No server management
+- **Auto-scaling**: Scales automatically with traffic
+- **Pay-per-use**: Charged only for execution time
+- **High availability**: Built-in fault tolerance
+- **Fast development**: Focus on code, not infra
+- **Easy integration**: Works seamlessly with S3, API Gateway, DynamoDB, SQS
+
+---
+
+## ❌ Cons
+- **Cold starts**: Higher latency for infrequent invocations
+- **Execution limits**: Max 15 minutes runtime
+- **Resource limits**: Limited memory, CPU, disk
+- **Connection pooling issues**: DB connections don’t scale well
+- **Debugging & observability**: Harder than long-running services
+- **Vendor lock-in**: Tied to AWS ecosystem
+- DB connection issues (the one from mongodb pool eg)
+
+
+***
+***
+***
+
+### Sharding (Interview Short)
+
+**Sharding** is a database scaling technique where **large datasets are split into smaller parts (shards)** 
+and distributed across multiple servers to improve **performance, scalability, and availability**.
+
+- Each shard holds a **subset of data**
+- Queries run in **parallel** across shards
+- Reduces load on a single database
+
+**Example:**  
+Users with IDs `1–1M` on Shard A, `1M–2M` on Shard B
+
+### Consistent Hashing (Interview Short)
+
+**Consistent hashing** is a technique used to distribute data across multiple servers so that 
+**adding or removing a server causes minimal data re-mapping**.
+
+**Why it was needed:**
+- Traditional hashing remaps **most keys** when nodes change
+- Causes massive cache invalidation and data movement
+- Poor for scalable distributed systems
+
+**How it helps:**
+- Only a small portion of keys move when a node is added/removed
+- Improves scalability and availability
+
+**Used in:**  
+CDNs, distributed caches (Redis, Memcached), databases, load balancers
+
+
+***
+***
+***
+
+### Pub/Sub vs Fanout (Interview Short)
+
+#### Pub/Sub (Publish–Subscribe)
+- Producers publish messages to a **topic**
+- Subscribers receive messages based on **subscriptions**
+- Subscribers are **decoupled** from publishers
+- Each subscriber gets **its own copy**
+
+**Use case:** Event-driven systems, notifications, microservices
+
+### What happens in AWS Pub/Sub
+
+#### Normal flow
+1. Producer publishes message to **SNS**
+2. SNS fans out to **SQS queues**
+3. Consumer processes message
+4. Message is **deleted**
+
+---
+
+#### Fanout
+- A single message is **broadcast** to multiple consumers simultaneously
+- Often implemented via queues or push mechanisms
+- Simpler, direct distribution pattern
+
+**Use case:** Sending same event to multiple downstream services
+
+---
+
+### Key Difference
+- **Pub/Sub** is a **pattern with topic-based subscriptions**
+- **Fanout** is a **distribution strategy** to broadcast messages
+
+
+
+
+***
+***
+***
+
+### Kafka (Interview Short, Simple Explanation)
+
+**Apache Kafka** is a **distributed event streaming platform** that stores events as 
+a **durable, ordered log** and allows multiple consumers to **read and replay data independently**.
+
+### In Simple Terms
+> Kafka is like a **commit log** where applications write events, and other applications
+ read them at their own pace — even multiple times.
+
+### When Kafka Is Used
+
+- High-volume event streaming
+- Data pipelines & ETL
+- Real-time analytics
+- Log aggregation
+- Event-driven microservices
+- Systems needing **replay**
+
+
+--
+
 
 
 ***
