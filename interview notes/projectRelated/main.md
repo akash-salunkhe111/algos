@@ -10,9 +10,13 @@ Context Length	2,048 tokens
 
 ### we can use MRL scaling in vespa
 ```
-In a standard embedding model, the information is spread out across all dimensions. If you have a 768-dimension vector and you cut it in half, you lose about half the meaning, making the search results inaccurate.
+In a standard embedding model, the information is spread out across all dimensions. 
+If you have a 768-dimension vector and you cut it in half, 
+you lose about half the meaning, making the search results inaccurate.
 
-In an MRL-trained model, the model is specifically taught to "front-load" the most important, high-level information into the first few dimensions. The later dimensions only add finer details.
+In an MRL-trained model, the model is specifically taught to "front-load" 
+the most important, high-level information into the first few dimensions. 
+The later dimensions only add finer details.
 ```
 
 ### Vespa details
@@ -25,20 +29,26 @@ Where it runs: Content Nodes (distributed across the cluster).
 
 Documents Processed: All matching documents (potentially millions of records).
 
-Purpose: To perform fast, lightweight scoring to narrow down the massive list of matches to the most promising candidates.
+Purpose: To perform fast, lightweight scoring to narrow down the massive 
+list of matches to the most promising candidates.
 
-Common Functions: nativeRank, bm25, or simple linear mathematical expressions (e.g., attribute(popularity) + fieldMatch(title)).
+Common Functions: nativeRank, bm25, or simple linear mathematical expressions 
+(e.g., attribute(popularity) + fieldMatch(title)).
 
-Performance: Must be extremely efficient since it executes for every single document that passes the query filters.
+Performance: Must be extremely efficient since it executes for every single 
+document that passes the query filters.
 
 Second PhaseWhere it runs: Content Nodes (locally on the data).Documents 
-Processed: The Top $K$ documents (typically 100–1,000) as determined by the First Phase scores.Purpose: 
+Processed: The Top $K$ documents (typically 100–1,000) as determined by the 
+First Phase scores.Purpose: 
 To apply more "expensive" and complex logic to a smaller, higher-quality subset of results.
 
 Global PhaseWhere it runs: Stateless Container (the entry point/gateway).
 Documents Processed: The Final Top $N$ results.Purpose: 
-This phase runs after the results from all individual content nodes have been merged into a single global list. 
-It is used for "all-field" re-ranking or logic that requires a global view of the results.
+This phase runs after the results from all individual content nodes 
+have been merged into a single global list. 
+It is used for "all-field" re-ranking or logic that requires a 
+global view of the results.
 
 ```
 
@@ -95,9 +105,11 @@ Imagine the user searches for: "protection for eyes"
   - Top Result might be: "Eye drops for dry eyes" (Semantically related to 'eyes', but wrong intent).
 
 * AFTER Training (Domain Specific):
-  - The model learns from our dataset that "protection for eyes" often leads to clicking "Safety Goggles" or "Visor".
+  - The model learns from our dataset that "protection for eyes" often leads to 
+  clicking "Safety Goggles" or "Visor".
   - It understands the *intent* of safety equipment.
-  - Top Result becomes: "V-Gard Standard Visor Frame" (Even though 'protection' isn't in the title, the embedding vector is now close).
+  - Top Result becomes: "V-Gard Standard Visor Frame" (Even though 'protection' 
+  isn't in the title, the embedding vector is now close).
   ```
 
 ### loss function used
@@ -126,13 +138,19 @@ Query => embedding => Document Matching => Results => Reranking => LLm or other
 
 ### problem with base model - 
 ```
-The base model was trained on general web data and academic datasets like MS MARCO, which made it struggle with domain-specific queries in our e-commerce/industrial safety equipment catalog."
+The base model was trained on general web data and academic datasets like MS MARCO, 
+which made it struggle with domain-specific queries in our
+ e-commerce/industrial safety equipment catalog."
 ```
 
 ### Technique used
 ```
 "What technique/approach did you use?"
-> "I used supervised fine-tuning with labeled query-document-relevance triplets. The model is a cross-encoder based on a transformer architecture (likely BERT or DeBERTa-based), which I fine-tuned using relevance labels from our production data - specifically clicks and conversions from search sessions."
+> "I used supervised fine-tuning with labeled query-document-relevance triplets. 
+The model is a cross-encoder based on a transformer architecture 
+(likely BERT or DeBERTa-based), which I fine-tuned using relevance labels 
+from our production data - specifically clicks and conversions from search sessions."
+
 Key points:
 Cross-Encoder Architecture (processes query + document together with cross-attention)
 Supervised Learning (labeled relevance scores)
@@ -206,26 +224,37 @@ OP format for both embedding and reranker model is ONNX
 
 ### What is dspy
 ```
-Prompt Automation: It replaces "trial-and-error" prompting. You don't write the prompt; the framework finds the best prompt for you.
+Prompt Automation: It replaces "trial-and-error" prompting. You don't write the prompt; 
+the framework finds the best prompt for you.
 
-Model Agnostic: If you switch from GPT-4 to Llama-3, you don't have to rewrite your prompts. You just click "Compile," and DSPy optimizes a new prompt specifically for the new model.
+Model Agnostic: If you switch from GPT-4 to Llama-3, you don't have to rewrite your prompts. 
+You just click "Compile," and DSPy optimizes a new prompt specifically for the new model.
 
-Structured AI: It turns "brittle strings" into "robust code." Your LLM app becomes a maintainable software program rather than a collection of hidden text files.
+Structured AI: It turns "brittle strings" into "robust code." Your LLM app becomes a
+ maintainable software program rather than a collection of hidden text files.
 ```
 
 
 ### dspy flow
 
 ```
-Define Signatures (The "What"): Instead of writing a long prompt, you define a Signature. This is just a declarative specification of the input and output.
+Define Signatures (The "What"): Instead of writing a long prompt, you define a Signature. 
+This is just a declarative specification of the input and output.
 
-Example: question -> answer. You don't tell the model how to answer; you just tell it what the input and output look like.
+Example: question -> answer. You don't tell the model how to answer; you just tell it what 
+the input and output look like.
 
-Build Modules (The "How"): You choose a module to implement your signature. DSPy provides pre-built modules like dspy.Predict (simple), dspy.ChainOfThought (reasoning), or dspy.ReAct (agentic). This is like choosing a layer in a neural network.
+Build Modules (The "How"): You choose a module to implement your signature. DSPy provides 
+pre-built modules like dspy.Predict (simple), dspy.ChainOfThought (reasoning), o
+r dspy.ReAct (agentic). This is like choosing a layer in a neural network.
 
-Define Metrics & Data (The "Goal"): You provide a small dataset (e.g., 20–50 examples) and a Metric (a function that scores the output, like "Is the answer factually correct?").
+Define Metrics & Data (The "Goal"): You provide a small dataset (e.g., 20–50 examples) 
+and a Metric (a function that scores the output, like "Is the answer factually correct?").
 
-Compile with an Optimizer (The "Magic"): You run a Teleprompter (Optimizer). This algorithm runs your program multiple times, tries different prompts and "few-shot" examples, and keeps the ones that score highest on your metric. It "compiles" your code into the best possible prompt for that specific model.
+Compile with an Optimizer (The "Magic"): You run a Teleprompter (Optimizer). 
+This algorithm runs your program multiple times, tries different prompts and 
+"few-shot" examples, and keeps the ones that score highest on your metric. 
+It "compiles" your code into the best possible prompt for that specific model.
 
 ```
 
@@ -239,18 +268,22 @@ Compile with an Optimizer (The "Magic"): You run a Teleprompter (Optimizer). Thi
 # NDCG
 
 ```
-NDCG (Normalized Discounted Cumulative Gain) is one of the most popular metrics for evaluating the quality of ranking systems, such as search engines and recommendation algorithms.
+NDCG (Normalized Discounted Cumulative Gain) is one of the most popular metrics for
+ evaluating the quality of ranking systems, such as search engines and recommendation algorithms.
 
-Unlike simple metrics like Accuracy or Precision, NDCG understands that the order of results matters—a relevant item at the top is much more valuable than the same item at the bottom.
+Unlike simple metrics like Accuracy or Precision, NDCG understands that the order
+ of results matters—a relevant item at the top is much more valuable than the same item at the bottom.
 ```
 
 ```
 2. Basic Inputs for NDCG
-Relevance Scores (Ground Truth): A set of "labels" for each item relative to a query. These are typically provided by human raters or gathered from user behavior (clicks, buys)
+Relevance Scores (Ground Truth): A set of "labels" for each item relative to a query. 
+These are typically provided by human raters or gathered from user behavior (clicks, buys)
 
 Predicted Ranking: The specific order of items returned by your AI/Search model.
 
-Cutoff Point ($k$): Usually denoted as NDCG@k (e.g., NDCG@10).17 This tells the formula to only look at the top 18$k$ results, as users rarely scroll past the first page.19
+Cutoff Point ($k$): Usually denoted as NDCG@k (e.g., NDCG@10).17 This tells the formula to 
+only look at the top 18$k$ results, as users rarely scroll past the first page.19
 ```
 
 
