@@ -106,7 +106,7 @@ unique salt by default in bcrypt.
 
 # What is EC2?
 
-**EC2 (Elastic Compute Cloud)** is a service from **:contentReference[oaicite:0]{index=0}** that lets you rent **virtual servers** in the cloud.
+**EC2 (Elastic Compute Cloud)** is a service from aws that lets you rent **virtual servers** in the cloud.
 
 You get:
 - Full control over OS (Linux/Windows)
@@ -209,7 +209,7 @@ No other customer can access your VPC unless explicitly allowed.
 ***
 ***
 
-# saProxy vs Reverse proxy
+# Proxy vs Reverse proxy
 ## Proxy (Forward Proxy)
 
 Sits between client and internet

@@ -207,11 +207,12 @@ environment variables
 secrets
 
 ✔ Data fetching directly in the component
+```
 export default async function Page() {
   const data = await fetch("https://api.example.com/posts").then(r => r.json());
   return <pre>{JSON.stringify(data)}</pre>;
 }
-
+```
 
 ***
 ***
@@ -365,11 +366,27 @@ export default function Page({ initialData }) {
 
 ### How the Hydration Flow Works
 ```
-Server Side: Next.js renders your component into a plain HTML string and sends it to the browser. The user sees the content immediately (fast First Contentful Paint).
+Server Side: Next.js renders your component into a plain HTML string and sends it to the browser. 
+The user sees the content immediately (fast First Contentful Paint).
 
 Browser Side: The browser downloads the JavaScript bundle.
 
-Hydration: React runs through the components in the browser, matches them with the existing HTML, and attaches event listeners (like onClick).
+Hydration: React runs through the components in the browser, matches them with the existing HTML, 
+and attaches event listeners (like onClick).
+```
+
+```
+Request
+  ↓
+Server fetches data
+  ↓
+Server renders HTML
+  ↓
+Send HTML + JS + data
+  ↓
+Browser paints HTML
+  ↓
+React hydrates (JS attaches events to dom)
 ```
 
 ### The Methods Responsible for Hydration - hydrateRoot
