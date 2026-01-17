@@ -147,93 +147,74 @@ function sum(a, a) {} // ❌ Error
 # difference between __proto__ and prototype in js
 
 🟦 prototype
-Works on functions
+## Prototype in JavaScript
 
-Every function in JavaScript automatically gets a prototype property.
+- JavaScript uses **prototypal inheritance**
+- Every object has an internal property called **`[[Prototype]]`**
+- Objects can **inherit properties and methods** from another object via the prototype chain
 
-```
-function Person() {}
-console.log(Person.prototype);
-```
+---
 
-Used when creating objects with the new keyword:
+## Simple Example
 
-```
-const p = new Person();
-```
-
-p will inherit methods from Person.prototype.
-
-Think:
-
-prototype is used to build the prototype chain for objects created by a constructor function
-
-🟩 __proto__
-Works on objects
-
-__proto__ is an internal reference that points to the prototype object from which the object inherits.
-
-```
-const obj = {};
-console.log(obj.__proto__);
-```
-
-This points to Object.prototype.
-
-Think:
-
-```
-__proto__ links an object to its prototype.
-```
-
-🧠 Relationship
-
-When you do:
-
-```
-const p = new Person();
-```
-
-Behind the scenes:
-
-```
-p.__proto__ === Person.prototype
-```
-
-***
-***
-***
-
-# Prototype inheritance with eg 
-
-```
-const person = {
-  sayHello() {
-    console.log("Hello!");
-  },
-};
-
-const user = {
-  name: "Akash",
-};
-
-// make user inherit from person
-user.__proto__ = person;
-
-user.sayHello(); // "Hello!"
-```
-
-```
+```js
 function Person(name) {
   this.name = name;
 }
 
 Person.prototype.sayHello = function () {
-  console.log("Hello from", this.name);
+  return `Hello, I am ${this.name}`;
 };
 
 const p1 = new Person("Akash");
-p1.sayHello(); // Hello from Akash
+console.log(p1.sayHello());
+```
+
+```
+How It Works
+
+p1 does not have sayHello
+
+JavaScript looks up:
+
+- p1
+
+- Person.prototype
+
+- Object.prototype
+
+- null
+```
+
+```
+__proto__ vs prototype
+p1.__proto__ === Person.prototype // true
+
+Term	Meaning
+prototype ->	Property of constructor functions
+__proto__	 -> Internal link of an object
+```
+
+```
+Why Prototypes Matter ⭐
+
+Memory efficient (methods shared)
+
+Enables inheritance
+
+Core to how JS objects work
+```
+
+```
+ES6 Class (Same Thing Under the Hood)
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+  sayHello() {
+    return `Hello, I am ${this.name}`;
+  }
+}
 ```
 
 ***
