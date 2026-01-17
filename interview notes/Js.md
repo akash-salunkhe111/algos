@@ -1,42 +1,3 @@
-🔍 Difference Between Normal Function and Arrow Function (Interview Answer)
-## 1. this Binding
-
-Normal functions have their own this context, which depends on how they are called.
-
-Arrow functions do not have their own this; they lexically inherit this from their parent scope.
-
-Example:
-
-```javascript
-const obj = {
-  value: 10,
-  normalFn() { return this.value; },
-  arrowFn: () => this.value
-};
-
-obj.normalFn(); // 10 (works)
-obj.arrowFn();  // undefined (arrow takes `this` from outer scope)
-```
-
-## 2. arguments Object
-
-Normal functions have the built-in arguments object.
-
-Arrow functions do not. You must use rest parameters (...args).
-
-```javascript
-function normal() {
-  console.log(arguments); // works
-}
-
-const arrow = () => {
-  console.log(arguments); // error: arguments is not defined
-};
-```
-
-
-
-
 
 🔍 What is this in JavaScript? (Interview Answer)
 
@@ -97,6 +58,86 @@ const obj = {
 };
 
 obj.arrow();   // undefined (this comes from global scope)
+```
+
+
+***
+***
+***
+
+
+🔍 Difference Between Normal Function and Arrow Function (Interview Answer)
+## 1. this Binding
+
+Normal functions have their own this context, which depends on how they are called.
+
+Arrow functions do not have their own this; they lexically inherit this from their parent scope.
+
+Example:
+
+```javascript
+const obj = {
+  value: 10,
+  normalFn() { return this.value; },
+  arrowFn: () => this.value
+};
+
+obj.normalFn(); // 10 (works)
+obj.arrowFn();  // undefined (arrow takes `this` from outer scope)
+```
+
+## 2. arguments Object
+
+Normal functions have the built-in arguments object.
+
+Arrow functions do not. You must use rest parameters (...args).
+
+```javascript
+function normal() {
+  console.log(arguments); // works
+}
+
+const arrow = () => {
+  console.log(arguments); // error: arguments is not defined
+};
+```
+
+***
+***
+***
+
+# Strict Mode in JavaScript
+
+- **Strict Mode** is a restricted variant of JavaScript
+- It helps catch **common bugs**, prevents **unsafe actions**, and enables **better optimizations**
+
+### How to Enable
+```
+js
+"use strict";
+```
+
+```
+1. Undeclared Variables ❌
+x = 10;   // ❌ Error in strict mode
+
+
+✔ Forces variable declaration (let, const, var)
+
+2. this in Functions
+function test() {
+  console.log(this);
+}
+test();
+
+
+Non-strict: this → window
+
+Strict: this → undefined
+
+3. Duplicate Parameters ❌
+function sum(a, a) {} // ❌ Error
+
 ```
 
 ***

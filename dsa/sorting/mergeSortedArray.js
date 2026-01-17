@@ -1,8 +1,8 @@
 /**
  * @param {number[]} nums1
- * @param {number} m
+ * @param {number} m num of elements in nums1
  * @param {number[]} nums2
- * @param {number} n
+ * @param {number} n num of elements in nums2
  * @return {void} Do not return anything, modify nums1 in-place instead.
  */
 var merge = function(nums1, m, nums2, n) {
@@ -27,6 +27,15 @@ while (second >= 0) {
 };
 
 console.log(merge([1,2,3,0,0,0], 3, [2,5,6] , 3));
+
+// Steps to merge 2 sorted arrays
+// 1. Start from the end of the arrays
+// 2. Compare the last elements of the arrays
+// 3. If the last element of nums1 is greater than the last element of nums2, then add the last element of nums1 to the end of the merged array
+// 4. If the last element of nums2 is greater than the last element of nums1, then add the last element of nums2 to the end of the merged array
+// 5. Repeat the process until all elements are merged
+// 6. If there are any remaining elements in nums1, add them to the end of the merged array
+// 7. If there are any remaining elements in nums2, add them to the end of the merged array
 
 
 // We have to merge in place
