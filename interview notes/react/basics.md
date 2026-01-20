@@ -582,6 +582,8 @@ useEffect(() => {
 }, [count]);
 ```
 
+## above will still run on first mount as initially it dosent have any count
+
 
 React re-runs the effect if any dependency changes.
 

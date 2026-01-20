@@ -1653,6 +1653,67 @@ Instead of one global transaction:
 ***
 ***
 
+# Use state vs use Ref
+```
+If we want UI to rerender, use useState or else use useRef.
+Both are use to store data.
+sometimes useRef is used to store the previous state values
+
+useRef is also use to access html element
+
+```
+
+***
+***
+***
+
+# Server Components (App Router) vs  getServerSideProps
+
+```
+Server Components move data fetching into the component itself and eliminate sending data 
+as JSON to the browser, unlike getServerSideProps.
+
+Execution Flow
+getServerSideProps
+
+Request
+ → getServerSideProps()
+ → Page component
+ → JSON props + HTML
+ → Client hydration
+
+
+
+Server Components
+
+Request
+ → Server Component fetch()
+ → HTML stream
+ → Client hydrates only Client Components
+
+
+
+Data Freshness Control (Big Win)
+Server Components - 
+fetch(url, { cache: "no-store" }) // SSR
+fetch(url, { next: { revalidate: 60 } }) // ISR
+fetch(url) // SSG (default)
+
+
+
+getServerSideProps - 
+Always SSR — no caching control
+
+
+
+```
+
+
+
+***
+***
+***
+
 ```
 "Since MedGemma 4B is highly optimized for medical image interpretation (like X-rays), does Experity see a future where the AI Scribe also processes visual diagnostic data alongside the ambient audio to create a more holistic clinical note?"
 
