@@ -1421,11 +1421,238 @@ Server failed to handle valid request.
 4. Messages persist until processed
 
 
+***
+***
+***
 
 
+# Explain difference  between S3, EBS and EFS
+
+```
+Amazon S3 (Simple Storage Service)
+What it is
+
+Stores data as objects (files + metadata + ID)
+
+Not a file system and not a disk
+
+Accessed via HTTP / REST APIs
+
+Common use cases
+
+ - Static website hosting
+
+ - Backups & archives
+
+ - Data lakes
+
+ - Media storage (images, videos)
+
+ - Logs and analytics data
+```
+
+```
+Amazon EBS (Elastic Block Store)
+What it is
+
+Acts like a virtual hard disk
+
+Attached to one EC2 instance at a time
+
+Requires formatting (ext4, xfs, etc.)
+
+
+Common use cases
+
+- Databases (MySQL, PostgreSQL)
+
+- OS boot volumes
+
+- Applications requiring fast disk access
+
+
+Amazon EFS (Elastic File System)
+
+What it is
+
+Managed shared file system
+
+Multiple EC2 instances can mount it simultaneously
+
+Uses NFS protocol
+
+Common use cases
+
+ - Shared application code
+
+ - Microservices shared storage
+
+ - Media processing pipelines
+
+ - CI/CD build artifacts
+```
+
+```
+| Feature       | S3                  | EBS                    | EFS                 |
+| ------------- | ------------------- | ---------------------- | ------------------- |
+| Storage Type  | Object              | Block                  | File                |
+| Mountable     | ❌ No                | ✅ Yes                  | ✅ Yes               |
+| Shared Access | ❌                   | ❌ (mostly)             | ✅                   |
+| Latency       | High                | Very Low               | Low–Medium          |
+| Scalability   | Infinite            | Fixed size (resizable) | Automatic           |
+| AZ Scope      | Regional            | Single AZ              | Multi-AZ            |
+| Best For      | Backups, data lakes | Databases, OS disks    | Shared file systems |
+
+```
+
+
+
 ***
 ***
 ***
+
+# what is optimistic and pessimist locking in db
+
+### When 2 threads ties to update same row, we face inconsistency, to avoid this, we have lockings
+
+```
+Pessimistic Locking
+
+- DB locks the row immediately
+
+- Other transactions must wait or fail
+
+- Lock held until commit / rollback
+
+What happens
+
+- Transaction A locks row
+
+- Transaction B tries → blocked
+
+
+Typical use cases - Bank account balance, Inventory stock deduction, Seat booking systems
+Where stong consistency is needed
+
+```
+
+
+```
+Optimistic Locking
+
+How it works
+
+- No lock while reading
+
+- Update succeeds only if data hasn’t changed
+
+- Uses version / timestamp
+
+When thread 1 changes data, it also changes version number.
+when thread 2 changes, i faces error as version has changed
+
+UPDATE accounts
+SET balance = 900, version = version + 1
+WHERE id = 1 AND version = 5;
+
+If rows affected = 0 → conflict detected
+
+
+Pros
+
+✅ High concurrency
+✅ No blocking
+✅ Scales very well
+```
+
+
+```
+In Distributed Systems (Important)
+
+In microservices:
+
+ - DB locks don’t work across services
+
+ - Optimistic locking + retries is preferred
+
+ - Use saga pattern
+
+```
+
+
+```
+## 🔄 Saga Pattern (Microservices) — Interview Short
+
+**Saga Pattern** is a way to manage **distributed transactions** in microservices **without using database locks or 2-phase commit**.
+
+Instead of one global transaction:
+- Each service performs a **local transaction**
+- Publishes an **event**
+- If a step fails, **compensating actions** undo previous steps
+
+---
+
+### 🧩 How It Works (Example: Order Flow)
+
+1. **Order Service**
+   - Create order
+   - Emit `ORDER_CREATED`
+
+2. **Payment Service**
+   - Charge payment
+   - Emit `PAYMENT_SUCCESS`
+   - ❌ On failure → emit `PAYMENT_FAILED`
+
+3. **Inventory Service**
+   - Reserve stock
+   - Emit `STOCK_RESERVED`
+   - ❌ On failure → trigger refund
+
+4. **Compensation (if needed)**
+   - Refund payment
+   - Release stock
+   - Mark order as `CANCELLED`
+
+➡️ System reaches **eventual consistency**
+
+---
+
+### 📌 Saga Types
+
+| Type | Description |
+|----|-----------|
+| **Choreography** | Services communicate via events (no central controller) |
+| **Orchestration** | Central saga orchestrator controls the flow |
+
+---
+
+### ✅ Why Use Saga Pattern
+
+- No distributed locks
+- Scales well
+- Works across independent databases
+- Handles partial failures safely
+
+---
+
+### ⚠️ Trade-offs
+
+- Eventual consistency
+- Complex debugging
+- Requires idempotency & retries
+
+---
+
+### 🎯 Interview One-Liner
+
+> **Saga pattern manages distributed transactions by breaking them into local steps with compensating actions, ensuring eventual consistency without global locks.**
+
+```
+
+***
+***
+***
+
 ```
 "Since MedGemma 4B is highly optimized for medical image interpretation (like X-rays), does Experity see a future where the AI Scribe also processes visual diagnostic data alongside the ambient audio to create a more holistic clinical note?"
 
