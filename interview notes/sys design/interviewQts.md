@@ -758,7 +758,7 @@ Defer non-critical JavaScript
 
 ## Throttling
 - Controls **request speed**
-- Delays or slows requests when limit is exceeded
+- Delays or slows requests when limit is exceeded (in queue for graceful degradation)
 - Ensures system stability under heavy load
 
 **Example:**  
@@ -809,8 +809,27 @@ User can send **100 requests per minute**
 
 ---
 
-## 🎯 Interview One-Liner
-> *Rate limiting restricts request count, throttling controls request speed; common algorithms include fixed window, sliding window, token bucket, and leaky bucket.*
+## Where it is configured
+```
+Primarily at infra level, optionally at code level for business logic.
+
+Lambda Concurrency (Implicit Throttling)
+- Lambda has concurrency limits
+- If exceeded → 429 Too Many Requests
+
+API Gateway (PRIMARY – Best Choice)
+- We can do Account-Level Throttling (The Safety Net)
+- Stage-Level Throttling (The API-Wide Limit)
+This allows you to set limits for a specific stage (like prod or dev) within a single API
+- Usage Plan Throttling (The Per-Client Limit)
+This is the most common method for businesses (like Experity) because it lets you limit individual customers using API Keys.
+
+
+AWS WAF (Web Application Firewall)
+- Rate-based rules
+Example:
+Block IP if > 2000 requests in 5 minutes
+```
 
 
 ***
@@ -938,6 +957,489 @@ a **durable, ordered log** and allows multiple consumers to **read and replay da
 
 --
 
+
+
+***
+***
+***
+
+# When to use microservice vs monolith
+## Monolith vs Microservices – When to Use
+
+### ✅ Use Monolith When
+- Small or early-stage product
+- Team size is small
+- Requirements are simple & stable
+- Need fast development and deployment
+- Want easier debugging & testing
+- Low operational complexity
+
+📌 Example: MVP, internal tools, early startup apps
+
+---
+
+### ✅ Use Microservices When
+- Large and complex application
+- Multiple teams working in parallel
+- Independent scaling is required
+- High traffic on specific features
+- Different services need different tech stacks
+- High availability & fault isolation is important
+
+📌 Example: E-commerce, streaming platforms, fintech systems
+
+---
+
+## Key Trade-offs
+
+| Factor | Monolith | Microservices |
+|----|--------|-------------|
+| Deployment | Simple | Complex |
+| Scalability | Whole app | Per service |
+| Performance | Faster (in-process) | Network latency |
+| Fault Isolation | Poor | Strong |
+| DevOps Overhead | Low | High |
+| Tech Flexibility | Low | High |
+
+---
+
+## ⭐ Interview One-Liner
+> Start with a monolith, move to microservices when scale, team size, or complexity demands it.
+
+***
+***
+***
+
+# How to Move from Monolith to Microservices (Short)
+
+1. **Identify Bounded Contexts**
+   - Split by business domains (users, orders, payments)
+
+2. **Start with One Service**
+   - Extract a low-risk, high-value module first
+
+3. **Use Strangler Pattern ⭐**
+   - New requests go to microservice, New functionality is built as **microservices**
+   - Traffic is **gradually redirected** to new services
+   - Old monolith code is **slowly removed**
+
+4. **Separate Database**
+   - Each microservice owns its own data
+   - Avoid shared DBs
+
+5. **Introduce API Layer**
+   - Use API Gateway for routing & security
+
+6. **Add Observability**
+   - Logging, monitoring, tracing before scaling
+
+7. **Handle Communication**
+   - Sync (REST/GraphQL)
+   - Async (Events / queues)
+
+8. **Automate CI/CD**
+   - Independent deploys per service
+
+---
+
+## ⭐ Interview One-Liner
+> Move incrementally using the strangler pattern by extracting domain-based services while keeping the monolith running.
+
+
+
+
+
+***
+***
+***
+
+# ECS vs EC2
+```
+Use EC2 if:
+
+- Full OS Control: You need to install custom drivers, specialized software, or specific kernel configurations.
+
+- Legacy Apps: You have a traditional application that isn't "containerized" (just a .exe or .jar file running on a server).
+
+- Static Workloads: You have a simple application that runs 24/7 on a single server and doesn't need complex scaling.
+
+Use ECS if:
+
+- Microservices: You are building a modern app with many small, independent parts.
+
+- Standardization: You want your "Dev" and "Prod" environments to be identical using Docker.
+
+- Operational Efficiency: You want to use AWS Fargate (the serverless version of ECS) so you never have to patch or manage a single server again.
+```
+
+
+***
+***
+***
+
+```
+suppose i am using aws lambda for user-service, and then when user requests userInfo, the lambda is started, it is cold at the start and then it takes time to create connection then after 15 mins it stops, again 2nd requests come, most of the time is spent in making lambda hot again, how to avoid this
+```
+
+Answer - 
+```
+1. Provisioned Concurrency (The "Always Hot" Solution)
+This is the most direct way to eliminate cold starts. You tell AWS to keep a specific number of execution environments "pre-warmed" and ready to respond.
+
+How it works: AWS initializes the environment, downloads your code, and runs your global setup (like DB connections) before a request ever arrives.
+
+Trade-off: You pay for this capacity 24/7 (or on a schedule), even if no one is using the service. It is great for predictable high-traffic periods.
+
+
+2 Move User-Service to ECS (If Very Latency Sensitive)
+
+If:
+
+User-service is hit frequently
+
+Needs persistent DB connections
+
+Sub-100ms latency required
+
+👉 ECS/Fargate is better
+
+Lambda is best for:
+
+Spiky traffic
+
+Event-driven workloads
+
+
+
+3. RDS Proxy (The "Connection Pooler")
+If your Lambda is slow because it’s struggling to negotiate a new TLS handshake or connection with a database (like MySQL or Postgres) every time, you should use Amazon RDS Proxy.
+
+The Problem: Traditional databases aren't built for the "connect-query-disconnect" cycle of thousands of Lambdas.
+
+The Solution: RDS Proxy sits between Lambda and your DB. It maintains a "warm pool" of database connections. When your Lambda starts up, it connects to the Proxy (which is nearly instant) instead of the database.
+
+
+```
+
+
+
+***
+***
+***
+
+
+# Cacheing in frontend
+
+```
+Browser Cache
+  ↓
+Next.js Cache (Data & HTML) - eg SSG
+  ↓
+CDN Cache (Vercel / CloudFront)
+  ↓
+App-level Cache (Memory / SWR / React Query)
+
+
+Browser Cache (HTTP Caching)
+- Uses HTTP headers
+- Cache-Control: public, max-age=3600
+
+```
+
+
+
+***
+***
+***
+
+## When to Use React vs Next.js
+
+### ✅ Use React.js When
+- Building a **Single Page Application (SPA)**
+- App is **highly interactive** (dashboards, admin panels)
+- SEO is **not important**
+- You already have a separate backend
+- You want full control over tooling and architecture
+
+📌 Examples:
+- Internal tools
+- Admin dashboards
+- Authenticated apps
+
+---
+
+### ✅ Use Next.js When
+- SEO is **important**
+- Need **server-side rendering (SSR)** or **static generation (SSG)**
+- Public-facing websites
+- Faster initial page load required
+- Want full-stack capabilities (API routes)
+
+📌 Examples:
+- Blogs
+- E-commerce sites
+- Marketing pages
+- Content-heavy apps
+
+---
+
+## Quick Decision Rule ⭐
+- **Public, SEO-driven app → Next.js**
+- **Private, interaction-heavy app → React**
+
+---
+
+## Interview One-Liner
+> Use React for client-heavy SPAs and Next.js for SEO-friendly, production-ready web applications that need server-side rendering.
+
+***
+***
+***
+
+## `next/image` in Next.js
+
+```
+- `next/image` is a built-in **image optimization component** in Next.js
+- It automatically optimizes images for **performance and SEO**
+```
+---
+
+## What It Does
+
+```
+- Automatic **image resizing**
+- **Lazy loading** by default
+- Serves images in modern formats (WebP/AVIF)
+- Responsive images for different screen sizes
+- Caches images at the **CDN level**
+```
+
+***
+***
+***
+
+## Core Web Vitals (Short)
+
+### 1️⃣ LCP – Largest Contentful Paint
+**What:** Time taken to load the largest visible content  
+**Good:** ≤ 2.5s  
+
+**Improve by:**
+- Use `next/image`
+- Use CDN & caching
+- Optimize server response (SSR / SSG)
+- Reduce JS & CSS blocking
+
+---
+
+### 2️⃣ INP – Interaction to Next Paint
+**What:** Responsiveness to user interaction  
+**Good:** ≤ 200ms  
+
+**Improve by:**
+- Reduce heavy JS execution
+- Code splitting & lazy loading
+- Use `useCallback` / `useMemo`
+- Avoid long main-thread tasks
+
+---
+
+### 3️⃣ CLS – Cumulative Layout Shift
+**What:** Visual layout stability  
+**Good:** ≤ 0.1  
+
+**Improve by:**
+- Always set image width & height
+- Reserve space for ads & embeds
+- Avoid injecting content above the fold
+- Use stable fonts (`font-display: swap`)
+
+---
+
+## Supporting Metrics
+
+### ⚡ FCP – First Contentful Paint
+- Load critical CSS early
+- Optimize fonts
+
+### ⏱️ TTFB – Time To First Byte
+- Use CDN
+- Cache responses
+- Improve backend latency
+
+---
+
+## Interview One-Liner ⭐
+> Core Web Vitals measure loading performance (LCP), interactivity (INP), and visual stability (CLS), and are improved through caching, image optimization, reducing JavaScript, and stable layouts.
+
+
+
+***
+***
+***
+
+# explain langchain
+## LangChain (Short Explanation)
+
+- LangChain is a **framework for building LLM-powered applications**
+- It helps connect **LLMs with data, tools, and workflows**
+- Used to build **chatbots, RAG systems, agents, and pipelines**
+
+---
+
+## What LangChain Provides
+
+- **Prompt templates** – reusable prompts
+- **Chains** – multi-step LLM workflows
+- **Memory** – conversation state
+- **Retrievers** – connect vector databases
+- **Agents** – LLMs that can use tools dynamically
+
+---
+
+## Common Use Cases
+- Retrieval-Augmented Generation (RAG)
+- Chatbots with memory
+- Document Q&A
+- Tool-using AI agents
+
+---
+
+## Interview One-Liner ⭐
+> LangChain is a framework that simplifies building LLM applications by chaining prompts, models, tools, and data sources together.
+
+
+
+***
+***
+***
+
+# HTTP Status Codes (Interview Overview)
+
+HTTP status codes indicate the **result of an HTTP request** and are grouped by range.
+
+---
+
+## 1xx – Informational
+Request received, processing continues.
+
+- **100 Continue** → Server ready to receive request body
+
+📌 Rarely handled directly in apps
+
+---
+
+## 2xx – Success
+Request successfully processed.
+
+- **200 OK** → Successful GET/PUT
+- **201 Created** → Resource created (POST)
+- **204 No Content** → Success, no response body (DELETE)
+
+📌 Most common success responses
+
+---
+
+## 3xx – Redirection
+Client must take additional action.
+
+- **301 Moved Permanently** → SEO-friendly redirect
+- **302 Found** → Temporary redirect
+
+📌 Used for routing & caching
+
+---
+
+## 4xx – Client Errors
+Problem with the request.
+
+- **400 Bad Request** → Invalid request data
+- **401 Unauthorized** → Authentication required
+- **403 Forbidden** → Authenticated but not allowed
+- **404 Not Found** → Resource doesn’t exist
+- **429 Too Many Requests** → Rate limit exceeded
+
+📌 Indicates client-side issue
+
+---
+
+## 5xx – Server Errors
+Server failed to handle valid request.
+
+- **500 Internal Server Error** → Generic server failure
+- **502 Bad Gateway** → Invalid response from upstream service
+- **503 Service Unavailable** → Server overloaded / down
+- **504 Gateway Timeout** → Upstream service timeout
+
+📌 Indicates backend or infrastructure issues
+
+---
+
+## Interview Tip ⭐
+- 4xx → Client fault
+- 5xx → Server fault
+- 429 → Throttling / rate limiting
+
+
+***
+***
+***
+
+# SNS-SQS
+
+
+## SNS–SQS (Interview Explanation)
+
+### SNS (Simple Notification Service)
+- **Pub/Sub messaging service**
+- One message → **multiple subscribers**
+- Does **not store messages**
+- Push-based delivery
+
+---
+
+### SQS (Simple Queue Service)
+- **Message queue**
+- Messages are **stored until consumed**
+- Pull-based
+- Ensures **reliable delivery**
+
+---
+
+## SNS + SQS Together (Very Common ⭐)
+
+### Why Combine Them?
+- SNS for **fan-out**
+- SQS for **durability & buffering**
+
+---
+
+## How It Works
+1. Producer publishes message to **SNS**
+2. SNS pushes message to **all subscribed SQS queues**
+3. Each service consumes from its own queue
+4. Messages persist until processed
+
+
+
+
+***
+***
+***
+```
+"Since MedGemma 4B is highly optimized for medical image interpretation (like X-rays), does Experity see a future where the AI Scribe also processes visual diagnostic data alongside the ambient audio to create a more holistic clinical note?"
+
+The "Technical" Question: "Given my experience with ONNX and DSPy, I’m curious—how is the team handling the fine-tuning of medical LLMs? Are you using parameter-efficient methods like LoRA on models like MedGemma, or are you focusing more on complex RAG pipelines to ensure accuracy?"
+
+
+Electronic Medical Records (EMR): The digital charts doctors use.
+```
+
+```
+hi, i am Akash, Software engineer with 7+ years experience in e-commerce search, AI relevance, and distributed systems. 
+In my last company, I primarily worked on large-scale e-commerce search systems, leading the migration to Vespa.ai and improving search relevance using LLMs and vector embeddings, also finetuned embedding and reranking models. 
+I have a strong background in Node.js, AWS, and designing end-to-end system architectures.
+```
 
 
 ***

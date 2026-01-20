@@ -291,8 +291,43 @@ only look at the top 18$k$ results, as users rarely scroll past the first page.1
 ***
 ***
 
+# Recommendation system
 
+## WRITE PATH – User Events Ingestion & Processing
+```
+Client (Web / Mobile)
+        ↓
+AWS API Gateway
+        ↓
+Lambda (Auth, validation, enrichment)
+        ↓
+Kinesis Data Streams  ←── High-throughput event ingestion
+        ↓
+Lambda / ECS Consumers
+        ↓
+Cassandra (User events – hot write store)
+        ↓
+SNS (fan-out notifications)
+        ↓
+SQS (buffered async jobs)
+        ↓
+BigQuery (Offline analytics & ML training)
 
+```
+
+## READ PATH – Serving Recommendations (Low Latency)
+```
+Client (Web / Mobile)
+        ↓
+API Gateway
+        ↓
+ECS Recommendation Service (Stateless)
+        ↓
+Cassandra (Precomputed recommendations)
+        ↓
+Response (Top-N items)
+
+```
 
 
 ***

@@ -262,6 +262,106 @@ type PartialUser = DeepPartial<User>;
 ***
 ***
 
+# Enums in TypeScript
+
+- Enums define a **set of named constant values**
+- Improve **readability, type safety, and maintainability**
+- Useful when a variable can have **only a fixed set of values**
+
+---
+
+## Numeric Enum (Default)
+
+```ts
+enum Status {
+  Pending,
+  Success,
+  Failed
+}
+
+
+***
+***
+***
+
+##`never` in TypeScript
+
+- `never` represents a value that **never occurs**
+- Used for functions that:
+  - Never return
+  - Always throw an error
+- Helps TypeScript with **exhaustive type checking**
+
+---
+
+## Example 1️⃣: Function That Never Returns
+
+```ts
+function throwError(message: string): never {
+  throw new Error(message);
+}
+```
+
+## Infinite loops
+
+***
+***
+***
+
+# Type Assertions in TypeScript
+
+- Type assertions tell TypeScript **“trust me, I know the type”**
+- They **do not change runtime behavior**
+- Used when TypeScript cannot infer the type correctly
+
+```
+let value: unknown = "hello";
+let len = (value as string).length;
+
+```
+
+
+***
+***
+***
+
+# `keyof` Type Operator in TypeScript
+
+- `keyof` produces a **union of property names** of a given type
+- Used for **type-safe property access**
+- Prevents invalid keys at compile time
+
+---
+
+## Basic Example
+
+```ts
+type User = {
+  id: number;
+  name: string;
+  email: string;
+};
+
+type UserKeys = keyof User;
+// "id" | "name" | "email"
+
+```
+function getValue<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+
+const user: User = { id: 1, name: "Akash", email: "a@a.com" };
+
+getValue(user, "name");   // ✅
+getValue(user, "age");    // ❌ compile-time error
+
+```
+
+***
+***
+***
+
+
 
 
 
