@@ -1714,21 +1714,166 @@ Always SSR — no caching control
 ***
 ***
 
-```
-"Since MedGemma 4B is highly optimized for medical image interpretation (like X-rays), does Experity see a future where the AI Scribe also processes visual diagnostic data alongside the ambient audio to create a more holistic clinical note?"
+# What is MCP
 
-The "Technical" Question: "Given my experience with ONNX and DSPy, I’m curious—how is the team handling the fine-tuning of medical LLMs? Are you using parameter-efficient methods like LoRA on models like MedGemma, or are you focusing more on complex RAG pipelines to ensure accuracy?"
-
-
-Electronic Medical Records (EMR): The digital charts doctors use.
-```
+- The Model Context Protocol is an open-source standard that allows AI applications to connect seamlessly with external data sources and tools. 
+- MCP standardizes how Large Language Models (LLMs) "talk" to databases, Google Drive, Slack, or local files.
 
 ```
-hi, i am Akash, Software engineer with 7+ years experience in e-commerce search, AI relevance, and distributed systems. 
-In my last company, I primarily worked on large-scale e-commerce search systems, leading the migration to Vespa.ai and improving search relevance using LLMs and vector embeddings, also finetuned embedding and reranking models. 
-I have a strong background in Node.js, AWS, and designing end-to-end system architectures.
+MCP Host: The AI application or environment where the model lives (e.g., Claude Desktop, an IDE like Cursor, or a custom chatbot).
+
+MCP Client: The component within the host that initiates connections and handles the protocol's "handshake."
+
+MCP Server: A lightweight program that exposes specific data or tools (e.g., a "Postgres MCP Server" that lets the AI query a database).
 ```
 
+***
+***
+***
+
+
+### ACID Properties
+## 1️⃣ Atomicity — “All or nothing”
+
+A transaction must either complete fully or not happen at all.
+
+✔ If one step fails → entire transaction is rolled back
+✔ No partial updates
+
+Example
+
+Bank transfer:
+
+Debit ₹500 from A
+
+Credit ₹500 to B
+
+If credit fails → debit is rolled back.
+
+## 2️⃣ Consistency — “Valid state → valid state”
+
+The database must always move from one valid state to another valid state, following all rules:
+
+data types
+
+constraints
+
+foreign keys
+
+unique rules
+
+business logic
+
+Example
+
+If a column requires a unique email, the DB must prevent duplicates.
+
+## 3️⃣ Isolation — “Transactions don’t interfere”
+
+Multiple transactions running at the same time should not affect each other’s results.
+
+Different isolation levels avoid problems like:
+
+Dirty reads
+
+Non-repeatable reads
+
+Phantom reads
+
+Example
+
+Two people booking the last movie ticket at the same time — isolation ensures only one succeeds.
+
+## 4️⃣ Durability — “Once committed, it stays”
+
+After a transaction is committed:
+
+power failure
+
+crash
+
+system reboot
+
+…should NOT remove the committed data.
+
+Databases use:
+
+Write-ahead logs
+
+Disk flush
+
+Replication
+
+Backups
+
+To guarantee durability.
+
+
+***
+***
+***
+
+# CAP
+```
+## What is CAP Theorem?
+**CAP theorem** states that in a **distributed system**, you can **guarantee only two 
+out of three** properties at the same time:
+
+When a **network partition** happens, the system must choose between **Consistency** and **Availability**.
+
+## 1️⃣ Consistency (C)
+- Every read receives the **latest write**
+- All nodes see the **same data at the same time**
+- Similar to a single-node system
+**Example:**
+- After updating user profile, any service reading it gets the updated
+ data immediately.
+
+## 2️⃣ Availability (A)
+- Every request gets a **response** (success or failure)
+- System never returns “no response”
+- Response may be **stale data**
+
+**Example:**
+- Recommendation service always responds even if data is slightly outdated.
+
+
+
+## 3️⃣ Partition Tolerance (P)
+- System continues to operate despite **network failures**
+- Nodes cannot communicate with each other
+
+**Example:**
+- Network issue between two microservices or between repla sets or pods of db.
+
+👉 **In distributed systems, P is non-negotiable**  
+(Network failures WILL happen)
+
+## Why You Can’t Have CA in Distributed Systems
+### CA = Consistency + Availability (❌ No Partition Tolerance)
+
+This only works if:
+- System runs on **single node**
+- OR network is **100% reliable** (not realistic)
+
+### What happens during a partition?
+
+Imagine:
+- Service A and Service B both have a copy of data
+- Network breaks between them
+
+Now a request comes to Service B:
+
+| Choice | Result |
+|------|-------|
+| Maintain Consistency | Service B must **reject request** → ❌ Availability |
+| Maintain Availability | Service B must **serve stale data** → ❌ Consistency |
+```
+
+
+👉 **You must sacrifice either C or A**
+
+Hence, **CA systems cannot exist once a partition occurs**
 
 ***
 ***
