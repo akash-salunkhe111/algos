@@ -25,43 +25,10 @@ Let’s break this down clearly.
 ✅ Why ECS Solves the MongoDB Connection Problem
 🔵 1. ECS containers are long-lived
 
-Unlike Lambda, ECS tasks:
-
-start once
-
-stay running for hours/days
-
-handle many requests over their lifetime
-
-Meaning:
-
 Create MongoDB connection once
 Reuse 100% of the time
 
-
-So instead of 1000 Lambdas each opening a connection, you might have:
-
-5 ECS tasks
-
-each with a single MongoDB connection or small pool (e.g., 10)
-
-Result:
-
-Total Mongo connections: ~5–50
-Instead of 1000+
-
-
 ### MongoDB Data API is a serverless, HTTP-based API provided by MongoDB Atlas.
-
-Instead of your Lambda connecting to MongoDB via:
-
-TCP
-
-TLS handshake
-
-MongoDB wire protocol
-
-Persistent connection pooling
 
 …you simply call an HTTPS endpoint to run MongoDB operations.
 
@@ -86,7 +53,7 @@ await fetch(DATA_API_URL, {
 });
 ```
 
-### Create a middleware gateway service like ecs where lambda will request to get data
+### Create a middleware gateway service like ecs where lambda will request to get data. This service will keep and handle pool of connections
 
 
 ***
@@ -158,12 +125,6 @@ Use **EC2** when:
   - ML workloads
 - Predictable or constant traffic
 
-**Examples**
-- Node.js / Java backend server
-- Kafka consumer
-- Custom monitoring agent
-- Game server
-
 ---
 
 # When to Use Lambda?
@@ -174,8 +135,6 @@ Use **Lambda** when:
 - Execution time is **short**
 - Traffic is **spiky or unpredictable**
 - You want **zero server management**
-
-
 
 ***
 ***
@@ -188,21 +147,10 @@ Below is a precise, discipline-correct definition:
 Key Characteristics
 1. Logical Network Isolation
 Although all customers share the cloud provider’s physical network fabric, your VPC gets:
-its own IP space
-
-
-its own subnets
-
-
-its own routing domain
-
-
-its own security boundaries
-
-
-No other customer can access your VPC unless explicitly allowed.
-
-
+- its own IP space
+- its own subnets
+- its own security boundaries
+- No other customer can access your VPC unless explicitly allowed.
 
 
 ***
@@ -217,8 +165,6 @@ Sits between client and internet
 Hides the client’s identity
 
 Used for access control, caching, anonymity
-
-Example: Corporate proxy, VPN
 
 Flow: Client → Proxy → Server
 
@@ -247,11 +193,6 @@ One-line difference (easy to remember):
 # How video download and upload works in s3
 
 ## SECURE VIDEO UPLOAD FLOW
-
-```
-[ Client ] → [ Server ] → [ S3 ]
-```
-
 ### Client → Server (Upload Request)
 
 Client sends metadata only:
@@ -276,9 +217,6 @@ Validate file type & size
 ## Server → S3 (Prepare Multipart Upload)
 
 ### Server:
-
-Creates multipart upload
-
 Generates pre-signed URLs for each chunk
 
 URLs are:
@@ -346,10 +284,6 @@ Thumbnail generation
 
 # 🔵 SECURE VIDEO DOWNLOAD FLOW (CONFIDENTIAL)
 
-```
-[ Client ] → [ Server ] → [ S3 ]
-```
-
 ## Client → Server (Access Request)
 ```
 GET /videos/{videoId}/download
@@ -397,14 +331,20 @@ URL expires automatically
 
 # How do we secure api, for senior software developer interview
 ```
+Code Level - 
 1 - Authentication – Who are you? (JWT)
 2 - Authorization – What are you allowed to do? (RBAC (Role-Based Access Control))
-3 - HTTPS everywhere
-4 - Input Validation & Request Security (sql injection, XSS)
-5 - Rate Limiting & Abuse Protection
-6 - Secrets Management (vault)
-7 - Logging, Monitoring & Auditing
-8 - Versioning Apis, make it backward compatible
+3 - Input Validation & Request Security (sql injection, XSS)
+4 - Security headers like 
+(cookie - httpOnly, SameSite, Content-Security-Policy header)
+(CSP - to avoid xss, tell browser what scripts (same origin) is allowed to load and execute
+httpOnly cookie cannot be accessed by javascript
+sameSite-  cookies can be sent only to same domain)
+Infra level - 
+1 - HTTPS everywhere
+2 - Rate Limiting & Abuse Protection
+3 - Secrets Management (vault)
+4- Logging, Monitoring & Auditing
 ```
 
 
@@ -447,8 +387,6 @@ Major is breaking change, minor is backward compotable and patch is simple chang
 - tell about version, AB tests
 
 
-
-
 ***
 ***
 ***
@@ -463,19 +401,11 @@ Major is breaking change, minor is backward compotable and patch is simple chang
 ## When Statelessness Is Not Ideal (Important!)
 
 ```
-Senior engineers acknowledge trade-offs.
-
-Legitimate State
-
 Long-running workflows
 
 WebSockets
 
-Background jobs
-
 Transactions
-
-Rate-limiting counters
 ```
 
 ## Correct Approach
@@ -549,8 +479,6 @@ PATCH /users/123
 - **CLS (Cumulative Layout Shift):** Measures unexpected layout movement during page load.
 - **TTFB (Time to First Byte):** Time taken for the server to send the first byte of response.
 ```
-- Performance and SEO scoring
-
 ### 3. Next.js Web Vitals
 ```js
 export function reportWebVitals(metric) {
@@ -568,55 +496,38 @@ Tracks real-user performance (RUM)
 ### Bundle Analyzer - Identifies large or unused dependencies
 
 # ⚡ How to Optimize Performance
-🧠 React-Level Optimizations
+## 1️⃣ Code-Level Optimizations (Component Logic)
 
-Use React.memo to prevent unnecessary re-renders
+- Use `React.memo` to prevent unnecessary re-renders
+- Use `useCallback` for stable function references
+- Use `useMemo` for expensive computations
 
-Use useCallback and useMemo
 
-Avoid inline functions inside render
+## 2️⃣ Rendering Optimizations (DOM & UI)
+- Virtualize long lists (`react-window`, `react-virtualized`).
+- Use Keys in list.
 
-Virtualize long lists (react-window, react-virtualized)
 
-🚀 Next.js Optimizations
+## 3️⃣ Framework-Level Optimizations (Next.js)
+- Use **App Router + Server Components** latest react/nextjs version
+- Prefer **SSG / ISR** over SSR
+- Lazy-load heavy components
+- Enable code splitting
+- Use `next/image` for responsive images
 
-Prefer SSG / ISR over SSR
 
-Use App Router with Server Components
+## 6️⃣ Data Fetching & State Optimization
+- Cache API responses
+- Use **SWR / React Query**
+- Browser cache
 
-Use dynamic imports (next/dynamic)
+## 7️⃣ Network & Infrastructure Optimizations
+- Use CDN for static assets
+- Enable HTTP compression (gzip / brotli)
 
-Optimize images with next/image
-
-Optimize fonts with next/font
-
-📦 Bundle & Asset Optimization
-
-Enable code splitting
-
-Remove unused dependencies
-
-Lazy-load heavy components
-
-Ensure tree-shaking is effective
-
-🌐 Network & API Optimization
-
-Use CDN caching
-
-Cache API responses
-
-Use SWR or React Query
-
-Enable HTTP compression and HTTP/2
-
-🧪 Rendering Strategy
-
-Reduce hydration using Server Components
-
-Avoid browser-only logic during SSR
-
-Defer non-critical JavaScript
+## other js related
+- Ensure effective tree-shaking
+- Remove unused dependencies
 
 ***
 ***
@@ -633,8 +544,7 @@ Defer non-critical JavaScript
 - Wrap components with `React.memo`
 - Use `useCallback` for stable function props
 - Use `useMemo` for expensive calculations
-- Avoid passing new object/array references
-- Split large components into smaller ones
+- Use keys in list
 
 
 ***
@@ -652,107 +562,26 @@ Defer non-critical JavaScript
 ---
 
 ## ⚡ How to Improve Performance
+### Code level
 - Use **async/non-blocking I/O** (use promise.all)
 - Avoid CPU-heavy work on main thread (use **Worker Threads**)
+
+### DB level and caching
 - Optimize database queries & add indexes
 - Use caching (Redis, in-memory)
+
+### Network and protocol level
 - Enable HTTP compression & keep-alive
-- Limit concurrency and use backpressure
 - Scale with **Cluster mode / PM2**
-- Optimize JSON parsing and payload size maybe use grpc
-
-
-
-
-***
-***
-***
-
-# End-to-End Request–Response Flow
-
-## 1️⃣ User Action
-- User enters URL or clicks a button
-- Browser initiates an HTTP/HTTPS request
-
----
-
-## 2️⃣ DNS Resolution
-- Domain → IP address via DNS
-- Result is cached by browser / OS
-
----
-
-## 3️⃣ TCP + TLS Handshake
-- TCP connection established (3-way handshake)
-- TLS handshake for HTTPS (cert verification, encryption)
-
----
-
-## 4️⃣ HTTP Request Sent
-- Method: GET / POST / PUT / DELETE
-- Headers: cookies, auth tokens, content-type
-- Body (for POST/PUT)
-
----
-
-## 5️⃣ CDN / Load Balancer
-- CDN serves cached content (if available)
-- Otherwise forwards request to load balancer
-- Load balancer routes to healthy server
-
----
-
-## 6️⃣ Backend Server Processing
-- Request reaches Node.js server
-- Middleware runs (auth, logging, validation)
-- Controller executes business logic
-- DB / cache / external API calls
-
----
-
-## 7️⃣ Database Interaction
-- Query executed (SQL / NoSQL)
-- Data fetched or updated
-- Response returned to server
-
----
-
-## 8️⃣ Response Creation
-- Server prepares response
-- Status code + headers + JSON/HTML
-- For SSR: HTML rendered on server
-
----
-
-## 9️⃣ Response Sent to Client
-- Data sent back over network
-- Browser receives first byte (TTFB)
-
----
-
-## 🔟 Browser Processing
-- HTML parsed → DOM
-- CSS parsed → CSSOM
-- JS downloaded & executed
-- Hydration (if SSR/Next.js)
-
----
-
-## 1️⃣1️⃣ UI Update
-- React updates Virtual DOM
-- Events attached
-- Page becomes interactive
-
----
-
-## 🎯 Interview One-Liner
-> *A request flows from the browser through DNS, TCP/TLS, CDN, backend processing, database interaction, and back as a response, which the browser parses, renders, and hydrates to make the UI interactive.*
+- Use graphql and keep payload size small
+- use http2/grpc
 
 
 
 ***
 ***
 ***
+
 
 # Throttling vs Rate Limiting (Short)
 
@@ -896,45 +725,6 @@ CDNs, distributed caches (Redis, Memcached), databases, load balancers
 ***
 ***
 
-### Pub/Sub vs Fanout (Interview Short)
-
-#### Pub/Sub (Publish–Subscribe)
-- Producers publish messages to a **topic**
-- Subscribers receive messages based on **subscriptions**
-- Subscribers are **decoupled** from publishers
-- Each subscriber gets **its own copy**
-
-**Use case:** Event-driven systems, notifications, microservices
-
-### What happens in AWS Pub/Sub
-
-#### Normal flow
-1. Producer publishes message to **SNS**
-2. SNS fans out to **SQS queues**
-3. Consumer processes message
-4. Message is **deleted**
-
----
-
-#### Fanout
-- A single message is **broadcast** to multiple consumers simultaneously
-- Often implemented via queues or push mechanisms
-- Simpler, direct distribution pattern
-
-**Use case:** Sending same event to multiple downstream services
-
----
-
-### Key Difference
-- **Pub/Sub** is a **pattern with topic-based subscriptions**
-- **Fanout** is a **distribution strategy** to broadcast messages
-
-
-
-
-***
-***
-***
 
 ### Kafka (Interview Short, Simple Explanation)
 
@@ -1057,11 +847,7 @@ a **durable, ordered log** and allows multiple consumers to **read and replay da
 ```
 Use EC2 if:
 
-- Full OS Control: You need to install custom drivers, specialized software, or specific kernel configurations.
-
-- Legacy Apps: You have a traditional application that isn't "containerized" (just a .exe or .jar file running on a server).
-
-- Static Workloads: You have a simple application that runs 24/7 on a single server and doesn't need complex scaling.
+- Full OS Control: You need to install custom drivers, specialized software, or specific kernel configurations, GPUS.
 
 Use ECS if:
 
@@ -1069,7 +855,6 @@ Use ECS if:
 
 - Standardization: You want your "Dev" and "Prod" environments to be identical using Docker.
 
-- Operational Efficiency: You want to use AWS Fargate (the serverless version of ECS) so you never have to patch or manage a single server again.
 ```
 
 
@@ -1158,13 +943,11 @@ Browser Cache (HTTP Caching)
 - Building a **Single Page Application (SPA)**
 - App is **highly interactive** (dashboards, admin panels)
 - SEO is **not important**
-- You already have a separate backend
-- You want full control over tooling and architecture
+
 
 📌 Examples:
 - Internal tools
 - Admin dashboards
-- Authenticated apps
 
 ---
 
@@ -1200,18 +983,11 @@ Browser Cache (HTTP Caching)
 
 ```
 - `next/image` is a built-in **image optimization component** in Next.js
-- It automatically optimizes images for **performance and SEO**
-```
----
-
-## What It Does
-
-```
 - Automatic **image resizing**
 - **Lazy loading** by default
+- Compresses image
 - Serves images in modern formats (WebP/AVIF)
 - Responsive images for different screen sizes
-- Caches images at the **CDN level**
 ```
 
 ***
@@ -1434,21 +1210,14 @@ What it is
 
 Stores data as objects (files + metadata + ID)
 
-Not a file system and not a disk
-
 Accessed via HTTP / REST APIs
 
 Common use cases
 
  - Static website hosting
 
- - Backups & archives
-
- - Data lakes
-
  - Media storage (images, videos)
 
- - Logs and analytics data
 ```
 
 ```
@@ -1459,15 +1228,10 @@ Acts like a virtual hard disk
 
 Attached to one EC2 instance at a time
 
-Requires formatting (ext4, xfs, etc.)
-
 
 Common use cases
 
 - Databases (MySQL, PostgreSQL)
-
-- OS boot volumes
-
 - Applications requiring fast disk access
 
 
@@ -1479,30 +1243,13 @@ Managed shared file system
 
 Multiple EC2 instances can mount it simultaneously
 
-Uses NFS protocol
-
 Common use cases
 
  - Shared application code
 
  - Microservices shared storage
-
- - Media processing pipelines
-
+ 
  - CI/CD build artifacts
-```
-
-```
-| Feature       | S3                  | EBS                    | EFS                 |
-| ------------- | ------------------- | ---------------------- | ------------------- |
-| Storage Type  | Object              | Block                  | File                |
-| Mountable     | ❌ No                | ✅ Yes                  | ✅ Yes               |
-| Shared Access | ❌                   | ❌ (mostly)             | ✅                   |
-| Latency       | High                | Very Low               | Low–Medium          |
-| Scalability   | Infinite            | Fixed size (resizable) | Automatic           |
-| AZ Scope      | Regional            | Single AZ              | Multi-AZ            |
-| Best For      | Backups, data lakes | Databases, OS disks    | Shared file systems |
-
 ```
 
 
@@ -1645,7 +1392,8 @@ Instead of one global transaction:
 
 ### 🎯 Interview One-Liner
 
-> **Saga pattern manages distributed transactions by breaking them into local steps with compensating actions, ensuring eventual consistency without global locks.**
+> **Saga pattern manages distributed transactions by breaking them into local steps with 
+compensating actions, ensuring eventual consistency without global locks.**
 
 ```
 
