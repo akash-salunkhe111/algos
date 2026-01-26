@@ -424,6 +424,127 @@ By default, every file in the app directory is a Server Component. You only add 
 ***
 ***
 
+# How do you handle state in react/next js without redux 
+
+```
+1 - URL as State (Underrated & Powerful)
+For filters, sorting, pagination — use URL.
+
+2 - Local Component State (UI-only) using useState
+
+3 - Shared Client State → Context
+
+4 - Async Client State → React Query
+
+5 - Use server components to fetch user info from cookies, db etc 
+```
+
+
+***
+***
+***
+
+# React query vs redux
+
+```
+Client State: Data that lives only in the browser (e.g., "Is this sidebar open?", "Dark mode on/off").
+
+Server State: Data that lives on a server and you are just "borrowing" it to show the user
+ (e.g., User profiles, list of products, notifications).
+```
+
+### Why React Query Wins for Server State
+```
+Redux is a "blank slate" tool. If you use Redux for API data, you have to manually write code for:
+
+Loading spinners (isLoading: true)
+
+Error handling (error: "Failed to fetch")
+
+Caching (preventing the app from fetching the same data twice)
+
+Invalidation (refreshing the data when something changes)
+
+Also redux have lot of boilerplate, where each state needs state-reducer-actions files
+```
+
+React query server side working
+```
+How It Works: The "Dehydration" Pattern
+The most common way to use React Query on the server is through Hydration. 
+This process ensures the user doesn't see a loading spinner the moment the page loads.
+
+Prefetching: On the server (inside getStaticProps or a Server Component), 
+you create a QueryClient and fetch the data.
+
+Dehydration: You "dehydrate" the cache. This turns the fetched data into a serialized JSON object.
+
+Sending to Client: This JSON is sent to the browser along with the HTML.
+
+Hydration: On the client side, React Query reads that JSON and "rehydrates" its internal cache. 
+The application now has the data ready without making a second API call.
+
+Why use React Query on the Server at all?
+You might wonder: "If I'm already on the server, why not just use fetch and pass props?"
+
+Caching Synergy: Once the page loads, React Query takes over. I
+f the user navigates away and back, it uses the cached data instead of hitting the server again.
+
+Background Updates: React Query can immediately trigger a "background refetch" 
+once the page loads to ensure the server-provided data isn't stale.
+
+Consistent API: You use the same hooks (useQuery) regardless of whether the data 
+was fetched on the server or the client.
+```
+
+### so if we store state on server side and cache it , dosent it conflict with other 
+users since server is same for all users
+```
+When you use React Query on the server (like in Next.js), you don't create one global QueryClient that stays alive forever. 
+Instead, you create a brand new QueryClient for every single incoming request.
+
+Request 1 (User A): A new QueryClient is born, fetches User A's profile, dehydrates it into the HTML, 
+and then the client instance is destroyed after the HTML is sent.
+
+Request 2 (User B): A totally separate QueryClient is born in a different slice of memory. 
+It has no idea User A ever existed.
+
+2. Where the "Real" Caching Happens
+The confusion usually comes from the word "Cache." In React Query:
+
+Server-Side Cache: This is just a temporary "bucket" used to hold data during the few milliseconds 
+it takes to render the page. It is not shared between users.
+
+Browser-Side Cache: This is where the long-term caching happens. This lives in User A's browser memory or localStorage. 
+It is physically impossible for User B to see this.
+
+This is called singleton pattern
+```
+
+***
+***
+***
+
+
+
+
+
+
+***
+***
+***
+
+
+
+
+
+***
+***
+***
+
+
+
+
 
 
 ***
