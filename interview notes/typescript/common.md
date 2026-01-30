@@ -361,6 +361,27 @@ getValue(user, "age");    // ❌ compile-time error
 ***
 ***
 
+# What is awaited utility in TypeScript?
+
+```
+In TypeScript, Awaited<T> is a utility type that helps you figure out what type you get
+ after await resolves a value.
+
+ type A = Awaited<Promise<number>>;
+// number
+```
+
+
+***
+***
+***
+
+
+
+***
+***
+***
+
 
 
 

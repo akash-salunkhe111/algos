@@ -691,35 +691,6 @@ Block IP if > 2000 requests in 5 minutes
 ***
 ***
 
-### Sharding (Interview Short)
-
-**Sharding** is a database scaling technique where **large datasets are split into smaller parts (shards)** 
-and distributed across multiple servers to improve **performance, scalability, and availability**.
-
-- Each shard holds a **subset of data**
-- Queries run in **parallel** across shards
-- Reduces load on a single database
-
-**Example:**  
-Users with IDs `1–1M` on Shard A, `1M–2M` on Shard B
-
-### Consistent Hashing (Interview Short)
-
-**Consistent hashing** is a technique used to distribute data across multiple servers so that 
-**adding or removing a server causes minimal data re-mapping**.
-
-**Why it was needed:**
-- Traditional hashing remaps **most keys** when nodes change
-- Causes massive cache invalidation and data movement
-- Poor for scalable distributed systems
-
-**How it helps:**
-- Only a small portion of keys move when a node is added/removed
-- Improves scalability and availability
-
-**Used in:**  
-CDNs, distributed caches (Redis, Memcached), databases, load balancers
-
 
 ***
 ***
@@ -1622,6 +1593,149 @@ Now a request comes to Service B:
 👉 **You must sacrifice either C or A**
 
 Hence, **CA systems cannot exist once a partition occurs**
+
+***
+***
+***
+
+# SOLID Principle
+
+```
+S — Single Responsibility Principle (SRP)
+
+A class should have only one reason to change.
+
+✔ One job, one responsibility
+❌ Avoid “God classes”
+
+Example:
+UserService handles users, EmailService sends emails
+
+
+O — Open/Closed Principle (OCP)
+
+Software entities should be open for extension, but closed for modification.
+
+✔ Add new behavior without changing existing code
+✔ Use interfaces, inheritance, composition
+
+class PaymentValidator {
+  validate(order) {
+    console.log('Validating order');
+  }
+}
+
+class CardPayment {
+  constructor(validator) {
+    this.validator = validator;
+  }
+
+  pay(order) {
+    this.validator.validate(order);
+    console.log('Card gateway call');
+  }
+}
+
+
+
+
+L — Liskov Substitution Principle (LSP)
+
+Subclasses should be replaceable for their base classes without breaking behavior.
+
+✔ Child class should not change expected behavior
+❌ No surprise exceptions or behavior changes
+
+class Discount {
+  apply(order) {
+    return order.total * 0.1;
+  }
+}
+
+class FreeShippingDiscount extends Discount {
+  apply(order) {
+    return 0; // doesn't touch price
+  }
+}
+
+Caller expects apply() to reduce price
+
+Suddenly it doesn’t
+
+Total calculation becomes wrong
+
+❌ Surprising behavior → LSP broken
+
+
+
+I — Interface Segregation Principle (ISP)
+
+Don’t force classes to implement interfaces they don’t use.
+
+✔ Prefer small, focused interfaces
+❌ Avoid fat interfaces
+
+class PaymentMethod {
+  pay(order) {}
+  refund(order) {}
+  capture(order) {}
+  saveCard(card) {}
+}
+
+class CashOnDelivery extends PaymentMethod {
+  pay(order) {
+    console.log('COD payment');
+  }
+
+  refund(order) {
+    throw new Error('COD refund not supported');
+  }
+
+  capture(order) {
+    throw new Error('COD capture not applicable');
+  }
+
+  saveCard(card) {
+    throw new Error('COD cannot save card');
+  }
+}
+
+
+D — Dependency Inversion Principle (DIP)
+
+Depend on abstractions, not concrete implementations.
+
+✔ High-level modules shouldn’t depend on low-level modules
+✔ Enables easy testing and swapping implementations
+
+class NotificationService {
+  send(msg) {}
+}
+
+class EmailNotification extends NotificationService {}
+class SmsNotification extends NotificationService {}
+class WhatsAppNotification extends NotificationService {}
+
+Why DIP is Critical in E-commerce
+
+Payment gateways change
+
+SMS/email vendors change
+
+Tax engines vary by region
+
+Fraud engines evolve
+
+A/B testing vendors
+
+DIP = plug-and-play architecture
+
+
+
+
+
+
+```
 
 ***
 ***
