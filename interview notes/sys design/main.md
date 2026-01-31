@@ -834,7 +834,11 @@ Use ECS if:
 ***
 
 ```
-suppose i am using aws lambda for user-service, and then when user requests userInfo, the lambda is started, it is cold at the start and then it takes time to create connection then after 15 mins it stops, again 2nd requests come, most of the time is spent in making lambda hot again, how to avoid this
+suppose i am using aws lambda for user-service, and then when user 
+requests userInfo, the lambda is started, it is cold at the 
+start and then it takes time to create connection then after 15 
+mins it stops, again 2nd requests come, most of the time is 
+spent in making lambda hot again, how to avoid this
 ```
 
 Answer - 
@@ -1115,7 +1119,6 @@ Server failed to handle valid request.
 
 - **500 Internal Server Error** → Generic server failure
 - **502 Bad Gateway** → Invalid response from upstream service
-- **503 Service Unavailable** → Server overloaded / down
 - **504 Gateway Timeout** → Upstream service timeout
 
 📌 Indicates backend or infrastructure issues
@@ -1489,7 +1492,7 @@ If a column requires a unique email, the DB must prevent duplicates.
 
 ## 3️⃣ Isolation — “Transactions don’t interfere”
 
-Multiple transactions running at the same time should not affect each other’s results.
+ensures concurrent transactions execute independently without interfering with one another
 
 Different isolation levels avoid problems like:
 
@@ -1531,6 +1534,89 @@ To guarantee durability.
 ***
 ***
 ***
+
+
+# Different levels of isolation
+
+```
+⚠️ Problems Isolation Prevents
+
+   Dirty Read – Reading uncommitted data from another transaction
+
+   Non-Repeatable Read – Same query returns different results within a transaction
+
+   Phantom Read – New rows appear when the same query is re-executed
+
+
+
+📊 Isolation Levels (in short)
+   1️⃣ Read Uncommitted (Lowest)
+
+      A transaction can see changes made by other transactions even before they are finished.
+      ❌ Dirty reads allowed
+      🚀 Fast but unsafe
+      Use case: Rarely used
+
+
+   2️⃣ Read Committed
+      Can read only committed data
+      ❌ Dirty reads prevented
+      ❌ Non-repeatable & phantom reads possible
+      Use case: Default in many DBs (PostgreSQL, Oracle)
+
+   3️⃣ Repeatable Read
+      Same row read multiple times → same result
+      This level guarantees that if you read a piece of data, it will stay the same for 
+      the duration of your transaction.
+      ✔ Dirty reads prevented
+      ✔ Non-repeatable reads prevented
+      ❌ Phantom reads possible
+
+   4️⃣ Serializable (Highest)
+      Transactions execute one after another
+      ✔ Prevents all anomalies
+      🐢 Slowest but safest
+      Use case: Critical operations (bank transfers)
+```
+
+
+
+***
+***
+***
+
+# BASE properties
+
+```
+⚡ BASE Properties (NoSQL) — Very Short
+
+BASE is an alternative to ACID, optimized for scalability & availability.
+
+B – Basically Available
+The system guarantees that it will respond to any request, but it doesn't 
+guarantee that the data is the most recent. Even if some nodes in a cluster fail
+, the database stays online and responds to the user rather than shutting down to 
+protect data integrity.
+
+A – Soft State
+The state of the system can change over time, even without any new input.
+ Because of "eventual consistency," data might be in flux as updates ripple 
+ through different servers or nodes in the background.
+
+S – Eventual Consistency
+Data becomes consistent eventually, not immediately
+
+👉 Used in NoSQL systems where high availability matters more than strict consistency.
+```
+
+
+
+
+***
+***
+***
+
+
 
 # CAP
 ```
