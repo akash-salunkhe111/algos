@@ -290,6 +290,21 @@ https://interviewready.io/learn/ai-engineering/what-is-a-large-language-model/ll
 ***
 ***
 
+# How Embedding Models Work (Interview Answer)
+```
+An **embedding model** converts text, images, or other data into **dense numerical 
+vectors** such that **semantically similar items have vectors close to each 
+other** in high-dimensional space.
+
+"Node.js performance tuning"
+        ↓
+Tokenizer → [Node, js, performance, tuning]
+        ↓
+Transformer layers
+        ↓
+[0.12, -0.98, 0.44, ..., 0.73]  ← embedding vector
+
+```
 
 
 
@@ -297,6 +312,20 @@ https://interviewready.io/learn/ai-engineering/what-is-a-large-language-model/ll
 ***
 ***
 
+# What Is Tokenization? (Interview-Ready Explanation)
+
+## Short Definition
+```
+**Tokenization** is the process of breaking raw input (text, code, etc.) 
+into **smaller units called tokens** and converting them into **numeric IDs** 
+that a machine-learning model can process.
+
+---
+
+## Why Tokenization Is Needed
+Neural networks cannot work with text directly.  
+They only understand **numbers**.
+```
 
 
 

@@ -1171,6 +1171,87 @@ Server failed to handle valid request.
 4. Messages persist until processed
 
 
+# PUSH PULL
+```
+SNS → SQS (PUSH model)
+SNS pushes messages to subscribed SQS queues
+
+
+2️⃣ ECS → SQS (PULL model)
+   ECS tasks poll (pull) messages from SQS
+   ECS uses:
+   AWS SDK
+   long polling (ReceiveMessage)
+   ECS controls:
+      batch size
+      concurrency
+      retry logic
+```
+
+# Delivery Model (VERY IMPORTANT)
+
+```
+SNS → SQS
+   At-least-once delivery
+   Message duplication can happen
+   Order not guaranteed (unless FIFO)
+
+SQS → ECS
+   At-least-once
+
+SQS FIFO
+   Exactly-once (with dedup)
+
+How duplicates are handled (Interview Tip)
+Because delivery is at-least-once, consumers must be:
+✅ Idempotent
+```
+
+***
+***
+***
+
+# How Apache Kafka Works
+High-level flow
+```
+Producer → Kafka Topic → Consumer Group → Consumers (ECS / Services)
+Producer → Kafka (PUSH model)
+Consumer → Kafka (PULL model) Consumers poll Kafka for messages
+
+
+Kafka supports all three, depending on configuration.
+
+At-most-once
+At-least-once
+Exactly-once
+
+Replay is possible
+
+Apache Kafka has its own persistent storage
+Where Kafka stores messages
+   Messages are written to disk on Kafka brokers
+   Stored as append-only log files
+   Retention-based storage
+   Time (e.g. 7 days) or Size
+   Default max message size: 1 MB
+   Can be increased to several MBs
+
+SNS-SQS diff
+Amazon SNS does NOT store messages
+   SNS is stateless
+   Max message size: 256 KB
+
+When to use kafka
+Very high throughput (millions of events/sec)
+✔ Message replay
+✔ Event sourcing
+✔ Real-time streaming & analytics
+✔ Multiple consumers reading at different speeds
+```
+
+
+
+
 ***
 ***
 ***

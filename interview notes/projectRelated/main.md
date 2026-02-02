@@ -333,3 +333,39 @@ Response (Top-N items)
 ***
 ***
 ***
+
+# Elastic search vs Vespa
+
+Elastic - 
+```
+Lexical Search
+What it is: Matches exact words, stems, or synonyms within documents.
+Algo - BM25
+
+Term Frequency (TF): Measures how often a query term appears in a specific document.
+BM25 applies a saturation mechanism, meaning the first few occurrences add significant
+score, but additional repetitions provide diminishing returns. 
+This prevents over-emphasis on excessively repeated terms.
+Inverted Index
+```
+
+Vespa - 
+```
+Cosine Similarity: Measures the angle between two vectors. 
+It is often preferred in Natural Language Processing (NLP) 
+tasks where the direction of the vector (semantic meaning) 
+matters more than its length.
+```
+
+
+***
+***
+***
+
+
+
+
+
+***
+***
+***

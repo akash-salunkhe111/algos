@@ -123,7 +123,7 @@ CREATE TABLE employees (
 
 ### Only MAX salary op
 ```
-SELECT MAX(salary) AS highest_salary
+SELECT MAX(salary)
 FROM employees;
 
 Note: This query returns only the highest salary amount itself. 
@@ -164,7 +164,7 @@ WHERE s.salary = (
 ## For second highest salary
 
 ```
-SELECT MAX(salary) AS second_highest_salary
+SELECT MAX(salary)
 FROM employees
 WHERE salary < (
   SELECT MAX(salary) FROM employees
@@ -308,3 +308,11 @@ Riya  25  Phone
 ***
 ***
 ***
+
+# SQL execution flow
+
+```
+F W G H S D O L
+
+From → Where → Group → Having → Select → Distinct → Order → Limit
+```

@@ -552,13 +552,18 @@ Evicts least frequently used keys
 ***
 ***
 
+# Unit test vs integration test
+```
+Unit Test: Tests a single function or module in isolation to ensure it works correctly.
 
-
+Integration Test: Tests multiple components together to ensure they work correctly as a whole.
+```
 
 
 ***
 ***
 ***
+
 
 
 

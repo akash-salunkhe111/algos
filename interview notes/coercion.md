@@ -1,8 +1,4 @@
-JavaScript Type Coercion Summary
 
-## Coercion in JavaScript is the automatic or manual conversion of one data type to another (like string → number, number → boolean) during operations or comparisons.
-
-JavaScript performs three types of coercions:
 
 ### ➤ ToNumber
 
