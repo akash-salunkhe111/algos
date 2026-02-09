@@ -60,17 +60,6 @@ Use case	Batch processing	Real-time updates
 ***
 ***
 
-# Steps for Sharding in MongoDB
-
-### Select key for sharding
-### Then deploy config server with mappings for server and range
-### Then Start shards as replica sets as if shard fail we have replica for that data
-### Create index on shard key (this is needed as when sharding starts, mongodb can easily find data to move across shards)
-### Start the sharding
-
-
-
-
 
 ***
 ***

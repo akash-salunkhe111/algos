@@ -103,10 +103,99 @@ That’s it ✅
 ```
 
 
+***
+***
+***
+
+
+# write a js function which can take multiple dynamic no of paramenters
+
+```
+function sum(...args) {
+  return args.reduce((total, num) => total + num, 0);
+}
+
+console.log(sum(1, 2));   
+
+
+function sum() {
+  let total = 0;
+
+  for (let num of arguments) {
+    total += num;
+  }
+
+  return total;
+}
+
+console.log(sum(1, 2, 3, 4)); // 10
+```
+
 
 ***
 ***
 ***
+
+## OP of following
+
+```
+Promise.resolve()
+  .then(() => {
+    console.log("Step 1");
+    throw new Error("Oops error");
+  })
+  .then(() => {
+    console.log("Step 2 (won’t run)");
+  })
+  .catch((err) => {
+    console.log("Caught:", err.message);
+  })
+  .then(() => {
+    console.log("Step 3 (runs after catch)");
+  })
+  .finally(() => {
+    console.log("Finally always runs");
+  });
+```
+
+```
+Step 1
+Caught: Oops error
+Step 3 (runs after catch)
+Finally always runs
+```
+
+
+***
+***
+***
+
+## OP based code
+
+```
+0 || "asd"
+'asd'
+
+"" || "asd"
+'asd'
+
+What does ?? do?
+It returns the right-hand value only if the left-hand value is:
+null or undefined
+
+console.log(0 ?? 100);       // 0
+console.log("" ?? "Hello");  // ""
+console.log(false ?? true);  // false
+
+```
+
+***
+***
+***
+
+
+
+
 
 # Find highest salary in table
 
