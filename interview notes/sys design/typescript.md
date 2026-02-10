@@ -72,28 +72,63 @@ interface Admin extends User {
   role: string;
 }
 
+<!-- Union and intersection -->
 type Status = "success" | "error";
 type Admin = User & { role: string };
 
 ```
 When to Use What?
-Use interface when:
+```
+Use interface:
+- To define object structures and when you expect the object to be extended or implemented by classes.
+interface User {
+  name: string;
+  age: number;
+}
 
-Defining object shapes
+interface Admin extends User {
+  role: string;
+}
 
-Working with classes
+const admin: Admin = {
+  name: "Bob",
+  age: 30,
+  role: "Administrator",
+};
 
-Designing public APIs
+Type can also be used above but interface is more intutive
 
-You want extensibility
 
-Use type when:
+- When you need automatic definition merging.
+interface User {
+  name: string;
+}
 
-You need unions or intersections
+interface User {
+  age: number;
+}
 
-Defining complex types
+const user: User = {
+  name: "Alice",
+  age: 30,
+};
 
-Working with function types or primitives
+
+- When defining class contracts.
+interface Moveable {
+ move(): void;
+ getPosition(): { x: number, y: number };
+}
+
+class Car implements Moveable {
+ move() { console.log("Moving…"); }
+ getPosition() { return { x: 0, y: 0 }; }
+}
+
+Can do above in type as well but interface is more intutive
+
+- Building public APIs where consumers might need to extend the types
+```
 
 
 ***
@@ -376,11 +411,97 @@ In TypeScript, Awaited<T> is a utility type that helps you figure out what type 
 ***
 ***
 
+# keyof in ts
+keyof gives you a union of all keys of an object type.
+```
+type User = {
+  id: number;
+  name: string;
+  isAdmin: boolean;
+};
+
+type UserKeys = keyof User;
+
+op - 
+"id" | "name" | "isAdmin"
+
+```
 
 
 ***
 ***
 ***
+
+# how to extract type of key from object
+```
+type User = {
+  id: number;
+  name: string;
+  isAdmin: boolean;
+};
+
+type NameType = User["name"];
+so -
+type NameType = string
+
+
+To extract all keys
+type Values = User[keyof User];
+op - number | string | boolean
+
+```
+
+
+
+***
+***
+***
+
+# pick in ts
+
+```
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+};
+
+Now pick only id and name:
+
+type UserPreview = Pick<User, "id" | "name">;
+
+op - 
+type UserPreview = {
+  id: number;
+  name: string;
+};
+
+
+Omit → remove these
+type UserWithoutEmail = Omit<User, "email">;
+op - 
+type UserWithoutEmail = {
+  id: number;
+  name: string;
+  isAdmin: boolean;
+};
+```
+
+
+***
+***
+***
+
+
+
+
+
+
+***
+***
+***
+
 
 
 
