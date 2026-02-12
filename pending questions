@@ -1,7 +1,4 @@
 indexes in sql
-jwt
-mcp cursor we have used
-sql execution flow
 self-attention in embedding
 do we create embedding for each word in vector search
 cookies/session storage etc diff
@@ -14,14 +11,11 @@ Cross-site scripting
 What is a content security policy?
 
 Choose the best architecture based on the situation, like if a customer places an order from the front-end and you want to create an order saved to db, then what will you do? Do you use an event-driven approach of SNS SQS or the call endpoint from the API Gateway, where AWS Lambda is attached, and it will create an order and respond on the same request
-Oauth
-Jwt flow
 
 How do you do bulk insert in MongoDB? Write down the query for it also for sql
 
 Do you know two-step authentication? Please explain with an example, and how you implement it
 What is an index in MongoDB
-ACID implementation in your project
 
 How you are storing or configuring configs on jenkins/vault, how the setup is done
 In the composite index what if i change the order of the fields?
@@ -72,7 +66,13 @@ Frontend -
 ul - li lists like navigation in sidebar -> show button for each only if sub item available -> 
 on press expand -> only one should be expanded at a time
 
-Show data and display it
+Show data and display it from some api
+
+Write custom hook for api calling
+
+express api to call and get data
+
+
 
 
 Backend - 

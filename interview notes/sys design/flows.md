@@ -279,6 +279,150 @@ URL expires automatically
 ***
 ***
 
+# Session Based Authentication
+
+```
+A traditional authentication method where the **server stores login 
+state** in a session.
+
+### 🔄 How it works
+1. User logs in with credentials  
+2. Server validates username/password  
+3. Server creates a **session record** in DB/Memory (Redis)
+Example session stored:
+```js
+{
+  sessionId: "abc123xyz",
+  userId: 42,
+  role: "admin"
+}
+4. Server sends cookie to browser:
+Set-Cookie: sessionId=abc123xyz; HttpOnly; Secure
+5. Browser automatically sends cookie on every request:
+6. Server looks up session → user authenticated
+
+
+What happens on Logout?
+- Browser requests logout endpoint
+- Server deletes session from store
+- Server clears cookie:
+
+
+✅ Pros
+  Simple and widely supported
+  Easy to revoke sessions instantly
+  Secure with HttpOnly cookies
+
+⚠️ Cons
+  Server must maintain session storage
+  Not ideal for stateless microservices
+  Needs Redis/shared session store in distributed apps
+
+```
+
+
+
+
+***
+***
+***
+
+# OAuth 2
+
+```
+OAuth 2.0 is an **authorization framework** that lets users grant apps limited access  
+**without sharing passwords**.
+### 🌍 Real Example
+“Login with Google” / “Import from Drive”
+
+- You don’t give the app your Google password  
+- Google shows a consent screen  
+- Google issues an **Access Token** for limited access  
+
+
+## 🔄 OAuth 2.0 Flow (Authorization Code Grant)
+
+1. User clicks **Login with Google**
+2. App redirects user to Google consent page
+3. User approves permissions
+4. Google redirects back with an **Authorization Code**
+5. App exchanges code (via backend) for tokens:
+
+```json
+{
+  "access_token": "ya29.a0AfH6SM...",
+  "refresh_token": "1//0gL...",
+  "expires_in": 3600
+}
+6. App calls APIs using token:
+Authorization: Bearer <access_token>
+
+
+🎟️ Token Types
+Access Token → short-lived API access
+Refresh Token → used to get new access tokens
+
+❓If OAuth is Authorization, why “Login with Google”?
+(OpenID Connect (OIDC))
+When you click “Login with Google”, it feels like authentication — but what’s actually happening underneath is:
+App (e.g., Canva) uses OAuth 2.0 flow to ask Google for permission.
+Instead of requesting access to Google Drive, the app asks for your basic profile info (openid, email, profile).
+
+Google returns an ID Token (JWT) — that’s where authentication happens.
+
+```
+
+
+
+***
+***
+***
+
+# SSO (Single Sign-On)
+
+```
+SSO means a user logs in **once** and can access **multiple applications**  
+without logging in again.
+
+👉 *One identity → many systems*
+
+---
+
+### ⚙️ Why SSO is needed
+Without SSO:
+- Separate login/password for every app (HR, Email, CRM, etc.)
+- Users log in repeatedly
+- Admins manage multiple credentials
+
+With SSO:
+- User authenticates once with a central **Identity Provider (Identity Provider)**
+- Identity Provider issues a trusted token
+- All apps rely on that Identity Provider for login
+
+---
+
+## 🔄 SSO Flow (High Level)
+
+1. User tries to open **App A**
+2. App redirects user to **Identity Provider** (JumpCloud, Okta, Azure AD)
+3. User logs in once (Password + MFA)
+4. Identity Provider issues an authentication proof:
+
+- **SAML Assertion** or  
+- **JWT ID Token**
+
+5. User is redirected back → App A grants access
+6. Later user opens **App B**
+7. Identity Provider detects user already logged in → auto-signs in
+
+---
+```
+
+
+
+***
+***
+***
 
 
 

@@ -564,7 +564,24 @@ Integration Test: Tests multiple components together to ensure they work correct
 ***
 ***
 
+# what is OWASP in short for interview
+```
+OWASP (Open Web Application Security Project) is a global organization that provides guidelines 
+and best practices for improving web application security
+Prevent SQL Injection by using parameterized queries instead of raw SQL
 
+Protect against XSS by validating and escaping user input
+
+Use strong authentication (hashed passwords, MFA, secure sessions)
+
+Implement proper access control so users can’t access unauthorized data
+
+Store sensitive data securely using encryption and secure key management
+
+Keep dependencies updated to avoid known vulnerabilities
+
+Log and monitor security events to detect attacks early
+```
 
 
 
@@ -572,3 +589,47 @@ Integration Test: Tests multiple components together to ensure they work correct
 ***
 ***
 
+# GRPC
+```
+gRPC is a high-performance way for services to talk to each other over the network.
+
+It uses HTTP/2 (fast, supports streaming)
+
+You define APIs using Protocol Buffers (protobuf) instead of JSON
+
+It generates client/server code automatically
+
+Great for microservices communication because it’s faster and strongly typed compared to REST
+
+Example: Service A can directly call Service B’s function like a normal method call, but over the network.
+```
+
+
+***
+***
+***
+
+# SQL execution flow
+
+```
+Parse → Optimize → Execute → Return results
+
+Parsing (Syntax Check) => DB checks if SQL is valid => 
+=> Converts query into an internal structure (parse tree) => 
+Example: detects keywords like SELECT, FROM, WHERE
+
+Query Optimization (Planner) => DB decides the best way to execute the query:  =>
+Should it use an index?  => Full table scan?  => Which join strategy?
+
+Execution Engine Runs the Plan
+
+DB logically processes as:
+FROM => WHERE => GROUP BY => HAVING => SELECT => ORDER BY => LIMIT
+```
+
+
+
+
+***
+***
+***

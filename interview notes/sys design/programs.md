@@ -193,7 +193,74 @@ console.log(false ?? true);  // false
 ***
 ***
 
+# Check op of following
 
+```
+let obj1 = {
+  name: "Akash",
+  address: {
+    city: "Delhi"
+  }
+};
+
+let obj2 = obj1;  // same reference
+
+obj2.name = "Rahul";
+obj2.address.city = "Mumbai";
+
+
+console.log(obj1.name); // Rahul ✅
+console.log(obj2.name); // Rahul ✅
+
+console.log(obj1.address.city); // Mumbai ✅
+console.log(obj2.address.city); // Mumbai ✅
+
+
+Shallow copy - 
+
+let obj1 = {
+  name: "Akash",
+  address: {
+    city: "Delhi"
+  }
+};
+
+let obj2 = { ...obj1 }; // shallow copy
+
+// Change top-level property
+obj2.name = "Rahul";
+
+// Change nested property
+obj2.address.city = "Mumbai";
+
+// Logs
+console.log(obj1.name);         // Akash 
+console.log(obj2.name);         // Rahul 
+
+console.log(obj1.address.city); // Mumbai 
+console.log(obj2.address.city); // Mumbai 
+```
+
+
+***
+***
+***
+
+# how to remove duplicats from array using set in js
+
+```
+let arr = [1, 2, 2, 3, 4, 4, 5];
+
+let uniqueArr = [...new Set(arr)];
+
+console.log(uniqueArr);
+```
+
+
+
+***
+***
+***
 
 
 
