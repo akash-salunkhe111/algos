@@ -633,3 +633,210 @@ FROM => WHERE => GROUP BY => HAVING => SELECT => ORDER BY => LIMIT
 ***
 ***
 ***
+
+
+## Making a Project Highly Available & Scalable
+
+### High Availability (No Downtime)
+- Deploy across multiple servers (no single point of failure)
+- Use Load Balancer to distribute traffic
+- Run services in multiple Availability Zones / Regions
+- Add Auto-healing (restart failed instances automatically)
+- Use Database Replication + Failover setup
+- Implement Health Checks + Monitoring
+
+### Scalability (Handle Growth)
+- Horizontal Scaling (add more servers instead of bigger ones)
+- Use Auto-Scaling based on traffic/load
+- Cache frequently used data with Redis/CDN
+- Use Message Queues (Kafka/RabbitMQ/SQS) for async processing
+- Design services as stateless for easy scaling
+- Apply Database Sharding/Partitioning for large datasets
+
+### Reliability & Performance
+- Use Rate Limiting + Circuit Breakers to prevent overload
+- Add Observability: logs, metrics, tracing
+- Ensure backups + disaster recovery plan
+
+
+
+***
+***
+***
+
+## Monitoring Tools I Have Used
+
+```
+- Splunk
+- DataDog
+- CloudWatch
+- Grafana + Prometheus
+Prometheus is the "collector" (backend) that gathers and stores data,
+ while Grafana is the "visualiser" (frontend) that turns that data into
+  beautiful charts and dashboards
+```
+
+
+***
+***
+***
+
+## How to Troubleshoot a Critical Production Incident
+
+```
+### 1. Detect & Acknowledge
+- Confirm incident via alerts (Datadog, CloudWatch, Grafana)
+
+### 2. Stabilize First (Stop the Bleeding)
+- Rollback latest deployment if needed
+
+### 3. Identify Root Cause Quickly
+- Check dashboards: CPU, memory, latency, error rates
+- Inspect logs and traces for failures
+- Verify dependencies: DB, cache, third-party APIs
+
+### 4. Mitigation & Recovery
+- Apply hotfix or config change
+- Failover to standby systems if required
+- Restart unhealthy instances/services
+
+### 5. Communication
+- Update stakeholders regularly (engineering + business)
+- Document timeline and actions taken
+
+### 6. Post-Incident Review
+- Perform RCA (Root Cause Analysis)
+```
+
+
+
+
+***
+***
+***
+
+### Imagine you are creating new microservice with node or golang for high performance requirement, what primary factor you would consider for scalibility ?
+
+```
+1. Horizontal Scaling First
+  Service should scale by adding more pods/instances
+
+2. Efficient Concurrency Model
+  Go: true parallelism with goroutines
+  Node.js: event-loop based, best for I/O-heavy workloads
+  Avoid blocking operations
+
+3. Stateless + Externalized State
+  Makes load balancing easy
+  Enables failover and auto-healing
+
+4. Database as the Bottleneck
+  Add caching (Redis)
+  Use read replicas
+  Optimize queries and indexes
+
+5. Async Processing
+  Offload heavy tasks using Kafka/SQS/RabbitMQ
+  Keeps request latency low
+
+6. Observability & Limits
+  Monitoring + tracing for bottlenecks
+  Rate limiting to prevent overload
+```
+
+
+
+***
+***
+***
+
+## Automating Repetitive Tasks Using AI Tools (e.g., GitHub Copilot)
+
+```
+### 1. Code Generation for Boilerplate
+
+### 2. Faster Debugging & Fix Suggestions
+
+### 3. Writing Unit Tests Automatically
+
+### 4. Refactoring Support
+
+### 5. Documentation & Comments
+
+### 6. DevOps Automation Help
+- Create CI/CD YAML templates (GitHub Actions, Jenkins pipelines)
+- Generate Dockerfiles and Kubernetes manifests faster
+
+### 7. Query and Script Automation
+- Generate SQL queries, migration scripts, or data-processing utilities
+```
+
+
+***
+***
+***
+
+# AI tools you have used
+
+```
+- Cursor
+- CodeRabbit
+- codeium to generate unit test cases, it also generates edge cases
+```
+
+***
+***
+***
+
+
+Django vs fastapi
+
+FastAPI — Choose this if you want speed + modern APIs
+Microservices - lambdas
+✅ High-performance async apps
+✅ Backend for React/Next.js frontend
+Simple projects
+
+
+Django is best when you're building:
+
+✅ Full web applications
+✅ Admin panel + authentication
+✅ Large scalable systems
+✅ Complex database models
+✅ Enterprise apps
+Comes with everything built-in
+
+ORM, auth, admin dashboard included
+
+
+
+
+✅ Template sends the UI (HTML) to the user
+✅ View decides which template to send and provides the data
+
+In Django's MVT architecture, the components are defined as follows:
+Model: This is the data access layer that defines the structure and behavior of your data, typically by mapping to a database table via Django's built-in Object-Relational Mapper (ORM). It is responsible for data storage, retrieval, and manipulation.
+View: In Django, the "view" contains the business logic. It is a Python function or class that receives web requests, interacts with the Model to fetch or modify data, and decides which data should be presented to the user.
+Template: The template is the presentation layer, typically an HTML file mixed with the Django Template Language (DTL), which describes how the data is displayed to the user. 
+
+By default, Django uses its own built-in:
+
+Django Template Language (DTL)
+
+Django also supports other engines like:
+
+Jinja2 (optional)
+
+
+Simple flow:
+
+User requests a page
+
+View runs logic + fetches data
+
+View renders a Template
+
+Template generates the final HTML UI
+
+Browser receives the response

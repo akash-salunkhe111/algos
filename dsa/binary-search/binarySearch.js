@@ -7,7 +7,7 @@ function binarySearch(nums, target) {
 
         if (nums[mid] === target) {
             return mid;
-        } else if(nums[target] < nums[mid]) {
+        } else if(target < nums[mid]) {
             right = mid - 1;
         } else {
             left = mid + 1;
@@ -17,3 +17,5 @@ function binarySearch(nums, target) {
 }
 
 console.log(binarySearch([1,4,6,77,88,99,101,102,108,110], 108));
+
+// 1

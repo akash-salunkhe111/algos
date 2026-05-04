@@ -21,3 +21,5 @@ var firstUniqueChar = function(s) {
 };
 
 console.log(firstUniqueChar("loveleetcode")); // 2
+
+// 1

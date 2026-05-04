@@ -42,3 +42,6 @@ console.log(twoSum([3,3], 6));
 //    const neededValue = target - nums[i];
 //    - Example: target=9, current=2, look for 7 (9-2)
 // 2 - Add to HashMap after checking if it exists because adding before would cause you to use the same element twice
+
+
+// 1
