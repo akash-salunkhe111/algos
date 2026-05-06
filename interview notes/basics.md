@@ -1,4 +1,5 @@
 
+<!-- 1 -->
 # What is CORS?
 
 **CORS (Cross-Origin Resource Sharing)** is a **browser security mechanism** that controls whether a web application running on one origin can request resources from another origin.
@@ -34,6 +35,30 @@ app.use(cors({
 Or manually:
 ```
 res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+```
+
+### Can we bypass cors using curl or postman ?
+```
+YES
+
+🔍 What actually happens
+In Browser ❌
+
+Browser sends request
+
+Server doesn’t include proper CORS headers
+
+Browser blocks response
+
+You see CORS error
+
+In Postman / curl ✅
+
+Request goes directly to server
+
+Server responds
+
+No CORS check → you get response normally
 ```
 
 ***
@@ -110,6 +135,13 @@ Whether cross-origin requests are permitted
 Browsers automatically send an OPTIONS request before certain cross-origin requests.
 
 This is called a CORS preflight request.
+```
+A CORS preflight request is an OPTIONS request sent by the browser to check if a cross-origin 
+request is allowed before sending the actual request.
+It is triggered for non-simple requests, such as those using methods other than 
+GET, POST, or HEAD, requests with custom headers (like Authorization), 
+or with non-standard content types (like application/json).
+```
 
 
 
@@ -126,9 +158,9 @@ This is called a CORS preflight request.
 
 400 Bad Request
 
-401 Unauthorized
+401 Unauthorized - (Wrong username/password, Expired JWT)
 
-403 Forbidden
+403 Forbidden - (You are logged in, but not allowed to access this resource. User role not allowed (e.g., not admin))
 
 404 Not Found
 

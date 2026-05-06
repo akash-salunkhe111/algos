@@ -1,46 +1,3 @@
-
-
-### ➤ ToNumber
-
-"3" → 3
-
-"-3" → -3
-
-true → 1
-
-false → 0
-
-null → 0
-
-undefined → NaN (Note: NaN is itself a number 😅)
-
-### ➤ ToString
-
-5 → "5"
-
--5 → "-5"
-
-true / false / null → "true" / "false" / "null"
-
-undefined, NaN → "undefined", "NaN"
-
-### ➤ ToBoolean
-
-Falsy values (convert to false):
-
-0
-
-"" (empty string)
-
-null
-
-undefined
-
-NaN
-
-Everything else → true
-
-
 Here are clean, short Markdown notes on the difference between == and === and when to use which.
 
 ## ⚖️ JS == vs === — Short Notes
@@ -78,6 +35,10 @@ null === undefined // false
 0 === 0         // true
 ```
 
+***
+***
+***
+
 
 📝 JS Coercion: + vs Other Operators
 ## ➕ 1. + Operator → Prefers ToString
@@ -103,6 +64,12 @@ numeric addition
 
 If either operand is a string, JS chooses string concatenation.
 
+
+***
+***
+***
+
+
 ## ➗ 2. Other Arithmetic Operators → Use ToNumber
 
 Operators like -, *, /, %, ** always expect numbers, so they trigger ToNumber coercion.
@@ -121,6 +88,9 @@ null + 5     // 5      (null → 0)
 Even if a string is involved (except for +), JS will convert it to a number.
 
 
+***
+***
+***
 
 
 ### Example questions
@@ -139,12 +109,6 @@ console.log(y); // ?
 ✍️ Short explanation (step-by-step)
 function f() {} in an expression position (if ( ... )) is a function expression (a function object). Any function object is truthy, so the if condition is true and the body runs.
 
-Inside the if body we evaluate typeof f. The name f of a named function expression is only defined inside the function itself, not in the surrounding scope. Outside the function, f is not defined.
-
-typeof f on an undeclared identifier returns the string "undefined" (it does not throw a ReferenceError).
-
-The statement y += typeof f does:
-
 typeof f → "undefined" (a string)
 
 y += "undefined" is equivalent to y = y + "undefined".
@@ -158,7 +122,9 @@ console.log(y) therefore logs the string:
 ```
 
 
-
+***
+***
+***
 
 
 ## console.log(undefined == false)
@@ -171,33 +137,13 @@ false
 
 == (loose equality) in JavaScript performs type coercion, but it follows specific rules.
 
-### 🚫 Rule: undefined is only loosely equal to null
-undefined == null   // true
-
-
-But undefined is NOT equal to any other value, including:
-
-numbers
-
-booleans
-
-strings
-
-objects
-
-### 🔸 When comparing undefined == false:
-
-JavaScript does NOT convert undefined to a boolean or number.
-
-The coercion rules say:
-
 If one side is undefined and the other is boolean, the result is always false.
 
-So:
-
-undefined == false  // false
 
 
+***
+***
+***
 
 📌 JavaScript Hoisting Example Explained
 Code
@@ -216,20 +162,6 @@ var name = 'fvdf';
 var name = 'fvdf';
 
 
-A global variable name is created with the value "fvdf".
-
-## 2. IIFE (Immediately Invoked Function Expression)
-
-Inside the function:
-
-```javascript
-(function () {
-  console.log(name);   // ?
-  var name = "sdcds";
-  console.log(name);   // ?
-}());
-```
-
 ## 3. Hoisting happens inside the function
 
 The var name inside the function is hoisted:
@@ -245,30 +177,15 @@ JavaScript rewrites the function like this:
 }());
 ```
 
-## 🧩 Why does the first console.log(name) print undefined?
-
-Because:
-
-var name inside the function shadows (overrides) the global variable name.
-
-After hoisting, the local name exists but is undefined until assignment.
-
-So the sequence is:
-
-Hoisted variable exists → value = undefined
-
-First console.log(name) → prints undefined
-
-Assignment name = "sdcds"
-
-Second console.log(name) → prints "sdcds"
-
 🎉 Final Output
 ```text
 undefined
 sdcds
 ```
 
+***
+***
+***
 
 
 📌 JS Reference Assignment Example Explained
@@ -319,17 +236,6 @@ b still references the original array, so output is:
 ```
 
 
-
-
-### eg - 
-```javascript
-var name = "Lokesh Prajapati";
-(function() {
-  console.log(name);
-  var name = "Lokesh Prajapati";
-})();
-```
-
-op - undefined due to hoisting of name inside function as undefined
-
-https://github.com/surbhidighe/Javascript-Output-Based-Questions
+***
+***
+***

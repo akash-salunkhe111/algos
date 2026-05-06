@@ -77,3 +77,6 @@ express api to call and get data
 
 Backend - 
 call middleware, get data from request and return status code with try catch
+
+
+HttpOnly, Secure, SameSite

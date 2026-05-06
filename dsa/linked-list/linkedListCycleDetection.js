@@ -13,3 +13,5 @@ function hasCycle(head) {
 
   return false;               // reached end = no cycle
 }
+
+// 1
