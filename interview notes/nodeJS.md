@@ -150,11 +150,10 @@ Example Use Cases
 # 🛠 2. Service Workers
 What they are:
 
-A Service Worker is a background script that acts as a network proxy for your web app.
+### A Service Worker is a background script that sits between your web app and the internet, acting like a smart middleman or network proxy.
 
-The main purpose:
-
-Enable offline capability, caching, background sync, and push notifications.
+```
+It is also a browser feature, browser provides API and we call using js
 
 Key Features
 
@@ -167,7 +166,7 @@ Can cache assets (HTML, CSS, JS, images)
 Does NOT interact with DOM directly
 
 Used for Progressive Web Apps (PWAs)
-
+```
 
 ***
 ***
