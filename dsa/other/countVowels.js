@@ -10,3 +10,5 @@ function countVowels(str) {
   }
   
   console.log(countVowels("hello world")); // 3
+
+  // 1

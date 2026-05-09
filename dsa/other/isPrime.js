@@ -22,3 +22,5 @@ console.log(isPrime(22))
 // so we can check if the number is prime by checking if it has any factors less than or equal to the square root of the number.
 // if it does, then the number is not prime.
 // if it does not, then the number is prime.
+
+// 1

@@ -23,3 +23,5 @@ function secondLargest(arr) {
 //   Why we need -Infinity in the beginning and not 0?
 // if we initialize with 0, negative numbers will not be considered as second largest.
 // if we define with null or undefined, then comparison will fail.
+
+// 1
