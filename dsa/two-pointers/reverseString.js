@@ -32,3 +32,5 @@ console.log(basicReverseString('hello'));
 
 // Two pointers
 // swap places of 2 pointers
+
+// 1

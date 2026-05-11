@@ -49,3 +49,5 @@ function segregateBinary(arr) {
 // // Test
 // console.log(segregate([0, 1, 0, 1, 1, 1]));
 // // Output: [0, 0, 1, 1, 1, 1]
+
+// 1

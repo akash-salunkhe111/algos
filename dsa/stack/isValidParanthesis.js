@@ -21,3 +21,5 @@ var isValidParanthesis = function(s) {
 };
 
 console.log(isValidParanthesis("([])"));
+
+// 1

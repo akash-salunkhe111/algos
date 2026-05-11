@@ -32,10 +32,15 @@ app.listen(4000, () => {console.log("Server is running on port 4000"); });
 ```
 
 # Frontend
+
+```
+npx create-react-app my-app -  for react
+npx create-next-app@latest - for next js
+```
+
 ```
 "use client";
 
-import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export default function Home() {
@@ -69,6 +74,17 @@ export default function Home() {
 
 ```
 
+```
+// Custom middleware
+function loggerMiddleware(req, res, next) {
+    console.log(`${req.method} ${req.url}`);
+    
+    next(); // move to next middleware/route
+}
+
+// Use middleware
+app.use(loggerMiddleware);
+```
 
 
 ```

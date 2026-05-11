@@ -1,5 +1,5 @@
 // Input: prices = [7,1,5,3,6,4]
-// Output: 5
+// Output: 5 (Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.)
 // Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
 // Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
 
@@ -31,3 +31,5 @@ console.log(bestTimeToBuyAndSellStock([7,1,5,3,6,4]));
 // if right pointer price is less than left pointer, move left pointer to right pointer
 // as we found new low
 // if not then add to max the difference
+
+// 1
