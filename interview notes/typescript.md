@@ -380,7 +380,6 @@ type User = {
 type UserKeys = keyof User;
 // "id" | "name" | "email"
 
-```
 function getValue<T, K extends keyof T>(obj: T, key: K): T[K] {
   return obj[key];
 }
