@@ -4,11 +4,6 @@ function factorialIterative(n) {
         return 1
     }
   
-    // Handle negative numbers, as factorial is not defined for them.
-    if (n < 0) {
-        return "Factorial not defined"
-    }
-  
     let result = 1;
     // Loop from 2 up to n (inclusive) to calculate the product.
     for (let i = 2; i <= n; i++) {
@@ -31,3 +26,4 @@ function factorialIterative(n) {
   console.log(factorialRecursive(0)); // Output: 1
   console.log(factorialRecursive(1)); // Output: 1
   
+//  1

@@ -18,3 +18,4 @@ function flattenNestedAray(arr) {
 
 console.log(flattenNestedAray([1, [2, [3, [4]], 5], 6] ));
 
+// 1

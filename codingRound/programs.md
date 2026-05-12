@@ -36,20 +36,27 @@ its final value, which is 4 (because the loop terminates when i becomes 4).
 
 ```
 function mostRepeatedNumber(arr) {
-  const freq = {};
+  let map = {};
   let maxCount = 0;
-  let result = null;
-
-  for (const num of arr) {
-    freq[num] = (freq[num] || 0) + 1;
-
-    if (freq[num] > maxCount) {
-      maxCount = freq[num];
-      result = num;
+  let maxElement = null;
+  
+  for(let i=0; i < arr.length; i++) {
+    const element = arr[i];
+    
+    if(map[element]) {
+      map[element] = map[element] + 1;
+    } else {
+      map[element] = 1;
     }
+    
+    if(map[element] > maxCount ) {
+      maxCount = map[element];
+      maxElement = element;
+    }
+    
   }
-
-  return result;
+  
+  return maxElement;
 }
 
 // Example
@@ -225,9 +232,17 @@ console.log(obj2.address.city); // Mumbai
 ```
 let arr = [1, 2, 2, 3, 4, 4, 5];
 
-let uniqueArr = [...new Set(arr)];
+// Step 1: Create Set
+let uniqueSet = new Set(arr);
+
+console.log(uniqueSet);
+// Set(5) {1, 2, 3, 4, 5}
+
+// Step 2: Convert Set back to Array
+let uniqueArr = [...uniqueSet];
 
 console.log(uniqueArr);
+// [1, 2, 3, 4, 5]
 ```
 
 

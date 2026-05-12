@@ -12,3 +12,5 @@ var searchBSTRecursive = function(root, val) {
     if(root.val === val) return root;
     return val < root.val ? searchBSTRecursive(root.left, val) : searchBSTRecursive(root.right, val);
 };
+
+// 1
