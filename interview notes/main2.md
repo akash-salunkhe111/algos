@@ -422,20 +422,6 @@ One UI failure doesn’t crash the entire app
 ***
 ***
 
-# What is the difference between blue and green race conditions in elastic
-
-```
-Use atomic alias switch
-2️⃣ Pause writes during switch (best practice)
-Write to both Blue & Green, Switch reads only after sync
-```
-
-
-
-***
-***
-***
-
 
 How would you prepare the system for a sale where users are going to be increased rapidly. sql db is expecting huge registration
 
@@ -498,21 +484,6 @@ Write → Update DB → Invalidate / Update Cache
 
 
 ## cache eviction
-
-```
-Redis Eviction Policies
-1️⃣ noeviction
-
-Redis rejects new writes
-
-Reads still work
-
-Default behavior
-
-✔ Safe for critical data
-❌ Can cause write failures
-```
-
 
 ```
 Redis Eviction Policies
@@ -787,56 +758,3 @@ Prometheus is the "collector" (backend) that gathers and stores data,
 ***
 ***
 ***
-
-
-Django vs fastapi
-
-FastAPI — Choose this if you want speed + modern APIs
-Microservices - lambdas
-✅ High-performance async apps
-✅ Backend for React/Next.js frontend
-Simple projects
-
-
-Django is best when you're building:
-
-✅ Full web applications
-✅ Admin panel + authentication
-✅ Large scalable systems
-✅ Complex database models
-✅ Enterprise apps
-Comes with everything built-in
-
-ORM, auth, admin dashboard included
-
-
-
-
-✅ Template sends the UI (HTML) to the user
-✅ View decides which template to send and provides the data
-
-In Django's MVT architecture, the components are defined as follows:
-Model: This is the data access layer that defines the structure and behavior of your data, typically by mapping to a database table via Django's built-in Object-Relational Mapper (ORM). It is responsible for data storage, retrieval, and manipulation.
-View: In Django, the "view" contains the business logic. It is a Python function or class that receives web requests, interacts with the Model to fetch or modify data, and decides which data should be presented to the user.
-Template: The template is the presentation layer, typically an HTML file mixed with the Django Template Language (DTL), which describes how the data is displayed to the user. 
-
-By default, Django uses its own built-in:
-
-Django Template Language (DTL)
-
-Django also supports other engines like:
-
-Jinja2 (optional)
-
-
-Simple flow:
-
-User requests a page
-
-View runs logic + fetches data
-
-View renders a Template
-
-Template generates the final HTML UI
-
-Browser receives the response
