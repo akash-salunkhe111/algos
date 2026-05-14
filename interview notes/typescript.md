@@ -431,32 +431,7 @@ op -
 ***
 ***
 
-# how to extract type of key from object
-```
-type User = {
-  id: number;
-  name: string;
-  isAdmin: boolean;
-};
-
-type NameType = User["name"];
-so -
-type NameType = string
-
-
-To extract all keys
-type Values = User[keyof User];
-op - number | string | boolean
-
-```
-
-
-
-***
-***
-***
-
-# pick in ts
+# pick and omit in ts
 
 ```
 type User = {

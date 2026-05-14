@@ -29,6 +29,9 @@ var findMaxAverage = function(nums, k) {
         windowSum = windowSum + element;
     }
 
+    // Initialize using first window
+     maxAvg = windowSum / k;
+
     for (let i = k; i < nums.length; i++) {
         const element = nums[i];
         windowSum = windowSum + element - nums[i - k]
@@ -44,3 +47,5 @@ console.log(findMaxAverage([1,12,-5,-6,50,3], 4));
 // Then iterate through the array and subtract the first element and add the next element
 // Then divide the sum by k and update the max average
 // Return the max average
+
+// 1
