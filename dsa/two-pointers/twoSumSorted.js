@@ -16,4 +16,4 @@ function twoSumSorted(nums, target) {
 
 // Using two pointers to solve the problem
 
-// 1
+// 11

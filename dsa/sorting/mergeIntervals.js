@@ -21,9 +21,11 @@ var merge = function(intervals) {
 
 
 console.log(merge([[1,3],[2,6],[8,10],[15,18]]));
-
+// op = [[1,6],[8,10],[15,18]]
 
 // Copy
 // first sort the array based on first element
 // then store the first element in op
 // create currInterval and point it to first element as we will need it for next time to mutate same var
+
+// 1

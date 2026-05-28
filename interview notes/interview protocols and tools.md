@@ -206,3 +206,40 @@ Splunk itself internally uses similar patterns (stream ingestion + indexing).
 ***
 ***
 ***
+
+
+# Server-Sent Events (SSE)
+
+Server-Sent Events (SSE) is a technology that allows a server to push realtime updates to the client over a single long-lived HTTP connection.
+
+Unlike WebSockets, SSE is **one-way communication**:
+- Server → Client
+
+The client subscribes to an event stream, and the server continuously sends updates whenever new data is available.
+
+---
+
+# How SSE Works
+
+1. Client opens a connection using `EventSource`
+2. Server keeps the HTTP connection open
+3. Server pushes events continuously
+4. Client receives updates instantly without polling
+
+---
+
+# Example
+
+## Client
+
+```javascript
+const eventSource = new EventSource('/events');
+
+eventSource.onmessage = (event) => {
+  console.log(event.data);
+};
+
+
+***
+***
+***

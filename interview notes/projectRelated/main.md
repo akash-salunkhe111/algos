@@ -362,7 +362,64 @@ matters more than its length.
 ***
 ***
 
+Clanmark project Built AI-powered moderation
 
+```
+One of the major features I worked on was an AI-powered moderation and trust scoring system for listings and user conversations.
+Whenever users created listings or sent chats, the content was asynchronously processed through a moderation microservice using queues.
+
+1 - Rule-Based Detection Layer
+banned keywords
+excessive capital letters/spam formatting
+phone numbers
+eg - "Send advance payment first"
+"Contact on Telegram"
+
+2 - Embedding / Semantic Similarity Layer
+For semantic similarity detection, we generated embeddings using OpenAI’s text-embedding-3-small model
+and stored them in PostgreSQL using pgvector.
+
+This layer detected semantically similar content.
+We generated embeddings using OpenAI embedding models and stored them in pgvector.
+This helped detect:
+duplicate scam listings
+reposted spam
+semantically similar fraud patterns
+Even if wording changed slightly,
+semantic similarity still matched them.
+
+3 - Behavioral Detection Layer
+We also monitored user activity patterns.
+
+Examples:
+
+posting too many listings quickly
+repeated edits
+same IP creating multiple accounts
+abnormal booking activity
+
+4 - AI Classification Layer (GPT)
+
+brand new Iphone 15 under 100$
+
+eg spamy language
+Best best best offer!!!
+Cheap cheap cheap!!!
+DM NOW FAST FAST!!!
+
+Misleading Hotel Listing
+Listing:
+Luxury sea-view hotel near beach
+But description says:
+Beach is 8 km away
+
+{
+  "spam_probability": 0.12,
+  "scam_probability": 0.87,
+  "reason": "Requests payment before product verification"
+}
+
+```
 
 
 

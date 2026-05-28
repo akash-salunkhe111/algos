@@ -346,7 +346,13 @@ OAuth 2.0 is an **authorization framework** that lets users grant apps limited a
 2. App redirects user to Google consent page
 3. User approves permissions
 4. Google redirects back with an **Authorization Code**
+https://yourapp.com/callback?code=abc123
 5. App exchanges code (via backend) for tokens:
+Your backend sends: code + client_secret to google server
+POST https://oauth2.googleapis.com/token
+6. Google returns access_token which is used to make other request to get user data
+GET https://www.googleapis.com/oauth2/v2/userinfo
+Authorization: Bearer ACCESS_TOKEN
 
 ```json
 {
