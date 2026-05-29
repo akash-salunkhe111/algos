@@ -1079,72 +1079,7 @@ Custom hooks can call other hooks
 ***
 ***
 ***
-# What are controlled and uncontrolled components in react
-Controlled vs Uncontrolled Components in React
-✅ Controlled Components
 
-A controlled component is a form element (like <input>, <textarea>, <select>) whose value is fully controlled by React state.
-
-React controls the input value, and updates happen via setState / setValue.
-
-🔹 Key Points
-
-React state is the single source of truth
-
-The input value changes only when React updates state
-
-Easier to validate, transform, and track form values
-
-🔹 Example (Controlled Input)
-```
-function Form() {
-  const [name, setName] = useState("");
-
-  return (
-    <input
-      value={name}
-      onChange={(e) => setName(e.target.value)}
-    />
-  );
-}
-```
-
-✅ Uncontrolled Components
-
-An uncontrolled component is a form element where the DOM itself controls the value, not React.
-
-You read values using a ref instead of state.
-
-🔹 Key Points
-
-Browser DOM is the source of truth
-
-Useful for quick forms or when you don’t need to track every keystroke
-
-Minimal React involvement
-
-🔹 Example (Uncontrolled Input)
-```
-function Form() {
-  const inputRef = useRef();
-
-  const handleSubmit = () => {
-    alert(inputRef.current.value);
-  };
-
-  return (
-    <>
-      <input ref={inputRef} />
-      <button onClick={handleSubmit}>Submit</button>
-    </>
-  );
-}
-```
-useRef itself is neither controlled nor uncontrolled. But when you use useRef to manage form inputs, it creates an uncontrolled component.
-
-***
-***
-***
 
 # difference between useMemo and react.memo
 
