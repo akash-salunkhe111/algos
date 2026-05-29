@@ -197,6 +197,24 @@ or with non-standard content types (like application/json).
 ***
 ***
 
+# Event-driven programming
+
+```
+Event-driven programming is a programming style where:
+
+code executes in response to events
+
+instead of running sequentially from top to bottom.
+
+Events Can Be
+button click
+API request
+file upload
+message received
+Microservices
+SNS event
+```
+
 
 
 ***

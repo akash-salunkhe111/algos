@@ -396,7 +396,13 @@ abnormal booking activity
 
 4 - AI Classification Layer (GPT)
 GPT-4o-mini
+temperature = 0 or 0.1
+Why?
+Because moderation needs:
 
+deterministic output
+consistent classifications
+stable JSON responses
 brand new Iphone 15 under 100$
 
 eg spamy language

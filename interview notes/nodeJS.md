@@ -4,23 +4,6 @@ Streaming in Node.js is a way to process data piece-by-piece (chunks) instead of
 
 Node.js streams allow you to read/write large files or data efficiently, without waiting for the whole data to be available.
 
-# 🌊 Why Streams Are Useful?
-✔ Handle large files
-
-Instead of loading a 5GB file fully into RAM, you process it chunk-by-chunk.
-
-✔ Better performance & memory usage
-
-Only a small part of data stays in memory at any time.
-
-✔ Faster data handling
-
-You can start processing data as soon as it begins to arrive.
-
-✔ Ideal for real-time data
-
-Such as video streaming, audio, logs, network packets.
-
 ***
 ***
 ***

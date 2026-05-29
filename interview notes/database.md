@@ -1,71 +1,17 @@
 # 🔥 Key Differences (Interview Table)
-Feature	SQL	NoSQL
-Data Model	Tables & rows	Document / Key-Value / Graph / Column
-Schema	Fixed	Flexible
-Scaling	Vertical	Horizontal
-Consistency	Strong (ACID)	Often eventual
-Querying	SQL	DB-specific APIs
-Relationships	Strong joins	Limited joins (denormalization)
-Performance	Best for structured queries	Best for large-scale distributed data
-# 🎯 When to Use Which?
-## 🟦 Use SQL When:
+```
+use slq if you need
+fixed schema
+complex joins
+strong consistency and ACID properties
+and fixed / strong constraints
 
-Your data is structured
-
-You need transactions (bank payments, orders)
-
-You need consistency first
-
-Relationships between data matter (joins)
-
-The schema does not change often
-
-Example Use Cases:
-
-Finance apps
-
-Billing systems
-
-HR management systems
-
-ERP, CRM
-
-Inventory + Order Management
-
-## 🟩 Use NoSQL When:
-
-Your data is unstructured or semi-structured
-
-Schema changes often (flexible)
-
-You expect huge amounts of data
-
-You need high availability + horizontal scaling
-
-You want fast reads/writes with simple queries
-
-You need document/graph storage
-
-Example Use Cases:
-
-IoT data
-
-Chat apps, messaging
-
-Real-time analytics
-
-Recommendation engines
-
-Logging systems
-
-Content management
-
-Social networks (graph DB)
-
-
-
-
-
+use nosql if
+flexible schema
+very high write throughput
+Base properties
+high availability
+```
 
 ***
 ***
