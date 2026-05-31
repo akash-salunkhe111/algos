@@ -34,4 +34,23 @@ Page Refresh, Direct URL open, <a href> navigation
 ***
 ***
 
+```
+In financial RAG, accuracy isn’t nice-to-have, it’s everything.
 
+You’re building RAG for financial PDFs. Missing a single number from search can cost millions. What is the best search method?
+
+Answer:
+- Use hybrid search, it’s the baseline for high-stakes data.
+- Combine BM25 (keyword) + semantic search → exact numbers + contextual meaning
+- Merge results using RRF (Reciprocal Rank Fusion)
+- Add a reranker (e.g., Cohere Rerank) to push the most relevant chunk to the top
+- Use layout-aware chunking (tables intact) and metadata filtering (company, quarter, doc type)
+- Always cite sources for every number
+
+In finance, retrieval is risk management—hybrid search + reranking is the minimum bar.
+
+```
+
+***
+***
+***
