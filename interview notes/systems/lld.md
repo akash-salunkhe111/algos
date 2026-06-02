@@ -57,12 +57,14 @@ async function getUsers() {
 Type: Creational Design Pattern
 
 Definition:
-Factory Pattern provides an interface for creating objects and lets the factory decide which object to instantiate, hiding the object creation logic from the client.
+Factory Pattern provides an interface for creating objects and lets the factory 
+decide which object to instantiate, hiding the object creation logic from the client.
 
 Pros
 Encapsulates object creation logic.
 Makes code easier to extend and maintain.
 Reduces tight coupling between client and concrete classes.
+
 Cons
 Adds extra abstraction and complexity.
 May require more classes/files for simple use cases.
@@ -105,12 +107,14 @@ notifier.send('Hello User');
 Type: Behavioral Design Pattern
 
 Definition:
-Observer Pattern defines a one-to-many relationship where multiple subscribers (observers) automatically get notified whenever the publisher (subject) changes state or emits an event.
+Observer Pattern defines a one-to-many relationship where multiple subscribers (observers) 
+automatically get notified whenever the publisher (subject) changes state or emits an event.
 
 Pros
 Loose coupling between publisher and subscribers.
 Easy to add or remove subscribers.
 Great for event-driven systems.
+
 Cons
 Can be difficult to debug with many subscribers.
 Too many notifications can impact performance.

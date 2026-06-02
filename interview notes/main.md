@@ -1582,25 +1582,34 @@ O — Open/Closed Principle (OCP)
 
 Software entities should be open for extension, but closed for modification.
 
-✔ Add new behavior without changing existing code
-✔ Use interfaces, inheritance, composition
+Instead of creating one class called Payment and each if else statement for
+payment types, do below
 
-class PaymentValidator {
-  validate(order) {
-    console.log('Validating order');
+
+class PaymentMethod {
+  pay(amount) {
+    throw new Error('Implement pay');
   }
 }
 
-class CardPayment {
-  constructor(validator) {
-    this.validator = validator;
-  }
-
-  pay(order) {
-    this.validator.validate(order);
-    console.log('Card gateway call');
+class CardPayment extends PaymentMethod {
+  pay(amount) {
+    console.log(`Paid ₹${amount} using Card`);
   }
 }
+
+class UpiPayment extends PaymentMethod {
+  pay(amount) {
+    console.log(`Paid ₹${amount} using UPI`);
+  }
+}
+
+const service = new PaymentService();
+
+service.process(
+  new CardPayment(),
+  1000
+);
 
 
 
@@ -1682,24 +1691,9 @@ class EmailNotification extends NotificationService {}
 class SmsNotification extends NotificationService {}
 class WhatsAppNotification extends NotificationService {}
 
-Why DIP is Critical in E-commerce
-
-Payment gateways change
-
-SMS/email vendors change
-
-Tax engines vary by region
-
-Fraud engines evolve
-
-A/B testing vendors
-
-DIP = plug-and-play architecture
-
-
-
-
-
+here Order service (High level module) shouldnt call
+EmailNotification (Low level module) directly.
+It should call NotificationService
 
 ```
 
