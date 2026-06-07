@@ -136,3 +136,52 @@ Use case	Batch processing	Real-time updates
 ***
 ***
 ***
+
+
+# Can we delete data from cassandra, and what is tombstone in cassandra
+
+Yes, but Cassandra handles deletes differently from traditional databases.
+
+When you delete a row or column, Cassandra writes a special marker called a tombstone.
+Instead of physically removing the data immediately,  it writes a tombstone marker 
+that indicates the data has been deleted.
+
+Why use Tombstones?
+
+Because Cassandra is a distributed database.
+
+Suppose:
+
+Node A  -> receives DELETE
+Node B  -> temporarily down
+Node C  -> receives DELETE
+
+If Cassandra physically removed the data immediately:
+
+A -> deleted
+C -> deleted
+B -> still has old data
+
+When B comes back, it could replicate the old data and resurrect the deleted row.
+
+Tombstones prevent this.
+
+The tombstone is replicated across the cluster so every node eventually learns:
+
+"This row is deleted."
+
+Too many tombstones can hurt performance.
+
+Common ways tombstones are created
+1. DELETE statements
+2. TTL (Time To Live)
+***
+***
+***
+
+
+
+
+***
+***
+***

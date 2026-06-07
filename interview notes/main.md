@@ -1687,6 +1687,18 @@ class NotificationService {
   send(msg) {}
 }
 
+class EmailNotification extends NotificationService {
+  send(message) {
+    console.log("Email:", message);
+  }
+}
+
+class SmsNotification extends NotificationService {
+  send(message) {
+    console.log("SMS:", message);
+  }
+}
+
 class EmailNotification extends NotificationService {}
 class SmsNotification extends NotificationService {}
 class WhatsAppNotification extends NotificationService {}

@@ -156,21 +156,12 @@ Used for Progressive Web Apps (PWAs)
 ***
 
 
-# process.nextTick()
-process.nextTick() is a Node.js function that schedules a callback to run:
-
-Immediately after the current operation completes, but before the event loop continues.
-It runs after all synchronous code is finished but before any promises or timers
-
-
-***
-***
-***
 
 # Multithreading in node js
 
 1. Worker Threads (worker_threads)
-Worker Threads allow you to run JavaScript in parallel within the same process. Each worker runs its own isolated V8 engine instance but shares the same system memory as the main thread.
+Worker Threads allow you to run JavaScript in parallel within the same process. 
+Each worker runs its own isolated V8 engine instance but shares the same system memory as the main thread.
 
 Best For: CPU-intensive tasks (e.g., image processing, encryption, complex mathematical calculations).
 
@@ -187,10 +178,7 @@ Communication: Uses postMessage() to send data back and forth.
 Number of workers ≤ number of CPU cores
 
 So if you have:
-
 4 cores → 4–6 workers
-
-8 cores → 8–12 workers
 
 Why?
 
@@ -202,15 +190,96 @@ Performance drops beyond core count
 
 
 2. Child Processes (child_process)
-A Child Process is a completely separate instance of the Node.js runtime (or even a different language like Python). It has its own memory space, its own PID, and its own V8 instance.
+A Child Process is a completely separate instance of the Node.js runtime (or even a different language like Python). 
+It has its own memory space, its own PID, and its own V8 instance.
 
-Best For: Running system commands (like ls or git), executing external scripts, or tasks where you need isolation (if the child crashes, the parent stays alive).
+Best For: Running system commands (like ls or git), executing external scripts.
 
 Memory: Completely isolated. They do not share memory.
 
 Overhead: High. Each child process consumes its own memory and CPU resources, similar to opening a new tab in a browser.
 
-Communication: Uses Inter-Process Communication (IPC). Data must be "serialized" (converted to a string/JSON), sent, and "deserialized" on the other end, which is slower than sharing memory.
+Communication: Uses Inter-Process Communication (IPC). Data must be "serialized" (converted to a string/JSON)
+
+***
+***
+***
+
+
+# 🔁 JavaScript Event Loop — Full Interview Explanation
+
+JavaScript is single-threaded, meaning it can run one line of code at a time.
+But JS can still handle asynchronous tasks (timers, promises, network calls) using the Event Loop.
+
+The Event Loop decides what to run next from different queues
+
+
+# 🧩 Main Components of the Event Loop
+
+Call Stack
+
+Web APIs (Browser) / C++ APIs (Node.js) LIBUV library
+
+Event Loop
+
+Task Queues / Callback Queues
+
+Microtask Queue (Promise queue) and MacroTask queues (timers)
+
+Rendering Queue (Browser)
+
+# 🔥 Event Loop Flow (High-Level)
+
+JS executes code line-by-line (call stack).
+
+When async code is encountered → moved to Web APIs.
+
+After completion, callbacks go into queues.
+
+Event Loop continuously checks:
+
+If the call stack is empty
+
+If yes → it pulls tasks from queues (based on priority)
+
+when sync code is completed then engine takes tasks from call stack
+
+✔ 1. Microtask Queue (Highest priority)
+Contains:
+
+process.nextTick()
+
+Promises (.then, .catch, .finally)
+
+Always executed before any other queue.
+
+✔ 2. Macrotask Queue (Task Queue / Callback Queue)
+
+Contains:
+
+setTimeout
+
+setInterval
+
+setImmediate (Node)
+
+I/O callbacks
+
+DOM events (click, scroll)
+
+MessageChannel
+
+
+***
+***
+***
+
+
+# process.nextTick()
+process.nextTick() is a Node.js function that schedules a callback to run:
+
+Immediately after the current operation completes, but before the event loop continues.
+It runs after all synchronous code is finished but before any promises or timers
 
 
 ***

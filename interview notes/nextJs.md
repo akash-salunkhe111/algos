@@ -13,31 +13,25 @@ It helps build fast, SEO-friendly, production-ready React applications with mini
 
 # Difference between SSR, SSG, ISR, and CSR in Next.js
 
-Next.js supports multiple rendering strategies depending on performance and SEO needs.
+Next.js supports multiple rendering strategies -
 
 ### ⚡ Server-Side Rendering (SSR)
-Rendered:
+Rendered: On every request by the server
 
-On every request by the server
+When used: 
 
-When used:
+SEO pages needing fresh data
 
 Data that changes often
 
 Personalized data
-
-SEO pages needing fresh data
-
-Next.js function:
 
 ```
 export async function getServerSideProps() {}
 ```
 
 ### ⚡ Static Site Generation (SSG)
-Rendered:
-
-At build time only
+Rendered: At build time only
 
 When used:
 
@@ -45,15 +39,12 @@ Blogs
 
 Docs
 
-Next.js function:
 ```
 export async function getStaticProps() {}
 ```
 
 ### ⚡ Incremental Static Regeneration (ISR)
-Rendered:
-
-Initially static at build time
+Rendered: Initially static at build time
 
 Regenerated after a configured interval
 
@@ -94,9 +85,6 @@ Auth dashboards
 
 User-specific data
 
-Real-time UI
-
-
 
 ***
 ***
@@ -114,11 +102,71 @@ Real-time UI
 | Components    | Client only              | Server by default                   |
 | Data Fetching | `getServerSideProps` etc | async server components + `fetch()` |
 | Layouts       | Limited                  | Nested layouts                      |
-| Streaming     | ❌                        | ✔                                   |
-| SEO           | Good                     | Better                              |
-| Performance   | Good                     | Excellent                           |
+
+Folder structure of App Router
+```
+project/
+│
+├── app/
+│   ├── layout.js
+│   ├── page.js
+│   │
+│   ├── about/
+│   │   └── page.js
+│   │
+│   ├── products/
+│   │   ├── page.js
+│   │   └── [id]/
+│   │       └── page.js
+│   │
+│   ├── dashboard/
+│   │   ├── layout.js
+│   │   ├── page.js
+│   │   └── settings/
+│   │       └── page.js
+│
+├── components/
+├── public/
+└── styles/
+
+app/page.js                     -> /
+app/about/page.js              -> /about
+app/products/page.js           -> /products
+app/products/[id]/page.js      -> /products/123
+app/dashboard/page.js          -> /dashboard
+```
 
 
+
+***
+***
+***
+
+
+# Difference between Layout, Page, Template in App router?
+🧠 Simple explanation
+
+Page → the actual route content
+
+Layout → persistent wrapper (doesn’t rerender)
+
+Template → like layout but rerenders (used for transitions/animations)
+
+🎯 One-liner for interview
+
+Layout persists across routes, Template recreates UI on navigation, Page is the actual route’s content.
+
+### 🧠 Why do we need Template?
+
+Suppose you want:
+
+page transition animation
+
+reset state on every navigation
+
+re-fetch something each time
+
+start animation from scratch
 
 ***
 ***
@@ -127,8 +175,6 @@ Real-time UI
 # ⚛️ What are React Server Components in Next.js?
 
 ✔ Run only on server
-
-They never execute in the browser runtime.
 
 ✔ Zero JS sent to client
 
@@ -162,90 +208,34 @@ export default async function Page() {
 
 # When do we need "use client"?
 
+In app router, by default, all components are server side
+
 Use "use client" when you need:
 
 ✔ React hooks that rely on the browser
 
-useState
-
-useEffect
-
-useRef
-
-useLayoutEffect
+useState, useEffect, useRef, useLayoutEffect
 
 ✔ Event handlers
 
-onClick
-
-onChange
-
-onSubmit
-
-etc.
+onClick, onChange, onSubmit etc.
 
 ✔ Browser APIs
 
-window
-
-localStorage
-
-document
-
-cookies (client-side)
+window, localStorage, document, cookies (client-side)
 
 ✔ Client-side state & interaction
 
-toggling UI
-
-modal open/close
-
-animations
-
-inputs/forms
-
-dropdown menus
+toggling UI, modal open/close, animations, inputs/forms
 
 ***
 ***
 ***
 
-# Difference between Layout, Page, Template in App router?
-🧠 Simple explanation
-
-Page → the actual route content
-
-Layout → persistent wrapper (doesn’t rerender)
-
-Template → like layout but rerenders (used for transitions/animations)
-
-🎯 One-liner for interview
-
-Layout persists across routes, Template recreates UI on navigation, Page is the actual route’s content.
-
-### 🧠 Why do we need Template?
-
-Suppose you want:
-
-page transition animation
-
-reset state on every navigation
-
-re-fetch something each time
-
-start animation from scratch
-
-***
-***
-***
 
 # What does getServerSideProps do in Next.js?
 
-getServerSideProps tells Next.js to render a page on the server for every incoming request instead of pre-building it at build time.
-
-In simple words
-
-It fetches data on the server at request time and injects it into the page before sending HTML to the browser.
+(not in new next js version, after next 14 app router became main)
 
 How it works (step-by-step)
 
@@ -299,6 +289,7 @@ export default function Page({ initialData }) {
 
 ➡️ First request = SSR
 ➡️ Subsequent updates = Client-side
+Note - This will call api again on frontend, use react query
 
 ***
 ***
@@ -360,28 +351,14 @@ Use useEffect to ensure the dynamic data only loads on the client:
 ***
 ***
 
-# 'use client'
-
-In the Next.js App Router, 'use client' is a directive used to declare a boundary between Server Components and Client Components.
-
-By default, every file in the app directory is a Server Component. You only add 'use client' at the very top of a file (before any imports) when you need browser-specific features.
-
-***
-***
-***
-
 # How do you handle state in react/next js without redux 
 
 ```
-1 - URL as State (Underrated & Powerful)
+1 - Local Component State (UI-only) using useState
+2 - Shared Client State → Context
+3 - Async Client State → React Query
+4 - URL as State (Underrated & Powerful)
 For filters, sorting, pagination — use URL.
-
-2 - Local Component State (UI-only) using useState
-
-3 - Shared Client State → Context
-
-4 - Async Client State → React Query
-
 5 - Use server components to fetch user info from cookies, db etc 
 ```
 
@@ -391,13 +368,6 @@ For filters, sorting, pagination — use URL.
 ***
 
 # React query vs redux
-
-```
-Client State: Data that lives only in the browser (e.g., "Is this sidebar open?", "Dark mode on/off").
-
-Server State: Data that lives on a server and you are just "borrowing" it to show the user
- (e.g., User profiles, list of products, notifications).
-```
 
 ### Why React Query Wins for Server State
 ```

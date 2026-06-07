@@ -103,3 +103,25 @@ const students = [
     // Note spelling of localeCompare, it has e in it
   });
 
+
+
+  // Simple test case
+  const add = require('./add');
+
+describe('add function', () => {
+  test('should add two positive numbers', () => {
+    expect(add(2, 3)).toBe(5);
+  });
+
+  test('should add negative numbers', () => {
+    expect(add(-2, -3)).toBe(-5);
+  });
+
+  test('should add positive and negative numbers', () => {
+    expect(add(5, -2)).toBe(3);
+  });
+
+  test('should add zeros', () => {
+    expect(add(0, 0)).toBe(0);
+  });
+});

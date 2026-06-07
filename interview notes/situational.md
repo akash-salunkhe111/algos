@@ -54,3 +54,58 @@ In finance, retrieval is risk management—hybrid search + reranking is the mini
 ***
 ***
 ***
+
+# can we pass function as prop from react server to client
+
+```
+No, you cannot pass a standard, ordinary JavaScript function as a prop from a React Server Component 
+to a Client Component. This is because any data crossing the network boundary from the server to 
+the client must be serializable
+
+But you can pass server action
+
+// ServerComponent.tsx (Server Component by default)
+import { ClientButton } from './ClientButton';
+
+export default function ServerComponent() {
+  // This is a Server Action
+  async function handleServerUpdate(id: string) {
+    'use server';
+    // This executes strictly on your server (e.g., database mutation)
+    console.log(`Updating record ${id} on the server`);
+  }
+
+  return (
+    <div>
+      <h1>Server Parent</h1>
+      {/* You can safely pass this as a prop */}
+      <ClientButton onUpdate={handleServerUpdate} />
+    </div>
+  );
+}
+
+
+// ClientButton.tsx
+'use client'; // This directive defines the network boundary
+
+interface ClientButtonProps {
+  onUpdate: (id: string) => Promise<void>;
+}
+
+export function ClientButton({ onUpdate }: ClientButtonProps) {
+  return (
+    // Triggering the function sends a POST request to the server
+    <button onClick={() => onUpdate('42')}>
+      Trigger Server Function
+    </button>
+  );
+}
+
+
+Here when we click button on client, it will make post reqeust to server
+```
+
+
+***
+***
+***
