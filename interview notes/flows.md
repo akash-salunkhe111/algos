@@ -134,6 +134,8 @@ This causes connection storm → connection exhaustion.
 
 ### Create a middleware gateway service like ecs where lambda will request to get data. This service will keep and handle pool of connections
 
+### AWS RDS
+
 
 ***
 ***

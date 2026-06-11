@@ -52,6 +52,8 @@ You:
 
 ---
 
+
+
 # When to Use EC2?
 
 Use **EC2** when:
@@ -79,6 +81,51 @@ Use **Lambda** when:
 ***
 ***
 ***
+
+# ECS vs EC2
+```
+Use EC2 if:
+
+- Full OS Control: You need to install custom drivers, specialized software, or specific kernel configurations, GPUS.
+
+Use ECS if:
+If you have containers like docker
+
+- Microservices: You are building a modern app with many small, independent parts.
+
+- Standardization: You want your "Dev" and "Prod" environments to be identical using Docker.
+
+```
+
+***
+***
+***
+
+# AWS Lambda – Pros & Cons (Interview Short)
+
+## ✅ Pros
+- **Serverless**: No server management
+- **Auto-scaling**: Scales automatically with traffic
+- **Pay-per-use**: Charged only for execution time
+- **High availability**: Built-in fault tolerance
+- **Fast development**: Focus on code, not infra
+- **Easy integration**: Works seamlessly with S3, API Gateway, DynamoDB, SQS
+
+---
+
+## ❌ Cons
+- **Cold starts**: Higher latency for infrequent invocations
+- **Execution limits**: Max 15 minutes runtime
+- **Resource limits**: Limited memory, CPU, disk
+- **Connection pooling issues**: DB connections don’t scale well
+- **Debugging & observability**: Harder than long-running services
+- **Vendor lock-in**: Tied to AWS ecosystem
+- DB connection issues (the one from mongodb pool eg)
+
+***
+***
+***
+
 
 # What is VPC
 A VPC (Virtual Private Cloud) is an isolated, software-defined network you create inside a public cloud provider (AWS, GCP, Azure). Think of it as your own private data-center network, carved out within the provider’s global infrastructure.
@@ -258,75 +305,6 @@ PATCH /users/123
 2 - npm audit - Fix vulnerabilities proactively
 3 - "Synk" (often spelled Snyk) refers primarily to a popular developer-first security platform for finding and fixing vulnerabilities in code, dependencies, and containers
 ```
-***
-***
-***
-
-# Performance in React / Next.js
-
-## 📊 How to Measure Performance
-
-### 1. React DevTools Profiler
-- Measures component render time
-- Detects unnecessary re-renders
-
-### 2. Chrome DevTools (Lighthouse)
-- Metrics: **LCP, FID, CLS, TTFB**
-```
-- **LCP (Largest Contentful Paint):** Time taken for the largest visible element (image/text) to render on screen.
-- **FID (First Input Delay):** Time between user’s first interaction and browser’s response.
-- **CLS (Cumulative Layout Shift):** Measures unexpected layout movement during page load.
-- **TTFB (Time to First Byte):** Time taken for the server to send the first byte of response.
-```
-### 3. Next.js Web Vitals
-```js
-export function reportWebVitals(metric) {
-  console.log(metric);
-}
-```
-Tracks real-user performance (RUM)
-
-### Network Tab
-
-- Analyze JS bundle size
-- Measure API latency
-- Waterfall request analysis
-
-### Bundle Analyzer - Identifies large or unused dependencies
-
-# ⚡ How to Optimize Performance
-## 1️⃣ Code-Level Optimizations (Component Logic)
-
-- Use `React.memo` to prevent unnecessary re-renders
-- Use `useCallback` for stable function references
-- Use `useMemo` for expensive computations
-
-
-## 2️⃣ Rendering Optimizations (DOM & UI)
-- Virtualize long lists (`react-window`, `react-virtualized`).
-- Use Keys in list.
-
-
-## 3️⃣ Framework-Level Optimizations (Next.js)
-- Use **App Router + Server Components** latest react/nextjs version
-- Prefer **SSG / ISR** over SSR
-- Lazy-load heavy components
-- Enable code splitting
-- Use `next/image` for responsive images
-
-
-## 6️⃣ Data Fetching & State Optimization
-- Cache API responses
-- Use **SWR / React Query**
-- Browser cache
-
-## 7️⃣ Network & Infrastructure Optimizations
-- Use CDN for static assets
-- Enable HTTP compression (gzip / brotli)
-
-## other js related
-- Ensure effective tree-shaking
-- Remove unused dependencies
 
 ***
 ***
@@ -431,9 +409,10 @@ User can send **100 requests per minute**
 ---
 
 ## 4️⃣ Leaky Bucket
-- Requests processed at constant rate
-- Extra requests are queued or dropped
-- No bursts allowed
+Imagine a bucket with a small hole at the bottom.
+Packets/requests arrive and are placed in the bucket.
+Water (packets) leaks out at a constant rate.
+If the bucket becomes full, new packets are dropped.
 
 ---
 
@@ -458,32 +437,6 @@ AWS WAF (Web Application Firewall)
 Example:
 Block IP if > 2000 requests in 5 minutes
 ```
-
-
-***
-***
-***
-
-# AWS Lambda – Pros & Cons (Interview Short)
-
-## ✅ Pros
-- **Serverless**: No server management
-- **Auto-scaling**: Scales automatically with traffic
-- **Pay-per-use**: Charged only for execution time
-- **High availability**: Built-in fault tolerance
-- **Fast development**: Focus on code, not infra
-- **Easy integration**: Works seamlessly with S3, API Gateway, DynamoDB, SQS
-
----
-
-## ❌ Cons
-- **Cold starts**: Higher latency for infrequent invocations
-- **Execution limits**: Max 15 minutes runtime
-- **Resource limits**: Limited memory, CPU, disk
-- **Connection pooling issues**: DB connections don’t scale well
-- **Debugging & observability**: Harder than long-running services
-- **Vendor lock-in**: Tied to AWS ecosystem
-- DB connection issues (the one from mongodb pool eg)
 
 
 ***
@@ -608,26 +561,6 @@ a **durable, ordered log** and allows multiple consumers to **read and replay da
 
 
 
-
-***
-***
-***
-
-# ECS vs EC2
-```
-Use EC2 if:
-
-- Full OS Control: You need to install custom drivers, specialized software, or specific kernel configurations, GPUS.
-
-Use ECS if:
-
-- Microservices: You are building a modern app with many small, independent parts.
-
-- Standardization: You want your "Dev" and "Prod" environments to be identical using Docker.
-
-```
-
-
 ***
 ***
 ***
@@ -643,7 +576,8 @@ spent in making lambda hot again, how to avoid this
 Answer - 
 ```
 1. Provisioned Concurrency (The "Always Hot" Solution)
-This is the most direct way to eliminate cold starts. You tell AWS to keep a specific number of execution environments "pre-warmed" and ready to respond.
+This is the most direct way to eliminate cold starts. 
+You tell AWS to keep a specific number of execution environments "pre-warmed" and ready to respond.
 
 How it works: AWS initializes the environment, downloads your code, and runs your global setup (like DB connections) before a request ever arrives.
 
@@ -705,160 +639,18 @@ Browser Cache (HTTP Caching)
 
 ```
 
-
-
-***
-***
-***
-
-## When to Use React vs Next.js
-
-### ✅ Use React.js When
-- Building a **Single Page Application (SPA)**
-- App is **highly interactive** (dashboards, admin panels)
-- SEO is **not important**
-
-
-📌 Examples:
-- Internal tools
-- Admin dashboards
-
----
-
-### ✅ Use Next.js When
-- SEO is **important**
-- Need **server-side rendering (SSR)** or **static generation (SSG)**
-- Public-facing websites
-- Faster initial page load required
-- Want full-stack capabilities (API routes)
-
-📌 Examples:
-- Blogs
-- E-commerce sites
-- Marketing pages
-- Content-heavy apps
-
----
-
-## Quick Decision Rule ⭐
-- **Public, SEO-driven app → Next.js**
-- **Private, interaction-heavy app → React**
-
----
-
-## Interview One-Liner
-> Use React for client-heavy SPAs and Next.js for SEO-friendly, production-ready web applications that need server-side rendering.
-
-***
-***
-***
-
-## `next/image` in Next.js
-
-```
-- `next/image` is a built-in **image optimization component** in Next.js
-- Automatic **image resizing**
-- **Lazy loading** by default
-- Compresses image
-- Serves images in modern formats (WebP/AVIF)
-- Responsive images for different screen sizes
-```
-
 ***
 ***
 ***
 
 ## Core Web Vitals (Short)
 
-### 1️⃣ LCP – Largest Contentful Paint
-**What:** Time taken to load the largest visible content  
-**Good:** ≤ 2.5s  
-
-**Improve by:**
-- Use `next/image`
-- Use CDN & caching
-- Optimize server response (SSR / SSG)
-- Reduce JS & CSS blocking
-
----
-
-### 2️⃣ INP – Interaction to Next Paint
-**What:** Responsiveness to user interaction  
-**Good:** ≤ 200ms  
-
-**Improve by:**
-- Reduce heavy JS execution
-- Code splitting & lazy loading
-- Use `useCallback` / `useMemo`
-- Avoid long main-thread tasks
-
----
-
-### 3️⃣ CLS – Cumulative Layout Shift
-**What:** Visual layout stability  
-**Good:** ≤ 0.1  
-
-**Improve by:**
-- Always set image width & height
-- Reserve space for ads & embeds
-- Avoid injecting content above the fold
-- Use stable fonts (`font-display: swap`)
-
----
-
-## Supporting Metrics
-
-### ⚡ FCP – First Contentful Paint
-- Load critical CSS early
-- Optimize fonts
-
-### ⏱️ TTFB – Time To First Byte
-- Use CDN
-- Cache responses
-- Improve backend latency
-
----
-
-## Interview One-Liner ⭐
-> Core Web Vitals measure loading performance (LCP), interactivity (INP), and visual stability (CLS), and are improved through caching, image optimization, reducing JavaScript, and stable layouts.
-
-
-
-***
-***
-***
-
-# explain langchain
-## LangChain (Short Explanation)
-
-- LangChain is a **framework for building LLM-powered applications**
-- It helps connect **LLMs with data, tools, and workflows**
-- Used to build **chatbots, RAG systems, agents, and pipelines**
-
----
-
-## What LangChain Provides
-
-- **Prompt templates** – reusable prompts
-- **Chains** – multi-step LLM workflows
-- **Memory** – conversation state
-- **Retrievers** – connect vector databases
-- **Agents** – LLMs that can use tools dynamically
-
----
-
-## Common Use Cases
-- Retrieval-Augmented Generation (RAG)
-- Chatbots with memory
-- Document Q&A
-- Tool-using AI agents
-
----
-
-## Interview One-Liner ⭐
-> LangChain is a framework that simplifies building LLM applications by chaining prompts, models, tools, and data sources together.
-
-
+```
+- **LCP (Largest Contentful Paint):** Time taken for the largest visible element (image/text) to render on screen.
+- **FID (First Input Delay):** Time between user’s first interaction and browser’s response.
+- **CLS (Cumulative Layout Shift):** Measures unexpected layout movement during page load.
+- **TTFB (Time to First Byte):** Time taken for the server to send the first byte of response.
+```
 
 ***
 ***
@@ -1255,66 +1047,6 @@ compensating actions, ensuring eventual consistency without global locks.**
 ***
 ***
 
-# Use state vs use Ref
-```
-If we want UI to rerender, use useState or else use useRef.
-Both are use to store data.
-sometimes useRef is used to store the previous state values
-
-useRef is also use to access html element
-
-```
-
-***
-***
-***
-
-# Server Components (App Router) vs  getServerSideProps
-
-```
-Server Components move data fetching into the component itself and eliminate sending data 
-as JSON to the browser, unlike getServerSideProps.
-
-Execution Flow
-getServerSideProps
-
-Request
- → getServerSideProps()
- → Page component
- → JSON props + HTML
- → Client hydration
-
-
-
-Server Components
-
-Request
- → Server Component fetch()
- → HTML stream
- → Client hydrates only Client Components
-
-
-
-Data Freshness Control (Big Win)
-Server Components - 
-fetch(url, { cache: "no-store" }) // SSR
-fetch(url, { next: { revalidate: 60 } }) // ISR
-fetch(url) // SSG (default)
-
-
-
-getServerSideProps - 
-Always SSR — no caching control
-
-
-
-```
-
-
-
-***
-***
-***
 
 # What is MCP
 
@@ -1341,16 +1073,6 @@ A transaction must either complete fully or not happen at all.
 
 ✔ If one step fails → entire transaction is rolled back
 ✔ No partial updates
-
-Example
-
-Bank transfer:
-
-Debit ₹500 from A
-
-Credit ₹500 to B
-
-If credit fails → debit is rolled back.
 
 ## 2️⃣ Consistency — “Valid state → valid state”
 
@@ -1399,10 +1121,6 @@ system reboot
 …should NOT remove the committed data.
 
 Databases use:
-
-Write-ahead logs
-
-Disk flush
 
 Replication
 
@@ -1472,18 +1190,18 @@ To guarantee durability.
 
 BASE is an alternative to ACID, optimized for scalability & availability.
 
-B – Basically Available
+BA – Basically Available
 The system guarantees that it will respond to any request, but it doesn't 
 guarantee that the data is the most recent. Even if some nodes in a cluster fail
 , the database stays online and responds to the user rather than shutting down to 
 protect data integrity.
 
-A – Soft State
+S – Soft State
 The state of the system can change over time, even without any new input.
  Because of "eventual consistency," data might be in flux as updates ripple 
  through different servers or nodes in the background.
 
-S – Eventual Consistency
+E – Eventual Consistency
 Data becomes consistent eventually, not immediately
 
 👉 Used in NoSQL systems where high availability matters more than strict consistency.
@@ -1745,74 +1463,3 @@ before completing checkout. Non-critical operations are async to reduce
 latency and improve reliability.
 ```
 
-***
-***
-***
-
-# How do you handle transaction in document based db
-
-```
-1. The First Rule: Atomic Document Operations
-In MongoDB, any write operation on a single document is atomic by default. 
-This means if you update 10 fields inside one document, it either all succeeds or all fails.
-The Strategy: Use Embedded Documents. Instead of having a Users table and a Settings table,
-put the settings inside the user document. You now have "transaction-like" safety without the performance 
-hit of a formal transaction.
-
-2. Multi-Document Transactions (ACID)
-In MongoDB, Multi-Document Transactions allow you to group multiple read/write operations together. They follow the ACID principle: either every operation in the group succeeds, or none of them are applied to the database.
-
-
-Here is the breakdown of how the process actually works under the hood.
-
-1. The Core Prerequisites
-Before you can run a transaction, two things must be true:
-
-WiredTiger Storage Engine: You must be using this engine (it's the default since MongoDB 3.2).
-
-Replica Sets or Sharded Clusters: Transactions rely on the Oplog (operations log) to synchronize data across nodes. They do not work on "Standalone" instances.
-
-
-2. The Transaction Workflow (Step-by-Step)
-MongoDB uses a Snapshot Isolation model. When a transaction starts, it takes a "snapshot" of the data.
-
-Start a Session: You first create a ClientSession. This is the container that tracks all your operations.
-
-Start Transaction: You call session.startTransaction(). At this point, no data has changed yet.
-
-Execute Operations: You perform your update, insert, or delete commands. 
-Important: You must pass the { session } object into every command so MongoDB knows they belong to that transaction.
-
-Pending State: While the transaction is open, other users looking at the database cannot see your changes yet. 
-They still see the "old" data.
-
-Commit: When you call session.commitTransaction(), the changes are written to the Oplog and made visible to everyone simultaneously.
-
-Abort/Rollback: If any error occurs (or you call abortTransaction()), MongoDB discards all pending 
-changes in that session, and the database remains as if nothing ever happened.
-
-```
-
-
-***
-***
-***
-
-# How do we do consistency in mongodb
-```
-1. Application-Level Consistency (Mongoose)
-How it works: You define a "Schema" in your code. If you try to save a document that doesn't match the schema 
-(e.g., a string where a number should be), Mongoose throws an error before the data ever reaches MongoDB.
-
-2. Database-Level Consistency (JSON Schema)
-MongoDB has built-in JSON Schema Validation. This is a set of rules stored inside the database itself.
-
-How it works: You tell the collection: "Every document must have a username (string) and an age (minimum 18)."
-```
-
-
-
-
-***
-***
-***

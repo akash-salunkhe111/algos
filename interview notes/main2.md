@@ -1,48 +1,3 @@
-# What is the singleton design pattern?
-```
-The Singleton Design Pattern is a creational pattern that ensures:
-
-✅ Only one instance of a class exists in the entire application
-✅ That single instance is globally accessible
-
-In short: “Create it once, reuse it everywhere.”
-
-Why Singleton exists
-
-Singleton is used when multiple instances would cause problems, such as:
-
-Multiple DB connections
-
-
-class MongoConnection {
-  private static instance: MongoConnection;
-  private client: MongoClient;
-  private db!: Db;
-
-  private constructor() {
-    this.client = new MongoClient(process.env.MONGO_URI!);
-  }
-
-  static async getInstance(): Promise<MongoConnection> {
-    if (!MongoConnection.instance) {
-      const conn = new MongoConnection();
-      await conn.client.connect();
-      conn.db = conn.client.db(process.env.DB_NAME);
-      MongoConnection.instance = conn;
-    }
-    return MongoConnection.instance;
-  }
-
-  getDb(): Db {
-    return this.db;
-  }
-}
-```
-
-
-***
-***
-***
 
 # Difference between the restapi and graphql
 
@@ -110,70 +65,6 @@ N+1 is caused by per-item resolvers; DataLoader fixes it by batching database ca
 ***
 ***
 
-### Sharding (Interview Short)
-
-**Sharding** is a database scaling technique where **large datasets are split into smaller parts (shards)** 
-and distributed across multiple servers to improve **performance, scalability, and availability**.
-
-- Each shard holds a **subset of data**
-- Queries run in **parallel** across shards
-- Reduces load on a single database
-
-**Example:**  
-Users with IDs `1–1M` on Shard A, `1M–2M` on Shard B
-
-### Consistent Hashing (Interview Short)
-
-**Consistent hashing** is a technique used to distribute data across multiple servers so that 
-**adding or removing a server causes minimal data re-mapping**.
-
-**Why it was needed:**
-- Traditional hashing remaps **most keys** when nodes change
-- Causes massive cache invalidation and data movement
-- Poor for scalable distributed systems
-
-**How it helps:**
-- Only a small portion of keys move when a node is added/removed
-- Improves scalability and availability
-
-**Used in:**  
-CDNs, distributed caches (Redis, Memcached), databases, load balancers
-
-***
-***
-***
-
-
-# How the sharding will be implemented
-
-```
-What is Sharding?
-
-Sharding = horizontal partitioning
-Data is split across multiple databases (shards) based on a shard key to scale writes and storage.
-
-How sharding is implemented (high level)
-
-Choose a shard key
-Decide sharding strategy
-Route queries to correct shard
-Handle rebalancing & failures
-
-Sharding strategies
-Range-based (userId 1–1000)
-Hash-based (hash(userId))
-
-Things to consider in SQL databases
-Shard key selection (avoid hot keys) (like country, all queries hit one country)
-Cross-shard joins are expensive ❌
-```
-
-
-
-***
-***
-***
-
 # How do you identify if the server stops working without looking at the logs in production?
 
 ```
@@ -204,7 +95,7 @@ No traffic for N minutes
 ***
 ***
 
-#Let's say one of the service api calls is failing because of a failure in the other service. How do you handle it? in mircoservices
+# Let's say one of the service api calls is failing because of a failure in the other service. How do you handle it? in mircoservices
 
 ```
 1️⃣ Timeouts (first line of defense)
@@ -312,24 +203,6 @@ Switch traffic instantly
 
 ```
 AB tests feature flags
-```
-
-
-***
-***
-***
-
-# Cassandra vs mongodb
-
-```
-| Aspect              | Cassandra    | MongoDB           |
-| ------------------- | ------------ | ----------------- |
-| Architecture        | Peer-to-peer | Primary-secondary |
-| Write scalability   | Excellent    | Good              |
-| Availability        | Very high    | Medium–high       |
-| Query flexibility   | Limited      | Rich              |
-| Joins / Aggregation | ❌            | ✅                 |
-
 ```
 
 
@@ -721,39 +594,6 @@ Prometheus is the "collector" (backend) that gathers and stores data,
 ***
 ***
 
-## Automating Repetitive Tasks Using AI Tools (e.g., GitHub Copilot)
-
-```
-### 1. Code Generation for Boilerplate
-
-### 2. Faster Debugging & Fix Suggestions
-
-### 3. Writing Unit Tests Automatically
-
-### 4. Refactoring Support
-
-### 5. Documentation & Comments
-
-### 6. DevOps Automation Help
-- Create CI/CD YAML templates (GitHub Actions, Jenkins pipelines)
-- Generate Dockerfiles and Kubernetes manifests faster
-
-### 7. Query and Script Automation
-- Generate SQL queries, migration scripts, or data-processing utilities
-```
-
-
-***
-***
-***
-
-# AI tools you have used
-
-```
-- Cursor
-- CodeRabbit
-- codeium to generate unit test cases, it also generates edge cases
-```
 
 ***
 ***

@@ -410,27 +410,6 @@ In TypeScript, Awaited<T> is a utility type that helps you figure out what type 
 ***
 ***
 
-# keyof in ts
-keyof gives you a union of all keys of an object type.
-```
-type User = {
-  id: number;
-  name: string;
-  isAdmin: boolean;
-};
-
-type UserKeys = keyof User;
-
-op - 
-"id" | "name" | "isAdmin"
-
-```
-
-
-***
-***
-***
-
 # pick and omit in ts
 
 ```

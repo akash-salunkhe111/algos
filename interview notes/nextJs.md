@@ -422,9 +422,21 @@ does NOT fetch again immediately.
 Because CLIENT cache already knows data.
 ```
 
+
 ***
 ***
 ***
+
+## `next/image` in Next.js
+
+```
+- `next/image` is a built-in **image optimization component** in Next.js
+- Automatic **image resizing**
+- **Lazy loading** by default
+- Compresses image
+- Serves images in modern formats (WebP/AVIF)
+- Responsive images for different screen sizes
+```
 
 
 
