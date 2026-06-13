@@ -132,6 +132,7 @@ Captures existing data	✅	❌ (only new changes)
 Captures new inserts	❌	✅
 Use case	Batch processing	Real-time updates
 
+```
 
 ***
 ***
