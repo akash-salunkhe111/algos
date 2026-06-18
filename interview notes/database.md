@@ -187,43 +187,25 @@ Common ways tombstones are created
 1. The First Rule: Atomic Document Operations
 In MongoDB, any write operation on a single document is atomic by default. 
 This means if you update 10 fields inside one document, it either all succeeds or all fails.
-The Strategy: Use Embedded Documents. Instead of having a Users table and a Settings table,
-put the settings inside the user document. You now have "transaction-like" safety without the performance 
-hit of a formal transaction.
 
 2. Multi-Document Transactions (ACID)
 In MongoDB, Multi-Document Transactions allow you to group multiple read/write operations together. 
-They follow the ACID principle: either every operation in the group succeeds, or none of them are applied to the database.
+They are atomic.
 
+const session = client.startSession();
 
-Here is the breakdown of how the process actually works under the hood.
+try {
+  session.startTransaction();
 
-1. The Core Prerequisites
-Before you can run a transaction, two things must be true:
+  await accounts.updateOne(..., { session });
+  await accounts.updateOne(..., { session });
 
-WiredTiger Storage Engine: You must be using this engine (it's the default since MongoDB 3.2).
-
-Replica Sets or Sharded Clusters: Transactions rely on the Oplog (operations log) to synchronize data across nodes. 
-They do not work on "Standalone" instances.
-
-
-2. The Transaction Workflow (Step-by-Step)
-MongoDB uses a Snapshot Isolation model. When a transaction starts, it takes a "snapshot" of the data.
-
-Start a Session: You first create a ClientSession. This is the container that tracks all your operations.
-
-Start Transaction: You call session.startTransaction(). At this point, no data has changed yet.
-
-Execute Operations: You perform your update, insert, or delete commands. 
-Important: You must pass the { session } object into every command so MongoDB knows they belong to that transaction.
-
-Pending State: While the transaction is open, other users looking at the database cannot see your changes yet. 
-They still see the "old" data.
-
-Commit: When you call session.commitTransaction(), the changes are written to the Oplog and made visible to everyone simultaneously.
-
-Abort/Rollback: If any error occurs (or you call abortTransaction()), MongoDB discards all pending 
-changes in that session, and the database remains as if nothing ever happened.
+  await session.commitTransaction();
+} catch (err) {
+  await session.abortTransaction();
+} finally {
+  await session.endSession();
+}
 
 ```
 
@@ -239,6 +221,7 @@ How it works: You define a "Schema" in your code. If you try to save a document 
 (e.g., a string where a number should be), Mongoose throws an error before the data ever reaches MongoDB.
 
 2. Database-Level Consistency (JSON Schema)
+When creating collection db.createCollection("users", {...
 MongoDB has built-in JSON Schema Validation. This is a set of rules stored inside the database itself.
 
 How it works: You tell the collection: "Every document must have a username (string) and an age (minimum 18)."
@@ -330,6 +313,111 @@ Cross-shard joins are expensive ❌
 ***
 ***
 ***
+
+# Stored procedures
+```
+A stored procedure is a set of SQL statements saved in the database and executed as a unit.
+
+CREATE OR REPLACE PROCEDURE increase_salary(
+    emp_id INT,
+    increment_amount NUMERIC
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE employees
+    SET salary = salary + increment_amount
+    WHERE id = emp_id;
+END;
+$$;
+
+
+SQL
+CALL increase_salary(1, 5000);
+
+Stored procedures and functions are written and stored inside the database itself, 
+not in your application code.
+When you execute this once, PostgreSQL stores it in its system catalog.
+
+For stored procedure - 
+1 - Can modify data in database and supports Commit and rollback like transactions
+2 -  Returning value is optional
+3 - Can use all DML operations like INSERT, UPDATE, DELETE, SELECT
+```
+
+# Stored Functions
+
+```
+A stored function is similar to a procedure, but it must return a value (or a table).
+
+CREATE OR REPLACE FUNCTION get_salary(emp_id INT)
+RETURNS NUMERIC
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    emp_salary NUMERIC;
+BEGIN
+    SELECT salary
+    INTO emp_salary
+    FROM employees
+    WHERE id = emp_id;
+
+    RETURN emp_salary;
+END;
+$$;
+
+SELECT get_salary(1);
+
+
+For stored functions - 
+1 - Cannot modify data in database and supports Commit and rollback like transactions
+2 -  Must return value
+3 - Can use SELECT
+
+Why use stored functions ?
+when you need repeated calculations on some values directly to be used with SELECT statement
+```
+
+***
+***
+***
+
+# Row Level Security (RLS) in PostgreSQL
+
+```
+Row Level Security (RLS) allows PostgreSQL to control access at the **row level**, 
+so users can only see or modify rows they are permitted to access.
+In multi-tenant applications, each customer should only access their own data.
+
+Without RLS:
+
+sql
+SELECT * FROM orders;
+
+
+A developer must remember to add:
+
+sql
+WHERE tenant_id = ?
+to every query.
+
+With RLS enabled, PostgreSQL automatically applies the filter, 
+reducing the risk of data leaks.
+
+How it works
+Enable RLS on a table:
+
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY tenant_policy
+ON orders
+USING (tenant_id = current_setting('app.tenant_id')::INT);
+
+  SELECT *
+  FROM orders
+  WHERE tenant_id = $1
+
+```
 
 ***
 ***

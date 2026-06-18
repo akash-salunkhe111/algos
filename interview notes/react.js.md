@@ -812,22 +812,6 @@ React.Suspense wraps lazy components and shows a fallback UI.
   <LazyComponent />
 </Suspense>
 ```
-✔ Example: Lazy Component with Suspense
-```
-const About = React.lazy(() => import("./About"));
-
-function App() {
-  return (
-    <Suspense fallback={<p>Loading...</p>}>
-      <About />
-    </Suspense>
-  );
-}
-```
-
-When About is loading, React shows:
-
-Loading...
 
 # ⭐ Why use React.lazy + Suspense?
 ✔ Reduce initial bundle size

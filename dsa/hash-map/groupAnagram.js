@@ -52,6 +52,7 @@ var groupAnagrams = function(strs) {
 };
 
 console.log(groupAnagrams(["eat","tea","tan","ate","nat","bat"]));
+// op - [["bat"],["nat","tan"],["ate","eat","tea"]]
 
 // First sort the array with alphabatical order
 // then group by sorted index, not that for loop is looping sortedStrings, but while

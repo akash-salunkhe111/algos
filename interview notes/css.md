@@ -1,23 +1,3 @@
-🆕 Some new HTML tags (HTML5 / modern spec)
-
-HTML5 introduced many semantic, interactive, and media elements. Here are commonly asked ones:
-
-🎯 Semantic tags (structure + accessibility)
-Tag	Purpose
-header -	Intro / top section of page or section
-footer -	Bottom section / copyright / links
-nav -	Navigation links
-section -	Thematic grouping of content
-article -	Independent content (blog, news)
-aside -	Sidebar or complementary content
-main -	Primary content of the page
-figure -	Image + caption wrapper
-figcaption -	Caption for images/video/etc
-
-***
-***
-***
-
 # What is the CSS Box Model?
 
 The CSS Box Model describes how every HTML element is treated as a rectangular box, and how its size and space are calculated.
@@ -58,7 +38,10 @@ Space outside the element — pushes elements away from each other
 
 By default, CSS adds padding + border on top of width, but you can change that:
 ```
+if we give box-sizing then The total width stays 200px and includes padding and all
 div {
+  width: 200px;
+  padding: 20px;
   box-sizing: border-box;
 }
 ```

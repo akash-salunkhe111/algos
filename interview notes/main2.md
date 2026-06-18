@@ -299,6 +299,7 @@ One UI failure doesn’t crash the entire app
 How would you prepare the system for a sale where users are going to be increased rapidly. sql db is expecting huge registration
 
 ```
+stored procedure for bulk insert which takes data as ip
 queue requests and Bulk insert at intervals
 Create appropriate indexes on userName or unique fields
 increase connection pools
@@ -558,35 +559,6 @@ Prometheus is the "collector" (backend) that gathers and stores data,
 ***
 ***
 ***
-
-### Imagine you are creating new microservice with node or golang for high performance requirement, what primary factor you would consider for scalibility ?
-
-```
-1. Horizontal Scaling First
-  Service should scale by adding more pods/instances
-
-2. Efficient Concurrency Model
-  Go: true parallelism with goroutines
-  Node.js: event-loop based, best for I/O-heavy workloads
-  Avoid blocking operations
-
-3. Stateless + Externalized State
-  Makes load balancing easy
-  Enables failover and auto-healing
-
-4. Database as the Bottleneck
-  Add caching (Redis)
-  Use read replicas
-  Optimize queries and indexes
-
-5. Async Processing
-  Offload heavy tasks using Kafka/SQS/RabbitMQ
-  Keeps request latency low
-
-6. Observability & Limits
-  Monitoring + tracing for bottlenecks
-  Rate limiting to prevent overload
-```
 
 
 

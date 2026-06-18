@@ -447,6 +447,30 @@ type UserWithoutEmail = {
 ***
 
 
+# Unknown VS Any
+
+```
+In TypeScript, both any and unknown can hold values of any type, 
+but they differ significantly in type safety.
+
+any disables TypeScript's type checking.
+
+let value: any = "hello";
+value.toUpperCase(); // ✅ No error
+value.foo.bar.baz(); // ✅ No error (may crash at runtime)
+
+
+unknown is the type-safe version of any.
+
+let value: unknown = "hello";
+value.toUpperCase(); // ❌ Error
+
+let value: unknown = "hello";
+if (typeof value === "string") {
+  console.log(value.toUpperCase()); // ✅
+}
+
+```
 
 
 

@@ -109,3 +109,97 @@ Here when we click button on client, it will make post reqeust to server
 ***
 ***
 ***
+
+# Suppose you forsee that large nos of users are going to signup, you have to optimize such that system does not fail under pressure
+
+```
+1 - Use stored procedures - 
+Without a stored procedure
+
+Suppose you need to insert 10,000 records.
+
+App -> INSERT row 1
+App -> INSERT row 2
+App -> INSERT row 3
+...
+App -> INSERT row 10000
+
+With a stored procedure
+
+The application sends the data once:
+
+CALL insert_orders(order_data);
+The procedure loops inside the database:
+
+FOR rec IN ...
+LOOP
+   INSERT INTO orders (...);
+END LOOP;
+
+2 - Queue the signup data in Message queue and then bulk insert it.
+
+3 - Use proper Indexes which can help while inserting
+```
+
+
+***
+***
+***
+
+## you are using sql and microservices, your queries are getting slow orders collections, lot of records and getting slow due to joins etc. how will you first debug and then fixes which you can do to optimize it
+
+```
+1. Diagnose First
+For SQL:
+
+EXPLAIN ANALYZE
+SELECT ...
+
+Mongodb alternative
+db.orders.find({
+  customer_id: 123
+}).explain("executionStats")
+
+Look for:
+Full table scans
+Nested loop joins on large tables
+Missing indexes
+High row counts scanned
+Sorting operations (ORDER BY)
+Temporary tables
+
+
+
+B. Measure query latency
+
+Check:
+
+p50
+p95
+p99
+
+Questions:
+
+Is every query slow?
+Only reporting queries?
+Only joins?
+Only during peak traffic?
+
+
+C. Find N+1 queries
+
+Microservices often do:
+
+for (const order of orders) {
+  await getCustomer(order.customerId);
+}
+
+100 orders = 100 DB calls.
+
+Very common performance issue.
+```
+
+
+***
+***
+***

@@ -1048,23 +1048,6 @@ compensating actions, ensuring eventual consistency without global locks.**
 ***
 
 
-# What is MCP
-
-- The Model Context Protocol is an open-source standard that allows AI applications to connect seamlessly with external data sources and tools. 
-- MCP standardizes how Large Language Models (LLMs) "talk" to databases, Google Drive, Slack, or local files.
-
-```
-MCP Host: The AI application or environment where the model lives (e.g., Claude Desktop, an IDE like Cursor, or a custom chatbot).
-
-MCP Client: The component within the host that initiates connections and handles the protocol's "handshake."
-
-MCP Server: A lightweight program that exposes specific data or tools (e.g., a "Postgres MCP Server" that lets the AI query a database).
-```
-
-***
-***
-***
-
 
 ### ACID Properties
 ## 1️⃣ Atomicity — “All or nothing”
